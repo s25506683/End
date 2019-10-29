@@ -31,7 +31,7 @@ public class CustomerController {
     public void processFormCreate(@RequestBody Customer customer) throws SQLException {
        dao.insert(customer);
     }
-    
+    //@POST
  @GetMapping(value = {"/customer/{id}"})
     public Customer retrieveOneCustomer(@PathVariable("id") Long id) throws SQLException{
        return dao.findOne(id);
