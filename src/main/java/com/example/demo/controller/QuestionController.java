@@ -19,36 +19,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.CustomerDAO;
-import com.example.demo.entity.Customer;
+import com.example.demo.dao.QuestionDAO;
+import com.example.demo.entity.Question;
 
 @RestController
-public class CustomerController {
+public class QuestionController {
   @Autowired
- CustomerDAO dao;
+  QuestionDAO dao;
 
- @PostMapping(value = "/customer")
-    public void processFormCreate(@RequestBody Customer customer) throws SQLException {
-       dao.insert(customer);
+ @PostMapping(value = "/question")
+    public void processFormCreate(@RequestBody Question question) throws SQLException {
+       dao.insert(question);
     }
     //@POST
- @GetMapping(value = {"/customer/{id}"})
-    public Customer retrieveOneCustomer(@PathVariable("id") Long id) throws SQLException{
-       return dao.findOne(id);
+ @GetMapping(value = {"/question/one/{cs_id}/{std_id}"})
+    public Question retrieveOneQuestion(@PathVariable("cs_id") String cs_id, @PathVariable("std_id") int std_id) throws SQLException{
+       return dao.findOne(cs_id,std_id);
     }
     
- @GetMapping(value = {"/customer"})
-    public List<Customer> retrieveCustomers() throws SQLException{
-       return dao.findAll();
+ @GetMapping(value = {"/question/all/{cs_id}"})
+    public List<Question> retrieveQuestion(@PathVariable("cs_id") String cs_id) throws SQLException{
+       return dao.findAll(cs_id);
     }
     
- @PutMapping(value = "/customer")
-    public void processFormUpdate(@RequestBody Customer customer) throws SQLException {
-       dao.update(customer);
+ @PutMapping(value = "/question")
+    public void processFormUpdate(@RequestBody Question question) throws SQLException {
+       dao.update(question);
     }
 
- @DeleteMapping(value = "/customer/{id}")
-    public void deleteCustomer(@PathVariable("id") Long id) {
+ @DeleteMapping(value = "/question/{id}")
+    public void deleteQuestion(@PathVariable("id") int id) {
        dao.delete(id);
     }
  

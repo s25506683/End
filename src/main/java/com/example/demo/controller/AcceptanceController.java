@@ -19,40 +19,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.CustomerDAO;
-import com.example.demo.entity.Customer;
+import com.example.demo.dao.AcceptanceDAO;
+import com.example.demo.entity.Acceptance;
 
 @RestController
-public class CustomerController {
+public class AcceptanceController {
   @Autowired
- CustomerDAO dao;
+  AcceptanceDAO dao;
 
- @PostMapping(value = "/customer")
-    public void processFormCreate(@RequestBody Customer customer) throws SQLException {
-       dao.insert(customer);
+ @PostMapping(value = "/acceptance")
+    public void processFormCreate(@RequestBody Acceptance acceptance) throws SQLException {
+       dao.insert(acceptance);
     }
     //@POST
- @GetMapping(value = {"/customer/{id}"})
-    public Customer retrieveOneCustomer(@PathVariable("id") Long id) throws SQLException{
+ @GetMapping(value = {"/acceptance/{id}"})
+    public Acceptance retrieveOneAcceptance(@PathVariable("id") int id) throws SQLException{
        return dao.findOne(id);
     }
     
- @GetMapping(value = {"/customer"})
-    public List<Customer> retrieveCustomers() throws SQLException{
-       return dao.findAll();
+ @GetMapping(value = {"/acceptance/hw/{hw}"})
+    public List<Acceptance> retrieveAcceptance(@PathVariable("hw") String hw) throws SQLException{
+       return dao.findAll(hw);
     }
     
- @PutMapping(value = "/customer")
-    public void processFormUpdate(@RequestBody Customer customer) throws SQLException {
-       dao.update(customer);
+ @PutMapping(value = "/acceptance")
+    public void processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException {
+       dao.update(acceptance);
     }
 
- @DeleteMapping(value = "/customer/{id}")
-    public void deleteCustomer(@PathVariable("id") Long id) {
+ @DeleteMapping(value = "/acceptance/{id}")
+    public void deleteAcceptance(@PathVariable("id") int id) {
        dao.delete(id);
     }
  
 }
+
 
 
 
