@@ -37,9 +37,9 @@ public class AcceptanceController {
        return dao.findOne(id);
     }
     
- @GetMapping(value = {"/acceptance/hw/{hw}"})
-    public List<Acceptance> retrieveAcceptance(@PathVariable("hw") String hw) throws SQLException{
-       return dao.findAll(hw);
+ @GetMapping(value = {"/acceptance/hw/{cs_id}/{hw_name}"})
+    public List<Acceptance> retrieveAcceptance(@PathVariable("cs_id") String cs_id, @PathVariable("hw_name") String hw_name) throws SQLException{
+       return dao.findAll(cs_id,hw_name);
     }
     
  @PutMapping(value = "/acceptance")
@@ -53,7 +53,3 @@ public class AcceptanceController {
     }
  
 }
-
-
-
-

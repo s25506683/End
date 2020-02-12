@@ -33,9 +33,9 @@ public class AcceptanceDAODB implements AcceptanceDAO {
     return this.jdbcTemplate.queryForObject( "select accept_id, accept_std_id, accept_hw_id, accept_time, accept_score, accept_done from acceptance where accept_id = ?", new Object[]{id}, new AcceptanceMapper());
   }
 
- public List<Acceptance> findAll(String hw) {
-     return this.jdbcTemplate.query( "select a.accept_id, a.accept_std_id, a.accept_hw_id, a.accept_time, a.accept_score, a.accept_done, hw.hw_name from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where hw.hw_name = ?"
-       , new Object[]{hw}, new AcceptanceMapper());
+ public List<Acceptance> findAll(String cs_id, String hw_name) {
+     return this.jdbcTemplate.query( "select a.accept_id, a.accept_std_id, a.accept_hw_id, a.accept_time, a.accept_score, a.accept_done, hw.hw_name from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ? and hw.hw_name = ?"
+       , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
  }
 
  private static final class AcceptanceMapper implements RowMapper<Acceptance> {
@@ -64,9 +64,7 @@ public class AcceptanceDAODB implements AcceptanceDAO {
  
  
  
+
+ 
+ 
 }
-
-
-
-
-
