@@ -12,4 +12,5 @@ public interface HomePage1_sDAO {
  public int update(HomePage1_s homepage1_s);
  public int delete(int id);
 
+ 
 }

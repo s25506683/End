@@ -51,6 +51,7 @@ public class HomePage1_sController {
     public void deleteQuestion(@PathVariable("id") int id) {
        dao.delete(id);
     }
+    
  
 }
 
