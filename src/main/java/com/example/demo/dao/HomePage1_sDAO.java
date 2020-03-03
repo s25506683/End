@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.demo.entity.HomePage1_s;
 
+//import org.springframework.stereotype.Component;
+//@Component
 public interface HomePage1_sDAO {
 
  //public int insert(HomePage1_s homepage1_s);
