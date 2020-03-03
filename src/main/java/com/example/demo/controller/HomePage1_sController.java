@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 //import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.bind.annotation.RequestMapping;
+/////////////import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.web.bind.annotation.RequestMethod;
 //import org.springframework.web.bind.annotation.RequestParam;
-
 //import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.HomePage1_sDAO;
@@ -27,30 +27,33 @@ public class HomePage1_sController {
   @Autowired
   HomePage1_sDAO dao;
 
- @PostMapping(value = "/question")
-    public void processFormCreate(@RequestBody HomePage1_s homepage1_s) throws SQLException {
-       dao.insert(homepage1_s);
-    }
+//  @PostMapping(value = "/question")
+//     public void processFormCreate(@RequestBody HomePage1_s homepage1_s) throws SQLException {
+//        dao.insert(homepage1_s);
+//     }
     //@POST
- @GetMapping(value = {"/question/one/{cs_id}/{std_id}"})
-    public HomePage1_s retrieveOneQuestion(@PathVariable("cs_id") String cs_id, @PathVariable("std_id") int std_id) throws SQLException{
-       return dao.findOne(cs_id,std_id);
+ @GetMapping(value = {"/HomePage1_s/one/{std_id}"})
+    public List<HomePage1_s> retrieveOneQuestion(@PathVariable("std_id") final int std_id) throws SQLException {
+       return dao.findStudentCourse(std_id);
     }
     
- @GetMapping(value = {"/question/all/{cs_id}"})
-    public List<HomePage1_s> retrieveQuestion(@PathVariable("cs_id") String cs_id) throws SQLException{
-       return dao.findAll(cs_id);
+ @GetMapping(value = {"/HomePage1_s/all"})
+    public List<HomePage1_s> retrieveQuestion() throws SQLException{
+      //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+      //String password = passwordEncoder.encode("12345");
+      //System.out.println(password.length() + "\n" + password);
+       return dao.findAllCourse();
     }
     
- @PutMapping(value = "/question")
-    public void processFormUpdate(@RequestBody HomePage1_s homepage1_s) throws SQLException {
-       dao.update(homepage1_s);
-    }
+//  @PutMapping(value = "/question")
+//     public void processFormUpdate(@RequestBody HomePage1_s homepage1_s) throws SQLException {
+//        dao.update(homepage1_s);
+//     }
 
- @DeleteMapping(value = "/question/{id}")
-    public void deleteQuestion(@PathVariable("id") int id) {
-       dao.delete(id);
-    }
+//  @DeleteMapping(value = "/question/{id}")
+//     public void deleteQuestion(@PathVariable("id") int id) {
+//        dao.delete(id);
+//     }
     
  
 }
