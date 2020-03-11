@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 public class Customer {
   private Long id;
-
   private String des;
   private int price;
   private String category;
