@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Student;
@@ -24,10 +25,13 @@ public class StudentDAODB implements StudentDAO {
 //jdbcTemplate 
 
 	public int insert(Student student) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String password = passwordEncoder.encode(student.getStd_password());
 		return jdbcTemplate.update(
 				"insert into student (std_id , std_password, std_name, std_gender, std_department , std_phone, std_mail, std_image) values(?, ?, ?, ?, ?, ?, ?, ?)",
-				student.getStd_id(), student.getStd_password(), student.getStd_name(), student.getStd_gender(),
+				student.getStd_id(), password, student.getStd_name(), student.getStd_gender(),
 				student.getStd_department(), student.getStd_phone(), student.getStd_mail(), student.getStd_image());
+	
 	}
 
 	public Student findOne(int std_id) {
@@ -58,9 +62,11 @@ public class StudentDAODB implements StudentDAO {
 	}
 
 	public int update(Student student) {
-		return jdbcTemplate.update("update registration set std_id=?, std_password=? where std_id =?",
-				student.getStd_id(), student.getStd_password());
-	}
+
+    return jdbcTemplate.update("update student set std_password=?,  std_name=?, std_gender=?, std_department=? , std_phone=?, std_mail=?, std_image=? where std_id =?",
+		student.getStd_password(),student.getStd_name(), student.getStd_gender(), student.getStd_department(), student.getStd_phone(), student.getStd_mail(), student.getStd_image(), student.getStd_id());
+ }
+
 
 	public int delete(int std_id) {
 		return jdbcTemplate.update("delete from registration where std_id =?", std_id);
