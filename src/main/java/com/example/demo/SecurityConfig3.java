@@ -14,10 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 @Configuration
-@Order(1)
-public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
+@Order(2)
+public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
 
-	public SecurityConfig2() {
+	public SecurityConfig3() {
         super();
     }
 	
@@ -44,24 +44,20 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		System.out.println(password);
 		
 		auth.jdbcAuthentication().dataSource(dataSource)
-		.usersByUsernameQuery("select std_id , std_password, enabled from student where std_id=?")
-		.authoritiesByUsernameQuery("select std_id, role from student where std_id=?")
+		.usersByUsernameQuery("select teacher_id , teacher_password, enabled from teacher where teacher_id=?")
+		.authoritiesByUsernameQuery("select teacher_id, role from teacher where teacher_id=?")
 		.passwordEncoder(passwordEncoder);
-
-
-		
 					
-
 		
-	// 	auth.inMemoryAuthentication()     // 驗證資訊存放於記憶體
-    //    .passwordEncoder(passwordEncoder)
-    //    .withUser("admin") 
-    //        .password(passwordEncoder.encode("12345"))
-    //        .roles("ADMIN", "USER")
-    //    .and()
-    //    .withUser("user")
-    //        .password(passwordEncoder.encode("12345"))
-    //        .roles("USER");
+//		auth.inMemoryAuthentication()     // 驗證資訊存放於記憶體
+//        .passwordEncoder(passwordEncoder)
+//        .withUser("admin") 
+//            .password(passwordEncoder.encode("admin12345678"))
+//            .roles("ADMIN", "MEMBER")
+//        .and()
+//        .withUser("caterpillar")
+//            .password(passwordEncoder.encode("12345678"))
+//            .roles("MEMBER");
 
 		
 		
