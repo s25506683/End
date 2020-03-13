@@ -52,7 +52,7 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		
 		
 		http.httpBasic().and().authorizeRequests()     //例外處理
-		.antMatchers("/css/**", "/index").permitAll()
+        .antMatchers("/css/**", "/index").permitAll()
 		.antMatchers("/teacher/").hasRole("ADMIN")
 		.antMatchers("/student/").hasRole("USER")
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
