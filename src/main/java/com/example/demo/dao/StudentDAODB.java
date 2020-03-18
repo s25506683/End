@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,12 @@ public class StudentDAODB implements StudentDAO {
 
 //jdbcTemplate 
 
+	public int queryUser(int std_id){
+		String sql = "select count(std_id) as count from student where std_id = ?";
+		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id);
+		return count;
+	}
+
 	public int insert(Student student) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode(student.getStd_password());
@@ -35,7 +42,7 @@ public class StudentDAODB implements StudentDAO {
 	}
 
 	public Student findOne(int std_id) {
-		return this.jdbcTemplate.queryForObject("select std_id, std_password from registration where std_id = ?",
+		return this.jdbcTemplate.queryForObject("select * from student where std_id = ?",
 				new Object[] { std_id }, new StudentMapper());
 	}
 

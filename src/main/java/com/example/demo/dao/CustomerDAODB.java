@@ -61,6 +61,7 @@ public class CustomerDAODB implements CustomerDAO {
       "delete from customer where id =?", id);
  }
 
+
  
 }
 

@@ -27,7 +27,7 @@ public class RollcallController {
   @Autowired
   RollcallDAO dao;
 
-  @PostMapping(value = "/rollcall/addrollcall/")
+  @PostMapping(value = "/teacher/rollcall/addrollcall/")
      public void processFormCreate(@RequestBody Rollcall rollcall) throws SQLException {
         dao.addrollcall(rollcall);
      }

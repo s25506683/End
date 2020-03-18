@@ -32,12 +32,12 @@ public class QuestionController {
        dao.insert(question);
     }
     //@POST
- @GetMapping(value = {"/question/one/{cs_id}/{std_id}"})
+ @GetMapping(value = {"/student/question/one/{cs_id}/{std_id}"})
     public Question retrieveOneQuestion(@PathVariable("cs_id") String cs_id, @PathVariable("std_id") int std_id) throws SQLException{
        return dao.findOne(cs_id,std_id);
     }
     
- @GetMapping(value = {"/question/all/{cs_id}"})
+ @GetMapping(value = {"/student/question/all/{cs_id}"})
     public List<Question> retrieveQuestion(@PathVariable("cs_id") String cs_id) throws SQLException{
        return dao.findAll(cs_id);
     }
