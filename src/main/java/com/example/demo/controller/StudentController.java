@@ -31,7 +31,7 @@ public class StudentController {
 	StudentDAO dao;
 
 
-	@PostMapping(value = "/student/")
+	@PostMapping(value = "/student")
 
 	public ResponseEntity<String> processFormCreate(@RequestBody Student student) throws SQLException {
 		//Student newStudent = new Student();
