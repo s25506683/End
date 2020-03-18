@@ -22,14 +22,16 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
     }
 	
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		
+	protected void configure(final HttpSecurity http) throws Exception {
+
 		http.httpBasic().and().authorizeRequests()     //例外處理
         .antMatchers("/css/**", "/index").permitAll()
-		.antMatchers("/teacher/").hasRole("ADMIN")
-		.antMatchers("/student/").hasRole("USER")
+		.antMatchers("/teacher/**").hasRole("ADMIN")
+		.antMatchers("/student/**").hasRole("USER")
+		.and().rememberMe().tokenValiditySeconds(1)
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
 		.and().csrf().disable();   //關掉跨網站的請求(避免回傳錯誤403)
+		//.formLogin().loginPage("/login/");
 		
 		
 	}
@@ -38,9 +40,9 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 	private DataSource dataSource;
 
 	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String password = passwordEncoder.encode("12345");
+	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
+		final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		final String password = passwordEncoder.encode("12345");
 		System.out.println(password);
 		
 		auth.jdbcAuthentication().dataSource(dataSource)

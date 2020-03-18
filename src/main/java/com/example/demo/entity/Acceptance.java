@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.sql.Time;
+import java.sql.Date;
 
 public class Acceptance {
 
@@ -10,6 +11,7 @@ public class Acceptance {
  private int accept_score;
  private boolean accept_done;
  private Time accept_time;
+
 
  
 
