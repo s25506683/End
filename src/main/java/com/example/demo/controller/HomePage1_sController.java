@@ -35,18 +35,24 @@ public class HomePage1_sController {
 //        dao.insert(homepage1_s);
 //     }
     //@POST
- @GetMapping(value = {"/HomePage1_s/one/{std_id}"})
-    public List<HomePage1_s> retrieveOneQuestion(@PathVariable("std_id") final int std_id) throws SQLException {
+ @GetMapping(value = {"/student/HomePage1_s/one/{std_id}"})
+    public List<HomePage1_s> retrieveStudentCourse(@PathVariable("std_id") final int std_id) throws SQLException {
        return dao.findStudentCourse(std_id);
     }
     
- @GetMapping(value = {"/HomePage1_s/all"})
-    public List<HomePage1_s> retrieveQuestion() throws SQLException{
+ @GetMapping(value = {"/student/HomePage1_s/all"})
+    public List<HomePage1_s> retrieveAllCourse() throws SQLException{
       //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       //String password = passwordEncoder.encode("12345");
       //System.out.println(password.length() + "\n" + password);
        return dao.findAllCourse();
     }
+
+@GetMapping(value = {"/student/HomePage1_s/one/{teacher_id}"})
+    public List<HomePage1_s> retrieveOneQuestion(@PathVariable("std_id") final int std_id) throws SQLException {
+       return dao.findStudentCourse(std_id);
+    }
+    
     
 //  @PutMapping(value = "/question")
 //     public void processFormUpdate(@RequestBody HomePage1_s homepage1_s) throws SQLException {
