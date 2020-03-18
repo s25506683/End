@@ -58,29 +58,6 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		.authoritiesByUsernameQuery("select std_id, role from student where std_id=?")
 		.passwordEncoder(passwordEncoder);
 
-
-		
-					
-
-		
-	// 	auth.inMemoryAuthentication()     // 驗證資訊存放於記憶體
-    //    .passwordEncoder(passwordEncoder)
-    //    .withUser("admin") 
-    //        .password(passwordEncoder.encode("12345"))
-    //        .roles("ADMIN", "USER")
-    //    .and()
-    //    .withUser("user")
-    //        .password(passwordEncoder.encode("12345"))
-    //        .roles("USER");
-
-		
-		
-		
-
-		
-		
-		
-		
 		
 	}
 
