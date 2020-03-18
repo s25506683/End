@@ -29,8 +29,8 @@ public class AcceptanceDAODB implements AcceptanceDAO {
       acceptance.getAccept_std_id(), acceptance.getAccept_hw_id(), acceptance.getAccept_score(), acceptance.isAccept_done());
  }
 
- public Acceptance findOne(int id) {
-    return this.jdbcTemplate.queryForObject( "select accept_id, accept_std_id, accept_hw_id, accept_time, accept_score, accept_done from acceptance where accept_id = ?", new Object[]{id}, new AcceptanceMapper());
+ public Acceptance findOne(int accept_std_id) {
+    return this.jdbcTemplate.queryForObject( "select * from acceptance where accept_std_id = ?", new Object[]{accept_std_id}, new AcceptanceMapper());
   }
 
  public List<Acceptance> findAll(String cs_id, String hw_name) {

@@ -32,6 +32,7 @@ public class StudentController {
 
 
 	@PostMapping(value = "/student/")
+
 	public ResponseEntity<String> processFormCreate(@RequestBody Student student) throws SQLException {
 		//Student newStudent = new Student();
 		//newStudent = dao.findOne(student.getStd_id());

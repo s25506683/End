@@ -10,7 +10,7 @@ public interface TeacherDAO {
 
 	public List<Teacher> findAll();
 
-//	public Teacher findOne(int teacher_id);
+	public Teacher findOne(int teacher_id);
 
 //	public int update(Teacher teacher);
 //
