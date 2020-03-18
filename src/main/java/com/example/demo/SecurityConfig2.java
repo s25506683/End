@@ -32,6 +32,14 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		.and().csrf().disable();   //關掉跨網站的請求(避免回傳錯誤403)
 		
 		
+		// .formLogin()
+		// .loginPage("/loginPage")
+		// .loginProcessingUrl("/admin")
+		// .defaultSuccessUrl("/");
+
+
+		
+		
 	}
 
 	@Autowired
@@ -41,7 +49,7 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode("12345");
-		System.out.println(password);
+		// System.out.println(password);
 		
 		auth.jdbcAuthentication().dataSource(dataSource)
 		.usersByUsernameQuery("select std_id , std_password, enabled from student where std_id=?")

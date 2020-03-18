@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +30,51 @@ public class TeacherController {
 	TeacherDAO dao;
 
 	@PostMapping(value = "/teacher/")
-	public void processFormCreate(@RequestBody Teacher teacher) throws SQLException {
-		dao.insert(teacher);
+	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher) throws SQLException {
+		Teacher newTeacher = new Teacher();
+		newTeacher = dao.findOne(teacher.getTeacher_id()); //newTecaher這個物件內有select *出teacher_id的值
+		
+
+		// if(newTeacher.getTeacher_name().equals(null)){ //透過name判斷是否重複
+
+			if(Integer.toString(teacher.getTeacher_id()).length() == 9){
+			
+
+				if(teacher.getTeacher_mail().contains("@") && teacher.getTeacher_mail().contains("com")){
+					dao.insert(teacher);
+					return ResponseEntity.ok("Response Success!");
+				}
+				else{
+					return ResponseEntity.ok("email格式錯誤");
+				}
+			}
+			else{
+				System.out.println("HELLO");
+				return ResponseEntity.ok("帳號長度不符");
+				
+			}	
+
+		// }else{
+		// 	return ResponseEntity.ok("此帳號已存在");
+		// }
+
+			
+		// if(processFormCreate.isPresent()){
+		// 	dao.insert(teacher);
+		// 	return ResponseEntity.status(HttpStatus.OK)
+        // 	.body();	
+		// }
+		
+		
+		
+		
 	}
 
-	// @POST
-//	@GetMapping(value = { "/student/{std_id}" })
-//	public Student retrieveOneStudent(@PathVariable("std_id") int std_id) throws SQLException {
-//		return dao.findOne(std_id);
-//	}
+	//@POST
+	@GetMapping(value = { "/teacher/{teacher_id}" })
+	public Teacher retrieveOneStudent(@PathVariable("teacher_id") int teacher_id) throws SQLException {
+		return dao.findOne(teacher_id);
+	}
 
 	@GetMapping(value = { "/teacher/" })
 	public List<Teacher> retrieveTeacher() throws SQLException {

@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Teacher;
@@ -24,16 +25,18 @@ public class TeacherDAODB implements TeacherDAO {
 //jdbcTemplate 
 
 	public int insert(Teacher teacher) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String password = passwordEncoder.encode(teacher.getTeacher_password());
 		return jdbcTemplate.update(
 				"insert into teacher (teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image) values(?, ?, ?, ?, ?, ?, ?, ?)",
-				teacher.getTeacher_id(), teacher.getTeacher_password(), teacher.getTeacher_name(), teacher.getTeacher_gender(),
+				teacher.getTeacher_id(), password, teacher.getTeacher_name(), teacher.getTeacher_gender(),
 				teacher.getTeacher_department(), teacher.getTeacher_phone(), teacher.getTeacher_mail(), teacher.getTeacher_image());
 	}
 
-//	public Student findOne(int std_id) {
-//		return this.jdbcTemplate.queryForObject("select std_id, std_password from registration where std_id = ?",
-//				new Object[] { std_id }, new StudentMapper());
-//	}
+	public Teacher findOne(int teacher_id) {
+		return this.jdbcTemplate.queryForObject("select * from teacher where teacher_id = ?",
+				new Object[] { teacher_id }, new TeacherMapper());
+	}
 
 	public List<Teacher> findAll() {
 		return this.jdbcTemplate.query(

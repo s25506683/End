@@ -31,6 +31,7 @@ public class StudentController {
 	@PostMapping(value = "/student/")
 	public void processFormCreate(@RequestBody Student student) throws SQLException {
 		dao.insert(student);
+		
 	}
 
 	// @POST
