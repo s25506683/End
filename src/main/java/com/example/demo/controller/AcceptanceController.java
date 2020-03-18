@@ -58,10 +58,12 @@ public class AcceptanceController {
        return dao.findAll(cs_id,hw_name);
     }
     
- @PutMapping(value = "/acceptance")
+    @PutMapping(value = "/acceptance")
     public void processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException {
        dao.update(acceptance);
     }
+
+
 
  @DeleteMapping(value = "/acceptance/{id}")
     public void deleteAcceptance(@PathVariable("id") int id) {
