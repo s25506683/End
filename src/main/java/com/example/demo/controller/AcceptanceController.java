@@ -64,6 +64,7 @@ public class AcceptanceController {
     }
 
 
+
  @DeleteMapping(value = "/acceptance/{id}")
     public void deleteAcceptance(@PathVariable("id") int id) {
        dao.delete(id);
