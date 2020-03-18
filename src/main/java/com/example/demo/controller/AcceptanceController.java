@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +30,27 @@ public class AcceptanceController {
 
  @PostMapping(value = "/acceptance")
     public void processFormCreate(@RequestBody Acceptance acceptance) throws SQLException {
-       dao.insert(acceptance);
+      dao.insert(acceptance);
+
+   // Acceptance acceptDone = new Acceptance();
+   // acceptDone = dao.findOne(acceptance.getAccept_std_id()); 
+   // System.out.println(acceptDone.isAccept_done());
+
+   // //isAccept_done()的 0是false,1是true.
+   // if(!acceptDone.isAccept_done()){
+
+   //    dao.update(acceptance);
+   //    return ResponseEntity.ok("成功登記驗收"); 
+
+   // }else{
+   //    return ResponseEntity.ok("你已登記驗收"); 
+
+      
     }
     //@POST
- @GetMapping(value = {"/acceptance/{id}"})
-    public Acceptance retrieveOneAcceptance(@PathVariable("id") int id) throws SQLException{
-       return dao.findOne(id);
+ @GetMapping(value = {"/acceptance/{accept_std_id}"})
+    public Acceptance retrieveOneAcceptance(@PathVariable("accept_std_id") int accept_std_id) throws SQLException{
+       return dao.findOne(accept_std_id);
     }
     
  @GetMapping(value = {"/acceptance/hw/{cs_id}/{hw_name}"})
@@ -43,9 +59,11 @@ public class AcceptanceController {
     }
     
  @PutMapping(value = "/acceptance")
-    public void processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException {
-       dao.update(acceptance);
-    }
+ public ResponseEntity<String> processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException {
+   dao.update(acceptance);
+
+   }
+ }
 
  @DeleteMapping(value = "/acceptance/{id}")
     public void deleteAcceptance(@PathVariable("id") int id) {
