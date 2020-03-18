@@ -6,6 +6,8 @@ import com.example.demo.entity.Student;
 
 public interface StudentDAO {
 
+	public int queryUser(int std_id);
+
 	public int insert(Student student);
 
 	public List<Student> findAll();

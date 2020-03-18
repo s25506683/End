@@ -10,6 +10,8 @@ public class HomePage1_s {
     private String teacher_name;
     private String cs_photo;
     private int std_id;
+    private int teacher_id;
+
 
 
 
@@ -52,7 +54,14 @@ public class HomePage1_s {
     public void setStd_id(int std_id) {
         this.std_id = std_id;
     }
+    
+    public int getTeacher_id() {
+        return this.teacher_id;
+    }
 
+    public void setTeacher_id(int teacher_id) {
+        this.teacher_id = teacher_id;
+    }
     
     
 
