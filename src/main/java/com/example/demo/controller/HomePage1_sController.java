@@ -3,7 +3,10 @@ package com.example.demo.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.xml.ws.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,22 +38,21 @@ public class HomePage1_sController {
 //        dao.insert(homepage1_s);
 //     }
     //@POST
+    
  @GetMapping(value = {"/student/HomePage1_s/one/{std_id}"})
     public List<HomePage1_s> retrieveStudentCourse(@PathVariable("std_id") final int std_id) throws SQLException {
-       return dao.findStudentCourse(std_id);
+      return dao.findStudentCourse(std_id);
+       
     }
     
- @GetMapping(value = {"/student/HomePage1_s/all"})
+ @GetMapping(value = {"/HomePage1_s/all"})
     public List<HomePage1_s> retrieveAllCourse() throws SQLException{
-      //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-      //String password = passwordEncoder.encode("12345");
-      //System.out.println(password.length() + "\n" + password);
        return dao.findAllCourse();
     }
 
-@GetMapping(value = {"/student/HomePage1_s/one/{teacher_id}"})
-    public List<HomePage1_s> retrieveOneQuestion(@PathVariable("std_id") final int std_id) throws SQLException {
-       return dao.findStudentCourse(std_id);
+@GetMapping(value = {"/teacher/HomePage1_s/one/{teacher_id}"})
+    public List<HomePage1_s> retrieveTeacherCourse(@PathVariable("teacher_id") final int teacher_id) throws SQLException {
+       return dao.findTeacherCourse(teacher_id);
     }
     
     

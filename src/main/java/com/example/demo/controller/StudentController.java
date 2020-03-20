@@ -36,8 +36,8 @@ public class StudentController {
 	public ResponseEntity<String> processFormCreate(@RequestBody Student student) throws SQLException {
 		//Student newStudent = new Student();
 		//newStudent = dao.findOne(student.getStd_id());
-
-//newStudent.getStd_name().equals(null)
+		//newStudent.getStd_name().equals(null)
+		
 		//if has userAccount in DB
 		if(dao.queryUser(student.getStd_id()) == 0){
 
@@ -68,7 +68,7 @@ public class StudentController {
 		return dao.findOne(std_id);
 	}
 
-	@GetMapping(value = { "/student/" })
+	@GetMapping(value = { "/student" })
 	public List<Student> retrieveStudent() throws SQLException {
 		return dao.findAll();
 	}
