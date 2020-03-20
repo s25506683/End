@@ -23,10 +23,17 @@ public class AcceptanceDAODB implements AcceptanceDAO {
 
 //jdbcTemplate 
 
+
+public int queryUser(int accept_std_id, int accept_hw_id){
+  String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
+  int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,accept_hw_id);
+  return count;
+}
+
  public int insert(Acceptance acceptance) {
     return jdbcTemplate.update(
-      "insert into acceptance (accept_std_id, accept_hw_id, accept_score, accept_done) values(?, ?, ?, ?)",
-      acceptance.getAccept_std_id(), acceptance.getAccept_hw_id(), acceptance.getAccept_score(), acceptance.isAccept_done());
+      "insert into acceptance (accept_std_id, accept_hw_id) values(?, ?)",
+      acceptance.getAccept_std_id(), acceptance.getAccept_hw_id());
  }
 
  public Acceptance findOne(int accept_std_id) {

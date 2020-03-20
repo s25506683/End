@@ -28,25 +28,20 @@ public class AcceptanceController {
   @Autowired
   AcceptanceDAO dao;
 
- @PostMapping(value = "/acceptance")
-    public void processFormCreate(@RequestBody Acceptance acceptance) throws SQLException {
-      dao.insert(acceptance);
+ @PostMapping(value = "/student/acceptance")
+    public ResponseEntity<String> processFormCreate(@RequestBody Acceptance acceptance) throws SQLException {
 
-   // Acceptance acceptDone = new Acceptance();
-   // acceptDone = dao.findOne(acceptance.getAccept_std_id()); 
-   // System.out.println(acceptDone.isAccept_done());
+      if(dao.queryUser(acceptance.getAccept_std_id(),acceptance.getAccept_hw_id()) == 0){
 
-   // //isAccept_done()的 0是false,1是true.
-   // if(!acceptDone.isAccept_done()){
+         dao.insert(acceptance);
+         return ResponseEntity.ok("登記驗收成功");
 
-   //    dao.update(acceptance);
-   //    return ResponseEntity.ok("成功登記驗收"); 
-
-   // }else{
-   //    return ResponseEntity.ok("你已登記驗收"); 
-
+      }else{
+         return ResponseEntity.badRequest().body("您已驗收過");
+      }
       
-    }
+    
+   }
     //@POST
  @GetMapping(value = {"/acceptance/{accept_std_id}"})
     public Acceptance retrieveOneAcceptance(@PathVariable("accept_std_id") int accept_std_id) throws SQLException{
@@ -58,9 +53,36 @@ public class AcceptanceController {
        return dao.findAll(cs_id,hw_name);
     }
     
-    @PutMapping(value = "/acceptance")
-    public void processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException {
-       dao.update(acceptance);
+    @PutMapping(value = "/teacher/acceptance")
+    public ResponseEntity<String> processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException {
+      
+      
+
+       if(dao.queryUser(acceptance.getAccept_std_id(),acceptance.getAccept_hw_id()) == 1){
+
+         dao.update(acceptance);
+         return ResponseEntity.ok("已修改成績");
+
+      }else{
+         return ResponseEntity.badRequest().body("此學生尚未驗收");
+      }
+
+
+      // Acceptance acceptDone = new Acceptance();
+      // acceptDone = dao.findOne(acceptance.getAccept_std_id()); 
+      // System.out.println(acceptDone.isAccept_done());
+
+      // //isAccept_done()的 0是false,1是true.
+      // if(!acceptDone.isAccept_done()){
+
+      //    dao.update(acceptance);
+      //    return ResponseEntity.ok("成功登記驗收"); 
+
+      // }else{
+      //    return ResponseEntity.ok("你已登記驗收"); 
+
+
+
     }
  
 
