@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 public class HomePage1_s {
     private String cs_id;
     private String cs_name;
+    private String std_name;
     private String teacher_name;
     private String cs_photo;
     private int std_id;
@@ -29,6 +30,14 @@ public class HomePage1_s {
 
     public void setCs_name(String cs_name) {
         this.cs_name = cs_name;
+    }
+
+    public String getStd_name() {
+        return this.std_name;
+    }
+
+    public void setStd_name(String std_name) {
+        this.std_name = std_name;
     }
 
     public String getTeacher_name() {
