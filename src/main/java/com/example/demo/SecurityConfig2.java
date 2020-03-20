@@ -48,13 +48,10 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 	private DataSource dataSource;
 
 	@Autowired
-
-
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
 		final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		final String password = passwordEncoder.encode("12345");
 		System.out.println(password);
-
 		
 		auth.jdbcAuthentication().dataSource(dataSource)
 		.usersByUsernameQuery("select std_id , std_password, enabled from student where std_id=?")
