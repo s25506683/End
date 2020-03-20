@@ -24,6 +24,13 @@ public class TeacherDAODB implements TeacherDAO {
 
 //jdbcTemplate 
 
+	public int queryUser(int teacher_id){
+		String sql = "select count(teacher_id) as count from teacher where teacher_id = ?";
+		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,teacher_id);
+		return count;
+	}
+
+
 	public int insert(Teacher teacher) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode(teacher.getTeacher_password());

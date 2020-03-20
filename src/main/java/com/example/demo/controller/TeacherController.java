@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +32,13 @@ public class TeacherController {
 
 	@PostMapping(value = "/teacher/")
 	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher) throws SQLException {
-		Teacher newTeacher = new Teacher();
-		newTeacher = dao.findOne(teacher.getTeacher_id()); //newTecaher這個物件內有select *出teacher_id的值
+		//Teacher newTeacher = new Teacher();
+		//newTeacher = dao.findOne(teacher.getTeacher_id()); //newTecaher這個物件內有select *出teacher_id的值
 		
 
 		// if(newTeacher.getTeacher_name().equals(null)){ //透過name判斷是否重複
+
+		if(dao.queryUser(teacher.getTeacher_id()) == 0){
 
 			if(Integer.toString(teacher.getTeacher_id()).length() == 9){
 			
@@ -45,25 +48,19 @@ public class TeacherController {
 					return ResponseEntity.ok("Response Success!");
 				}
 				else{
-					return ResponseEntity.ok("email格式錯誤");
+					return ResponseEntity.badRequest().body("email格式錯誤");
 				}
 			}
 			else{
 				System.out.println("HELLO");
-				return ResponseEntity.ok("帳號長度不符");
+				return ResponseEntity.badRequest().body("帳號長度不符");
 				
 			}	
 
-		// }else{
-		// 	return ResponseEntity.ok("此帳號已存在");
-		// }
-
-			
-		// if(processFormCreate.isPresent()){
-		// 	dao.insert(teacher);
-		// 	return ResponseEntity.status(HttpStatus.OK)
-        // 	.body();	
-		// }
+		}else{
+			return ResponseEntity.badRequest().body("此帳號已存在");
+		}
+		
 		
 		
 		
