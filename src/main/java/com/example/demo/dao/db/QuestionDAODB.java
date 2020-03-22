@@ -1,4 +1,4 @@
-package com.example.demo.dao;
+package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.dao.QuestionDAO;
 import com.example.demo.entity.Question;
 
 @Repository

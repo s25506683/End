@@ -1,4 +1,4 @@
-package com.example.demo.dao;
+package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.dao.StudentDAO;
 import com.example.demo.entity.Student;
 
 @Repository
@@ -26,14 +27,14 @@ public class StudentDAODB implements StudentDAO {
 
 //jdbcTemplate 
 
-	public void writeLog(String writemessage){
+	public void writeLog(String writtenmessage){
 		String directory = System.getProperty("user.dir");
 		String fileName = "src/main/java/com/example/demo/util/logfile.txt";
 		String absolutePath = directory + File.separator + fileName;
 		System.out.println(absolutePath);
 		
 		try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
-			String fileContent = writemessage + "\n";
+			String fileContent = writtenmessage + "\n";
 			filewriter.write(fileContent);
 			filewriter.flush();
 			filewriter.close();
