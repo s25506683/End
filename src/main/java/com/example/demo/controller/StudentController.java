@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.StudentDAODB;
 import com.example.demo.entity.Student;
 import com.example.demo.dao.StudentDAO;
 
@@ -51,8 +50,8 @@ public class StudentController {
 				//if input email's format is alright
 				if(student.getStd_mail().contains("@") && student.getStd_mail().contains(".com")){
 					dao.insert(student);
-					final String writemessage = dtf.format(now) + "\t" + Integer.toString(student.getStd_id()) + " now has already registered!" ;
-					dao.writeLog(writemessage);
+					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString(student.getStd_id()) + " now has already registered!" ;
+					dao.writeLog(writtenmessage);
 					return ResponseEntity.ok("request successful!");
 				}else{
 					return ResponseEntity.badRequest().body("request failed.\nEmail format error!");

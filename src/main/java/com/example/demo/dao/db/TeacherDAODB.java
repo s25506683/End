@@ -1,4 +1,4 @@
-package com.example.demo.dao;
+package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.dao.TeacherDAO;
 import com.example.demo.entity.Teacher;
 
 @Repository
