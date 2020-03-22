@@ -26,22 +26,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.entity.Student;
 import com.example.demo.dao.StudentDAO;
+import com.example.demo.dao.LogfileDAO;
 
 @RestController
 public class StudentController {
 	@Autowired
 	StudentDAO dao;
 
+	@Autowired
+	LogfileDAO logfiledao;
+
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 	LocalDateTime now = LocalDateTime.now();
 	   
 	@PostMapping(value = "/student_re")
 
-	public ResponseEntity<String> processFormCreate(@RequestBody final Student student)
-			throws SQLException {
-		//Student newStudent = new Student();
-		//newStudent = dao.findOne(student.getStd_id());
-		//newStudent.getStd_name().equals(null)
+	public ResponseEntity<String> processFormCreate(@RequestBody final Student student) throws SQLException {
 		
 		//if has userAccount in DB
 		if(dao.queryUser(student.getStd_id()) == 0){
@@ -51,7 +51,7 @@ public class StudentController {
 				if(student.getStd_mail().contains("@") && student.getStd_mail().contains(".com")){
 					dao.insert(student);
 					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString(student.getStd_id()) + " now has already registered!" ;
-					dao.writeLog(writtenmessage);
+					logfiledao.writeLog(writtenmessage);
 					return ResponseEntity.ok("request successful!");
 				}else{
 					return ResponseEntity.badRequest().body("request failed.\nEmail format error!");
