@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.demo.entity.Student;
 
 public interface StudentDAO {
+	public void writeLog(String writemessage);
 
 	public int queryUser(int std_id);
 

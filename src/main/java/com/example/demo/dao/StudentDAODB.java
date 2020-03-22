@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
+import java.io.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,7 +26,25 @@ public class StudentDAODB implements StudentDAO {
 
 //jdbcTemplate 
 
-	public int queryUser(int std_id){
+	public void writeLog(String writemessage){
+		String directory = System.getProperty("user.dir");
+		String fileName = "src/main/java/com/example/demo/util/logfile.txt";
+		String absolutePath = directory + File.separator + fileName;
+		System.out.println(absolutePath);
+		
+		try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
+			String fileContent = writemessage + "\n";
+			filewriter.write(fileContent);
+			filewriter.flush();
+			filewriter.close();
+		} catch (IOException e) {
+			System.err.print("Something went wrong");
+		}
+	}
+
+
+
+	public int queryUser(int std_id) {
 		String sql = "select count(std_id) as count from student where std_id = ?";
 		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id);
 		return count;
