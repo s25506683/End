@@ -32,10 +32,10 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
         .antMatchers("/css/**", "/index").permitAll()
 		.antMatchers("/teacher/**").hasRole("ADMIN")
 		.antMatchers("/student/**").hasRole("USER")
-		.and().rememberMe().tokenValiditySeconds(1)
+		.and().rememberMe().tokenValiditySeconds(1).and().cors()
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
-		.and().csrf().disable()   //關掉跨網站的請求(避免回傳錯誤403)
-		.formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1");
+		.and().csrf().disable() ;  //關掉跨網站的請求(避免回傳錯誤403)
+		//.formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1");
 		
 		// .formLogin()
 		// .loginPage("/loginPage")
