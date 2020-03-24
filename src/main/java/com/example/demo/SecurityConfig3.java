@@ -31,7 +31,7 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
 		.and().rememberMe().tokenValiditySeconds(1).and().cors()
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
 		.and().csrf().disable();   //關掉跨網站的請求(避免回傳錯誤403)
-		//.formLogin().loginPage("/login/");
+		//.formLogin().loginPage("/login/").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000");
 		
 	}
 
