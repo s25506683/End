@@ -48,16 +48,16 @@ public class StudentController {
 			//if input's std_id out of range(or less than) 9
 			if(Integer.toString(student.getStd_id()).length() == 9){
 				//if input email's format is alright
-				if(student.getStd_mail().contains("@") && student.getStd_mail().contains(".com")){
+				if(student.getStd_mail().contains("@")){
 					dao.insert(student);
 					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString(student.getStd_id()) + " now has already registered!" ;
 					logfiledao.writeLog(writtenmessage);
 					return ResponseEntity.ok("request successful!");
 				}else{
-					return ResponseEntity.badRequest().body("request failed.\nEmail format error!");
+					return ResponseEntity.badRequest().body("request failed. Email format error!");
 				}
 			}else{
-				return ResponseEntity.badRequest().body("request failed.\nId too long/smail!");
+				return ResponseEntity.badRequest().body("request failed. Id too long/smail!");
 			}
 
 			

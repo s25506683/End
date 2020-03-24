@@ -42,7 +42,7 @@ public class TeacherController {
 			if(Integer.toString(teacher.getTeacher_id()).length() == 9){
 			
 
-				if(teacher.getTeacher_mail().contains("@") && teacher.getTeacher_mail().contains("com")){
+				if(teacher.getTeacher_mail().contains("@")){
 					dao.insert(teacher);
 					return ResponseEntity.ok("Response Success!");
 				}
