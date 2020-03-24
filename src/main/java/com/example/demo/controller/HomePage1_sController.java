@@ -58,9 +58,11 @@ public class HomePage1_sController {
        return dao.findAllCourse();
     }
 
-@GetMapping(value = {"/teacher/HomePage1_s/one/{teacher_id}"})
-    public List<HomePage1_s> retrieveTeacherCourse(@PathVariable("teacher_id") final int teacher_id) throws SQLException {
-       return dao.findTeacherCourse(teacher_id);
+@GetMapping(value = {"/teacher/HomePage1_s/one/"})
+    public List<HomePage1_s> retrieveTeacherCourse() throws SQLException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+      return dao.findTeacherCourse(Integer.parseInt(teacher_id));
     }
     
     
