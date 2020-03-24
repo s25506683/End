@@ -3,7 +3,11 @@ package com.example.demo.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+<<<<<<< HEAD
 // import javax.xml.ws.Response;
+=======
+//import javax.xml.ws.Response;
+>>>>>>> 97ea7621fba71ddbd125861f90b6662957d7520e
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

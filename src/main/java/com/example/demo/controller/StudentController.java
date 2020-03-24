@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,31 +24,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.StudentDAODB;
 import com.example.demo.entity.Student;
 import com.example.demo.dao.StudentDAO;
+import com.example.demo.dao.LogfileDAO;
 
 @RestController
 public class StudentController {
 	@Autowired
 	StudentDAO dao;
 
+	@Autowired
+	LogfileDAO logfiledao;
 
-	@PostMapping(value = "/student")
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+	LocalDateTime now = LocalDateTime.now();
+	   
+	@PostMapping(value = "/student_re")
 
-	public ResponseEntity<String> processFormCreate(@RequestBody Student student) throws SQLException {
-		//Student newStudent = new Student();
-		//newStudent = dao.findOne(student.getStd_id());
-		//newStudent.getStd_name().equals(null)
+	public ResponseEntity<String> processFormCreate(@RequestBody final Student student) throws SQLException {
 		
 		//if has userAccount in DB
 		if(dao.queryUser(student.getStd_id()) == 0){
-
 			//if input's std_id out of range(or less than) 9
 			if(Integer.toString(student.getStd_id()).length() == 9){
 				//if input email's format is alright
 				if(student.getStd_mail().contains("@") && student.getStd_mail().contains(".com")){
 					dao.insert(student);
+					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString(student.getStd_id()) + " now has already registered!" ;
+					logfiledao.writeLog(writtenmessage);
 					return ResponseEntity.ok("request successful!");
 				}else{
 					return ResponseEntity.badRequest().body("request failed.\nEmail format error!");
@@ -64,7 +70,7 @@ public class StudentController {
 
 	// @POST
 	@GetMapping(value = { "/student/{std_id}" })
-	public Student retrieveOneStudent(@PathVariable("std_id") int std_id) throws SQLException {
+	public Student retrieveOneStudent(@PathVariable("std_id") final int std_id) throws SQLException {
 		return dao.findOne(std_id);
 	}
 
@@ -74,12 +80,12 @@ public class StudentController {
 	}
 
 	@PutMapping(value = "/student")
-	public void processFormUpdate(@RequestBody Student student) throws SQLException {
+	public void processFormUpdate(@RequestBody final Student student) throws SQLException {
 		dao.update(student);
 	}
 
 	@DeleteMapping(value = "/student/{std_id}")
-	public void deleteStudent(@PathVariable("std_id") int std_id) {
+	public void deleteStudent(@PathVariable("std_id") final int std_id) {
 		dao.delete(std_id);
 	}
 

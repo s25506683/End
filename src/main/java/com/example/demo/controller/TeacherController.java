@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.dao.TeacherDAODB;
 import com.example.demo.entity.Teacher;
 import com.example.demo.dao.TeacherDAO;
 
