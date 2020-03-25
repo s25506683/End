@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Teacher;
-import com.example.demo.dao.LogfileDAO;
+import com.example.demo.util.Logfile;
 import com.example.demo.dao.TeacherDAO;
 
 @RestController
@@ -35,7 +35,7 @@ public class TeacherController {
 	TeacherDAO dao;
 
 	@Autowired
-	LogfileDAO logfiledao;
+	Logfile logfile;
 
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	LocalDateTime now = LocalDateTime.now();
@@ -49,10 +49,10 @@ public class TeacherController {
 
 			if(Integer.toString(teacher.getTeacher_id()).length() == 9){
 			
-				if(teacher.getTeacher_mail().contains("@") && teacher.getTeacher_mail().contains("com")){
+				if(teacher.getTeacher_mail().contains("@")){
 					dao.insert(teacher);
 					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
-					logfiledao.writeLog(writtenmessage);
+					logfile.writeLog(writtenmessage);
 					return ResponseEntity.ok("Response Success!");
 				}
 				else{

@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
 
 @EnableWebSecurity
 @Configuration
@@ -28,11 +32,10 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
         .antMatchers("/css/**", "/index").permitAll()
 		.antMatchers("/teacher/**").hasRole("ADMIN")
 		.antMatchers("/student/**").hasRole("USER")
-		.and().rememberMe().tokenValiditySeconds(1)
+		.and().rememberMe().tokenValiditySeconds(1).and().cors()
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
-		.and().csrf().disable();   //關掉跨網站的請求(避免回傳錯誤403)
-		//.formLogin().loginPage("/login/");
-		
+		.and().csrf().disable();  //關掉跨網站的請求(避免回傳錯誤403)
+		//.formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000");
 		
 		// .formLogin()
 		// .loginPage("/loginPage")
