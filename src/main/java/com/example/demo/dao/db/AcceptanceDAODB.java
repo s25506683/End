@@ -2,6 +2,8 @@ package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -38,9 +40,9 @@ public int queryUser(final int accept_std_id, final int accept_hw_id){
       acceptance.getAccept_std_id(), acceptance.getAccept_hw_id());
  }
 
- public List<Acceptance> findCourseHomework(final int accept_std_id, final String hw_cs_id) {
-    return this.jdbcTemplate.query( "select hw.hw_name, a.accept_score, a.accept_done from acceptance as a inner join homework as hw on hw.hw_id = a.accept_hw_id where a.accept_std_id = ? and hw.hw_cs_id = ?"
-       ,new Object[]{accept_std_id,hw_cs_id}, new HomeWorkMapper());
+ public List<Acceptance> findCourseHomework(final int std_id, final String hw_cs_id) {
+    return this.jdbcTemplate.query( "select hw.hw_name, hw.hw_createtime,a.accept_score, a.accept_done from acceptance as a inner join homework as hw on hw.hw_id = a.accept_hw_id where a.accept_std_id = ? and hw.hw_cs_id = ?"
+       ,new Object[]{std_id,hw_cs_id}, new HomeWorkMapper());
   }
 
  public List<Acceptance> findHomeworkDetail(final String cs_id, final String hw_name) {  
@@ -67,6 +69,7 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
   public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     final Acceptance acceptance = new Acceptance();
     acceptance.setHw_name(rs.getString("hw_name"));
+    acceptance.setHw_createtime (rs.getDate("hw_createtime"));
     acceptance.setAccept_score(rs.getInt("accept_score"));
     acceptance.setAccept_done(rs.getBoolean("accept_done"));
       return acceptance;
@@ -74,9 +77,6 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
 
 
 }
-
-
-
 
 
 

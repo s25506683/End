@@ -13,7 +13,7 @@ public interface AcceptanceDAO {
 
  public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name);
 
- public List<Acceptance> findCourseHomework(int accept_std_id, String hw_cs_id);
+ public List<Acceptance> findCourseHomework(int std_id, String hw_cs_id);
 
  public int update(Acceptance acceptance);
 

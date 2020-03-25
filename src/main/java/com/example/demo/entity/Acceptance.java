@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
 import java.sql.Time;
+import java.time.format.DateTimeFormatter;
+import java.security.Timestamp;
 import java.sql.Date;
 
 public class Acceptance {
@@ -13,12 +15,21 @@ public class Acceptance {
  private Time accept_time;
  private String hw_cs_id;
  private String hw_name;
+ private Date hw_createtime;
+
+ public Date getHw_createtime() {
+     return this.hw_createtime;
+ }
+
+ public void setHw_createtime(Date hw_createtime) {
+     this.hw_createtime = hw_createtime;
+ }
 
  public String getHw_cs_id() {
      return this.hw_cs_id;
  }
 
- public void setHw_cs_id(String hw_cs_id) {
+ public void setHw_cs_id(final String hw_cs_id) {
      this.hw_cs_id = hw_cs_id;
  }
 
@@ -26,21 +37,15 @@ public class Acceptance {
      return this.hw_name;
  }
 
- public void setHw_name(String hw_name) {
+ public void setHw_name(final String hw_name) {
      this.hw_name = hw_name;
  }
-
-
-
-
-
- 
 
  public int getAccept_id() {
   return accept_id;
  }
 
- public void setAccept_id(int accept_id) {
+ public void setAccept_id(final int accept_id) {
   this.accept_id = accept_id;
  }
 
@@ -48,7 +53,7 @@ public class Acceptance {
   return accept_std_id;
  }
 
- public void setAccept_std_id(int accept_std_id) {
+ public void setAccept_std_id(final int accept_std_id) {
   this.accept_std_id = accept_std_id;
  }
 
@@ -56,7 +61,7 @@ public class Acceptance {
   return accept_hw_id;
  }
 
- public void setAccept_hw_id(int accept_hw_id) {
+ public void setAccept_hw_id(final int accept_hw_id) {
   this.accept_hw_id = accept_hw_id;
  }
 
@@ -64,7 +69,7 @@ public class Acceptance {
   return accept_time;
  }
 
- public void setAccept_time(Time accept_time) {
+ public void setAccept_time(final Time accept_time) {
   this.accept_time = accept_time;
  }
  
@@ -72,7 +77,7 @@ public class Acceptance {
   return accept_score;
  }
 
- public void setAccept_score(int accept_score) {
+ public void setAccept_score(final int accept_score) {
   this.accept_score = accept_score;
  }
 
@@ -80,7 +85,7 @@ public class Acceptance {
   return accept_done;
  }
 
- public void setAccept_done(boolean accept_done) {
+ public void setAccept_done(final boolean accept_done) {
   this.accept_done = accept_done;
  }
 
