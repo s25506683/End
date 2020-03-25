@@ -1,9 +1,10 @@
-package com.example.demo.dao.db;
-
+package com.example.demo.util;
 
 import java.util.List;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,13 +13,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.dao.LogfileDAO;
-import com.example.demo.entity.Student;
 
 @Repository
-public class LogfileDAODB implements LogfileDAO {
+public class Logfile {
 
-	
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+	LocalDateTime now = LocalDateTime.now();
 
 	public void writeLog(String writtenmessage){
 		String directory = System.getProperty("user.dir");
@@ -27,7 +27,7 @@ public class LogfileDAODB implements LogfileDAO {
 		System.out.println(absolutePath);
 		
 		try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
-			String fileContent = writtenmessage + "\n";
+			String fileContent = dtf.format(now) + "\t" + writtenmessage + "\n";
 			filewriter.write(fileContent);
 			filewriter.flush();
 			filewriter.close();

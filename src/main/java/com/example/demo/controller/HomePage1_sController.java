@@ -51,7 +51,7 @@ public class HomePage1_sController {
       System.out.println(std_id);
       return dao.findStudentCourse(Integer.parseInt(std_id));
       
-    }
+    } 
     
  @GetMapping(value = {"/HomePage1_s/all"})   
     public List<HomePage1_s> retrieveAllCourse() throws SQLException{

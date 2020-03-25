@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.dao.QuestionDAO;
 import com.example.demo.entity.Question;
+//import com.example.demo.util.AuthenticationUtil;
 
 @RestController
 public class QuestionController {
   @Autowired
   QuestionDAO dao;
 
- @PostMapping(value = "/question")
+ @PostMapping(value = "/student/question")
     public void processFormCreate(@RequestBody Question question) throws SQLException {
        dao.insert(question);
     }
