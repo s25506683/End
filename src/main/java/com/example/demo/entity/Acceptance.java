@@ -11,6 +11,27 @@ public class Acceptance {
  private int accept_score;
  private boolean accept_done;
  private Time accept_time;
+ private String hw_cs_id;
+ private String hw_name;
+
+ public String getHw_cs_id() {
+     return this.hw_cs_id;
+ }
+
+ public void setHw_cs_id(String hw_cs_id) {
+     this.hw_cs_id = hw_cs_id;
+ }
+
+ public String getHw_name() {
+     return this.hw_name;
+ }
+
+ public void setHw_name(String hw_name) {
+     this.hw_name = hw_name;
+ }
+
+
+
 
 
  
