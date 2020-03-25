@@ -27,9 +27,11 @@ public class QuestionDAODB implements QuestionDAO {
 //jdbcTemplate 
 
  public int insert(final Question question) {
+   AuthenticationUtil auth = new AuthenticationUtil();
+   String std_id = auth.getCurrentUserName();
     return jdbcTemplate.update(
-      "insert into question (q_id, q_std_id, q_content, cs_id) values(?, ?, ?, ?)",
-      question.getQ_id(), question.getQ_std_id(), question.getQ_content(), question.getCs_id());
+      "insert into question (q_std_id, q_content, cs_id) values(?, ?, ?)",
+      std_id, question.getQ_content(), question.getCs_id());
  }
 
  public Question findOne(final String cs_id, final int std_id) {
@@ -37,7 +39,7 @@ public class QuestionDAODB implements QuestionDAO {
   }
 
  public List<Question> findAll(final String cs_id) {
-  System.out.println("\n\n\n\n\n\n\n\n" +AuthenticationUtil.class.getClassLoader()+"\n\n\n\n\n\n\n\n");
+    
      return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q_time from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_time", new Object[]{cs_id}, new QuestionMapper());
  }
 
