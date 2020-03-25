@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.logging.LogFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Teacher;
+import com.example.demo.dao.LogfileDAO;
 import com.example.demo.dao.TeacherDAO;
 
 @RestController
@@ -29,21 +34,25 @@ public class TeacherController {
 	@Autowired
 	TeacherDAO dao;
 
-	@PostMapping(value = "/teacher/")
-	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher) throws SQLException {
-		//Teacher newTeacher = new Teacher();
-		//newTeacher = dao.findOne(teacher.getTeacher_id()); //newTecaher這個物件內有select *出teacher_id的值
-		
+	@Autowired
+	LogfileDAO logfiledao;
 
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+	LocalDateTime now = LocalDateTime.now();
+
+	@PostMapping(value = "/teacher_re")
+	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher) throws SQLException {
+		
 		// if(newTeacher.getTeacher_name().equals(null)){ //透過name判斷是否重複
 
 		if(dao.queryUser(teacher.getTeacher_id()) == 0){
 
 			if(Integer.toString(teacher.getTeacher_id()).length() == 9){
 			
-
 				if(teacher.getTeacher_mail().contains("@") && teacher.getTeacher_mail().contains("com")){
 					dao.insert(teacher);
+					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
+					logfiledao.writeLog(writtenmessage);
 					return ResponseEntity.ok("Response Success!");
 				}
 				else{
