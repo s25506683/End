@@ -10,8 +10,10 @@ public class Question {
     private String q_content;
     private String cs_id;
     private String cs_name;
-    //private String q_time;
-    private Time q_time;
+    private String q_time;
+    //private Time q_time;
+    private String q_solved;
+
 
     
 
@@ -74,14 +76,21 @@ public class Question {
     // }
 
 
-    public Time getQ_time() {
+    public String getQ_time() {
         return this.q_time;
     }
 
-    public void setQ_time(Time q_time) {
+    public void setQ_time(String q_time) {
         this.q_time = q_time;
     }
 
+    public String getQ_solved() {
+        return this.q_solved;
+    }
+
+    public void setQ_solved(String q_solved) {
+        this.q_solved = q_solved;
+    }
 
 
     
