@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.dao.AcceptanceDAO;
 import com.example.demo.entity.Acceptance;
+import com.example.demo.util.AuthenticationUtil;
 
 @RestController
 public class AcceptanceController {
@@ -45,12 +46,14 @@ public class AcceptanceController {
    }
     //@POST
 
- @GetMapping(value = {"/acceptance/{accept_std_id}/{hw_cs_id}"})
-    public List<Acceptance> retrieveOneAcceptance(@PathVariable("accept_std_id") final int accept_std_id, @PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException{
-       return dao.findCourseHomework(accept_std_id,hw_cs_id);
+ @GetMapping(value = {"/student/acceptance/{hw_cs_id}"})
+    public List<Acceptance> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String std_id = auth.getCurrentUserName(); 
+      return dao.findCourseHomework(Integer.parseInt(std_id),hw_cs_id);
     }
     
- @GetMapping(value = {"/acceptance/hw/{cs_id}/{hw_name}"})
+ @GetMapping(value = {"/student/acceptance/hw/{cs_id}/{hw_name}"})
     public List<Acceptance> retrieveAcceptance(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException{
        return dao.findHomeworkDetail(cs_id,hw_name);
     }
