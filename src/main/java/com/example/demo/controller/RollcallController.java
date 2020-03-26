@@ -41,6 +41,11 @@ public class RollcallController {
     public List<Rollcall> retrieveRollcall(@PathVariable("cs_id") final String cs_id) throws SQLException{
        return dao.findAllRollcallRecord(cs_id);
     }
+
+ @GetMapping(value = {"/rollcall/{cs_id}"})
+    public List<Rollcall> retrieveRollcall2(@PathVariable("cs_id") final String cs_id) throws SQLException{
+       return dao.findClassList(cs_id);
+    }
     
 //  @PutMapping(value = "/rollcall")
 //     public void processFormUpdate(@RequestBody HomePage1_s homepage1_s) throws SQLException {
