@@ -32,6 +32,17 @@ public int queryCs_id(String cs_id) {
   return count;
 }
 
+public int queryStudentInTheClass(String std_id, String cs_id) {
+  String sql = "select count(std_id) as count from class_student where std_id = ? and cs_id = ?";
+  int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id,cs_id);
+  return count;
+}
+
+public int queryTeacherInTheClass(String teacher_id, String cs_id) {
+  String sql = "select count(teacher_id) as count from class_teacher where teacher_id = ? and cs_id = ?";
+  int count = this.jdbcTemplate.queryForObject(sql,Integer.class,teacher_id,cs_id);
+  return count;
+}
 
  public int studentinsert(final Question question) {
    AuthenticationUtil auth = new AuthenticationUtil();
@@ -41,9 +52,9 @@ public int queryCs_id(String cs_id) {
       std_id, question.getQ_content(), question.getCs_id());
  }
 
- public Question findOne(final String cs_id, final int std_id) {
+ /*public Question findOne(final String cs_id, final int std_id) {
     return this.jdbcTemplate.queryForObject( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q_time, q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? and q.q_std_id = ? ", new Object[]{cs_id,std_id}, new QuestionMapper());
-  }
+  }*/
 
  public List<Question> findQuestion(final String cs_id) {
      return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_time, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_time", new Object[]{cs_id}, new QuestionMapper());
@@ -66,9 +77,11 @@ public int queryCs_id(String cs_id) {
      }
  }
  public int update(final Question question) {
+    AuthenticationUtil auth = new AuthenticationUtil();
+    String std_id = auth.getCurrentUserName();
     return jdbcTemplate.update(
-      "update question set q_std_id=?, q_content=?, cs_id=? where q_std_id =?",
-      question.getQ_std_id(), question.getQ_content(), question.getCs_id(), question.getQ_std_id());
+      "update question set q_reply = ?, q_solved = 1 where q_std_id = ? and cs_id = ?",
+      question.getQ_reply(), question.getQ_std_id(), question.getCs_id());
  }
 
  public int delete(final int id) {

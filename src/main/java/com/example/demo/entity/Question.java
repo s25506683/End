@@ -8,6 +8,7 @@ public class Question {
     private int q_id;
     private int q_std_id;
     private String q_content;
+    private String q_reply;
     private String cs_id;
     private String cs_name;
     private String q_time;
@@ -31,8 +32,8 @@ public class Question {
         return this.q_std_id;
     }
 
-    public void setQ_std_id(int q_std_id) {
-        this.q_std_id = q_std_id;
+    public void setQ_std_id(int i) {
+        this.q_std_id = i;
     }
 
     public String getQ_content() {
@@ -41,6 +42,14 @@ public class Question {
 
     public void setQ_content(String q_content) {
         this.q_content = q_content;
+    }
+
+    public String getQ_reply() {
+        return this.q_reply;
+    }
+
+    public void setQ_reply(String q_reply) {
+        this.q_reply = q_reply;
     }
 
     public String getCs_id() {

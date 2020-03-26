@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,22 +55,41 @@ public class QuestionController {
     }
     //@POST
 
- @GetMapping(value = {"/student/question/one/{cs_id}/{std_id}"})
+ /*@GetMapping(value = {"/student/question/one/{cs_id}/{std_id}"})
     public Question retrieveOneQuestion(@PathVariable("cs_id") final String cs_id, @PathVariable("std_id") final int std_id) throws SQLException{
        return dao.findOne(cs_id,std_id);
-    }
+    }*/
     
  @GetMapping(value = {"/student/question/all/{cs_id}"})
-    public List<Question> retrieveQuestion(@PathVariable("cs_id") final String cs_id) throws SQLException{
+    public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
-      writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
-      logfile.writeLog(writtenmessage);
-         return dao.findQuestion(cs_id);
+
+      if(dao.queryStudentInTheClass(std_id, cs_id) == 0){
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+       }else{
+         writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage);
+         return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
+       }
        
     }
+
+ @GetMapping(value = {"/teacher/question/all/{cs_id}"})
+    public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+       if(dao.queryTeacherInTheClass(teacher_id, cs_id) == 0){
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+       }else{
+         writtenmessage = "teacher \"" + teacher_id + "\" watching question in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage);
+         return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
+       }
+    }
+
     
- @PutMapping(value = "/question")
+ @PutMapping(value = "/teacher/question")
     public void processFormUpdate(@RequestBody final Question question) throws SQLException {
        dao.update(question);
     }
