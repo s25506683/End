@@ -57,7 +57,7 @@ public int queryTeacherInTheClass(String teacher_id, String cs_id) {
   }*/
 
  public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_time, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_time", new Object[]{cs_id}, new QuestionMapper());
+     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_time, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_time", new Object[]{cs_id}, new QuestionMapper());
  }
 
  private static final class QuestionMapper implements RowMapper<Question> {
@@ -67,6 +67,7 @@ public int queryTeacherInTheClass(String teacher_id, String cs_id) {
          question.setQ_id(rs.getInt("q_id"));
          question.setQ_std_id(rs.getInt("q_std_id"));
          question.setQ_content(rs.getString("q_content"));
+         question.setQ_reply(rs.getString("q_reply"));
          question.setCs_id(rs.getString("cs_id"));
          question.setCs_name(rs.getString("cs_name"));
          //df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
