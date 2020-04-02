@@ -36,7 +36,8 @@ public class StudentController {
 	@Autowired
 	Logfile logfile;
 
-	   
+	String writtenmessage = new String();
+	
 	@PostMapping(value = "/student_re")
 
 	public ResponseEntity<String> processFormCreate(@RequestBody final Student student) throws SQLException {
@@ -48,7 +49,7 @@ public class StudentController {
 				//if input email's format is alright
 				if(student.getStd_mail().contains("@")){
 					dao.insert(student);
-					final String writtenmessage = Integer.toString(student.getStd_id()) + " now has already registered!" ;
+					writtenmessage = Integer.toString(student.getStd_id()) + " now has already registered!" ;
 					logfile.writeLog(writtenmessage);
 					return ResponseEntity.ok("request successful!");
 				}else{
