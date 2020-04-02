@@ -33,12 +33,18 @@ public int queryUser(final int accept_std_id, final int accept_hw_id){
   return count;
 }
 
-
- public int insert(final Acceptance acceptance) {
+ public int insertAcceptance(final Acceptance acceptance) {
     return jdbcTemplate.update(
       "insert into acceptance (accept_std_id, accept_hw_id) values(?, ?)",
       acceptance.getAccept_std_id(), acceptance.getAccept_hw_id());
  }
+
+public int insertHomework(final Acceptance acceptance){
+  return jdbcTemplate.update(
+    "insert into homework (hw_name, hw_content, hw_cs_id) values(?, ?, ?)",
+    acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_cs_id());
+}
+
 
  public List<Acceptance> findCourseHomework(final int std_id, final String hw_cs_id) {
     return this.jdbcTemplate.query( "select hw.hw_name, hw.hw_createtime,a.accept_score, a.accept_done from acceptance as a inner join homework as hw on hw.hw_id = a.accept_hw_id where a.accept_std_id = ? and hw.hw_cs_id = ?"
@@ -80,11 +86,20 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
 
 
 
- public int update(final Acceptance acceptance) {
+ public int updateScore(final Acceptance acceptance) {
     return jdbcTemplate.update(
       "update acceptance set accept_std_id=?, accept_hw_id=?, accept_score=?, accept_done=1 where accept_std_id =? and accept_hw_id = ?",
       acceptance.getAccept_std_id(), acceptance.getAccept_hw_id(), acceptance.getAccept_score(), acceptance.getAccept_std_id(),acceptance.getAccept_hw_id());
  }
+
+
+ public int updateContent(final Acceptance acceptance){
+    return jdbcTemplate.update(
+      "update homework set hw_name=?, hw_content=?, hw_cs_id=? where hw_name=? and hw_cs_id=?",
+      acceptance.getHw_name(),acceptance.getHw_content(),acceptance.getHw_cs_id(),acceptance.getHw_name(),acceptance.getHw_cs_id());
+    
+ }
+
 
  public int delete(final int accept_std_id, int accept_hw_id) {
     return jdbcTemplate.update(

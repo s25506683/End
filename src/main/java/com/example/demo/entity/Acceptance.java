@@ -16,6 +16,15 @@ public class Acceptance {
  private String hw_cs_id;
  private String hw_name;
  private Date hw_createtime;
+ private String hw_content;
+
+ public String getHw_content() {
+     return this.hw_content;
+ }
+
+ public void setHw_content(String hw_content) {
+     this.hw_content = hw_content;
+ }
 
  public Date getHw_createtime() {
      return this.hw_createtime;
