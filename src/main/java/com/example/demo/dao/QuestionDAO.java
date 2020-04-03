@@ -12,15 +12,19 @@ public interface QuestionDAO {
     
     public int queryTeacherInTheClass(String teacher_id, String cs_id);
 
+    public int hasBeenReply(int std_id, String q_asktime);
+
     public int studentinsert(Question question);
 
     public List<Question> findQuestion(String cs_id);
 
     //public Question findOne(String cs_id,int std_id);
 
-    public int update(Question question);
+    public int updateStudentQuestionContent(Question question);
 
-    public int delete(int id);
+    public int updateTeacherReply(Question question);
+
+    public int deleteQuestion(Question question);
 
 }
 

@@ -49,7 +49,7 @@ public class AcceptanceController {
  @GetMapping(value = {"/student/acceptance/{hw_cs_id}"})
     public List<Acceptance> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
-      String std_id = auth.getCurrentUserName(); 
+      String std_id = auth.getCurrentUserName();
       return dao.findCourseHomework(Integer.parseInt(std_id),hw_cs_id);
     }
     
