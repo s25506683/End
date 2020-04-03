@@ -58,13 +58,7 @@ public class QuestionController {
           return ResponseEntity.ok("request successful!");
        }
     }
-    //@POST
 
- /*@GetMapping(value = {"/student/question/one/{cs_id}/{std_id}"})
-    public Question retrieveOneQuestion(@PathVariable("cs_id") final String cs_id, @PathVariable("std_id") final int std_id) throws SQLException{
-       return dao.findOne(cs_id,std_id);
-    }*/
-    
 
   //student get all question in this class.
   //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
@@ -140,18 +134,63 @@ public class QuestionController {
 
    //student delete there question.
    //input std_id, q_asktime.
- @DeleteMapping(value = "/student/question/")
-    public void StudentdeleteQuestion(@RequestBody final Question question) throws SQLException{
-       dao.deleteQuestion(question);
+ @DeleteMapping(value = "/student/deletequestioncontent/")
+    public ResponseEntity<String> StudentdeleteQuestion(@RequestBody final Question question) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      int std_id = Integer.parseInt(auth.getCurrentUserName());
+      if(question.getQ_std_id() != std_id){
+         //if the student don't have sufficient permissions to delete question.
+         writtenmessage = "student \"" + question.getQ_std_id() + "\" does not have permission to delete question with student \"" + std_id + "\", question's asktime \"" + question.getQ_asktime() + "\"!";
+         logfile.writeLog(writtenmessage);
+         return ResponseEntity.badRequest().body("request failed. you can not delete other student's question, because you are not the question creator!");
+      }else if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
+         //if the question not found.
+         return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
+      }else if(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()) == 1){
+         //if the question has been replied from teacher.
+         return ResponseEntity.badRequest().body("request failed. you can not delete your question, because the question has already replied from teacher!");
+      }else{
+         dao.deleteQuestion(question);
+         writtenmessage = "student \"" + std_id + "\" deleted question with question's asktime \"" + question.getQ_asktime() + "\".";
+         logfile.writeLog(writtenmessage);
+         return ResponseEntity.ok("request successful! your question has been deleted!");
+      }
     }
 
    //teacher delete student's question.
    //input std_id, q_asktime.
- @DeleteMapping(value = "/teacher/question/{id}")
-    public void TeacherdeleteQuestion(@RequestBody final Question question) throws SQLException{
-       dao.deleteQuestion(question);
+ @DeleteMapping(value = "/teacher/deletequestioncontent/")
+    public ResponseEntity<String> TeacherdeleteQuestion(@RequestBody final Question question) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+      if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
+         //if the question not found.
+         return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
+      }else{
+         dao.deleteQuestion(question);
+         writtenmessage = "teacher \"" + teacher_id + "\" deleted question with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
+         logfile.writeLog(writtenmessage);
+         return ResponseEntity.ok("request successful! the student \"" + question.getQ_std_id() + "\"'s question has been deleted!");
+      }
     }
  
+
+   //teacher delete there question's reply.
+   //input std_id, q_asktime.
+ @DeleteMapping(value = "/teacher/deletequestionreply/")
+ public ResponseEntity<String> TeacherdeleteQuestionReply(@RequestBody final Question question) throws SQLException{
+   AuthenticationUtil auth = new AuthenticationUtil();
+   String teacher_id = auth.getCurrentUserName();
+   if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
+      //if the question not found.
+      return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
+   }else{
+      dao.deleteQuestionReply(question);
+      writtenmessage = "teacher \"" + teacher_id + "\" deleted question reply with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
+      logfile.writeLog(writtenmessage);
+      return ResponseEntity.ok("request successful! the student's \"" + question.getQ_std_id() + "\" question reply has been deleted!");
+   }
+ }
    
  
 }

@@ -51,6 +51,12 @@ public int hasBeenReply(int std_id, String q_asktime){
   return q_solved;
 }
 
+public int hasQuestion(int std_id, String q_asktime){
+  String sql = "select count(q_std_id) as count from question where q_std_id = ? and q_asktime = ?";
+  int count = this.jdbcTemplate.queryForObject(sql,Integer.class, std_id, q_asktime);
+  return count;
+}
+
  public int studentinsert(final Question question) {
    AuthenticationUtil auth = new AuthenticationUtil();
    String std_id = auth.getCurrentUserName();
@@ -112,8 +118,11 @@ public int updateStudentQuestionContent(final Question question) {
  }
 
  //delete teacher reply?? (have to set q_solved to 0).
-
- 
+ public int deleteQuestionReply(Question question) {
+  return jdbcTemplate.update(
+    "update question set q_reply = null, q_solved = 0, q_replytime = null where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
+}
+ //顯示學生自己問過的問題
 }
 
 

@@ -14,6 +14,8 @@ public interface QuestionDAO {
 
     public int hasBeenReply(int std_id, String q_asktime);
 
+    public int hasQuestion(int std_id, String q_asktime);
+
     public int studentinsert(Question question);
 
     public List<Question> findQuestion(String cs_id);
@@ -25,6 +27,8 @@ public interface QuestionDAO {
     public int updateTeacherReply(Question question);
 
     public int deleteQuestion(Question question);
+
+    public int deleteQuestionReply(Question question);
 
 }
 

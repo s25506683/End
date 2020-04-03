@@ -61,3 +61,18 @@ This is a sample text.
 2020/04/03 21:37:49	teacher "16283" reply question in class "2" with question's asktime "2020-04-03 20:37:54", student "406401599".
 2020/04/03 21:37:49	student "406401599" writing question in class "2".
 2020/04/03 21:37:49	student "406401599" writing question in class "2".
+2020/04/03 23:10:08	student "406401599" writing question in class "2".
+2020/04/03 23:10:08	student "406401599" writing question in class "2".
+2020/04/04 00:18:36	teacher "16283" deleted question reply with student "406401599", question's asktime "2020-04-03 23:43:16".
+2020/04/04 00:19:14	teacher "16283" deleted question reply with student "406401628", question's asktime "2020-04-03 16:35:40".
+2020/04/04 00:31:20	student "406401599" writing question in class "2".
+2020/04/04 00:31:20	student "406401599" writing question in class "2".
+2020/04/04 00:31:20	student "406401599" writing question in class "2".
+2020/04/04 00:34:41	student "406401599" deleted question with question's asktime "2020-04-04 00:31:23".
+2020/04/04 00:59:57	student "406401599" deleted question with question's asktime "2020-04-04 00:31:25".
+2020/04/04 01:09:23	student "406401599" writing question in class "2".
+2020/04/04 01:09:23	teacher "16283" deleted question with student "406401599", question's asktime "2020-04-04 01:10:48".
+2020/04/04 01:09:23	teacher "16283" deleted question reply with student "406401628", question's asktime "2020-04-03 16:35:40".
+2020/04/04 01:09:23	teacher "16283" deleted question reply with student "406401628", question's asktime "2020-04-03 16:35:40".
+2020/04/04 01:22:05	student "406401598" does not have permission to delete question with student "406401599", question's asktime "2020-04-04 00:31:26"!
+2020/04/04 01:25:58	student "406401598" does not have permission to delete question with student "406401599", question's asktime "2020-04-04 00:31:26"!
