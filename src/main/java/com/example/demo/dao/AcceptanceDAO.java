@@ -7,7 +7,9 @@ import com.example.demo.entity.Acceptance;
 public interface AcceptanceDAO {
 
 
- public int queryUser(int accept_std_id , int accept_hw_id);
+ public int queryStudentInTheAcceptance(int accept_std_id , int accept_hw_id);
+
+ public int queryHomeworkInTheClass(String hw_name ,String hw_cs_id);
 
  public int insertAcceptance(Acceptance acceptance);
 
@@ -15,7 +17,7 @@ public interface AcceptanceDAO {
 
  public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name);
 
- public List<Acceptance> findCourseHomework(int std_id, String hw_cs_id);
+ public List<Acceptance> findCourseHomework(String hw_cs_id);
 
  public int updateScore(Acceptance acceptance);
 

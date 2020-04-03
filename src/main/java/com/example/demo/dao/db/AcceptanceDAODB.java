@@ -27,10 +27,17 @@ public class AcceptanceDAODB implements AcceptanceDAO {
 //jdbcTemplate 
 
 
-public int queryUser(final int accept_std_id, final int accept_hw_id){
+public int queryStudentInTheAcceptance(final int accept_std_id, final int accept_hw_id){
   final String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
   final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,accept_hw_id);
-  return count;
+  return count; //看這筆驗收中有沒有這個學生
+}
+
+public int queryHomeworkInTheClass(final String hw_name, final String hw_cs_id){
+  final String sql = "select count(hw_name) as count from homework where hw_name = ? and hw_cs_id = ?"; 
+  final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,hw_name,hw_cs_id);
+  return count; //這堂課中有沒有這筆homework
+
 }
 
  public int insertAcceptance(final Acceptance acceptance) {
@@ -46,9 +53,9 @@ public int insertHomework(final Acceptance acceptance){
 }
 
 
- public List<Acceptance> findCourseHomework(final int std_id, final String hw_cs_id) {
-    return this.jdbcTemplate.query( "select hw.hw_name, hw.hw_createtime,a.accept_score, a.accept_done from acceptance as a inner join homework as hw on hw.hw_id = a.accept_hw_id where a.accept_std_id = ? and hw.hw_cs_id = ?"
-       ,new Object[]{std_id,hw_cs_id}, new HomeWorkMapper());
+ public List<Acceptance> findCourseHomework(final String hw_cs_id) {
+    return this.jdbcTemplate.query( "select hw.hw_name, hw.hw_createtime,a.accept_score, a.accept_done from acceptance as a inner join homework as hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ?"
+       ,new Object[]{hw_cs_id}, new HomeWorkMapper());
   }
 
  public List<Acceptance> findHomeworkDetail(final String cs_id, final String hw_name) {  
@@ -66,6 +73,7 @@ public int insertHomework(final Acceptance acceptance){
       acceptance.setAccept_time(rs.getTime("accept_time"));
       acceptance.setAccept_score(rs.getInt("accept_score"));
       acceptance.setAccept_done(rs.getBoolean("accept_done"));
+      acceptance.setHw_name(rs.getString("hw_name"));
          return acceptance;
      }
  }
