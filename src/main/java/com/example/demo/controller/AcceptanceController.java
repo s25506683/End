@@ -73,6 +73,7 @@ public class AcceptanceController {
     public List<Acceptance> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException{
       // AuthenticationUtil auth = new AuthenticationUtil();
       // String std_id = auth.getCurrentUserName(); 
+      
       return dao.findCourseHomework(hw_cs_id); 
     }
 
@@ -102,11 +103,14 @@ public class AcceptanceController {
  @PutMapping(value = "/teacher/updateContent")
     public ResponseEntity<String> processFormUpdate2(@RequestBody final Acceptance acceptance) throws SQLException{
        
-      if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 0){
-         
+      if(acceptance.getHw_content() == ""){
+         return ResponseEntity.badRequest().body("作業內容不得為空");
+      }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 0){
+         return ResponseEntity.badRequest().body("無此作業，請先新增作業");
       }
        dao.updateContent(acceptance);
        return ResponseEntity.ok("修改成功");
+      
     }
 
  @DeleteMapping(value = "/acceptance/{id}/{accept_hw_id}")

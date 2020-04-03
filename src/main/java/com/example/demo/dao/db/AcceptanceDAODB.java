@@ -40,6 +40,8 @@ public int queryHomeworkInTheClass(final String hw_name, final String hw_cs_id){
 
 }
 
+
+
  public int insertAcceptance(final Acceptance acceptance) {
     return jdbcTemplate.update(
       "insert into acceptance (accept_std_id, accept_hw_id) values(?, ?)",
@@ -54,12 +56,12 @@ public int insertHomework(final Acceptance acceptance){
 
 
  public List<Acceptance> findCourseHomework(final String hw_cs_id) {
-    return this.jdbcTemplate.query( "select hw.hw_name, hw.hw_createtime,a.accept_score, a.accept_done from acceptance as a inner join homework as hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ?"
+    return this.jdbcTemplate.query( "select hw_name, hw_createtime from homework where hw_cs_id = ?"
        ,new Object[]{hw_cs_id}, new HomeWorkMapper());
   }
 
  public List<Acceptance> findHomeworkDetail(final String cs_id, final String hw_name) {  
-     return this.jdbcTemplate.query( "select a.accept_id, a.accept_std_id, a.accept_hw_id, a.accept_time, a.accept_score, a.accept_done, hw.hw_name from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ? and hw.hw_name = ?"
+     return this.jdbcTemplate.query( "select a.accept_id, a.accept_std_id, a.accept_hw_id, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ? and hw.hw_name = ?"
        , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
  }
 
@@ -74,6 +76,7 @@ public int insertHomework(final Acceptance acceptance){
       acceptance.setAccept_score(rs.getInt("accept_score"));
       acceptance.setAccept_done(rs.getBoolean("accept_done"));
       acceptance.setHw_name(rs.getString("hw_name"));
+      acceptance.setHw_content(rs.getString("hw_content"));
          return acceptance;
      }
  }
@@ -84,8 +87,6 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
     final Acceptance acceptance = new Acceptance();
     acceptance.setHw_name(rs.getString("hw_name"));
     acceptance.setHw_createtime (rs.getDate("hw_createtime"));
-    acceptance.setAccept_score(rs.getInt("accept_score"));
-    acceptance.setAccept_done(rs.getBoolean("accept_done"));
       return acceptance;
   }
 
