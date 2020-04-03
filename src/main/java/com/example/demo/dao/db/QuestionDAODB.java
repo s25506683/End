@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.dao.QuestionDAO;
 import com.example.demo.entity.Question;
 import com.example.demo.util.AuthenticationUtil;
+import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
 public class QuestionDAODB implements QuestionDAO {
@@ -44,12 +45,26 @@ public int queryTeacherInTheClass(String teacher_id, String cs_id) {
   return count;
 }
 
+public int hasBeenReply(int std_id, String q_asktime){
+  String sql = "select q_solved from question where q_std_id = ? and q_asktime = ?";
+  int q_solved = this.jdbcTemplate.queryForObject(sql,Integer.class, std_id, q_asktime);
+  return q_solved;
+}
+
+public int hasQuestion(int std_id, String q_asktime){
+  String sql = "select count(q_std_id) as count from question where q_std_id = ? and q_asktime = ?";
+  int count = this.jdbcTemplate.queryForObject(sql,Integer.class, std_id, q_asktime);
+  return count;
+}
+
  public int studentinsert(final Question question) {
    AuthenticationUtil auth = new AuthenticationUtil();
    String std_id = auth.getCurrentUserName();
+   CurrentTimeStamp ts = new CurrentTimeStamp();
+   String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "insert into question (q_std_id, q_content, cs_id) values(?, ?, ?)",
-      std_id, question.getQ_content(), question.getCs_id());
+      "insert into question (q_std_id, q_content, q_asktime, cs_id) values(?, ?, ?, ?)",
+      std_id, question.getQ_content(), timestamp, question.getCs_id());
  }
 
  /*public Question findOne(final String cs_id, final int std_id) {
@@ -57,7 +72,7 @@ public int queryTeacherInTheClass(String teacher_id, String cs_id) {
   }*/
 
  public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_time, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_time", new Object[]{cs_id}, new QuestionMapper());
+     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime", new Object[]{cs_id}, new QuestionMapper());
  }
 
  private static final class QuestionMapper implements RowMapper<Question> {
@@ -71,26 +86,43 @@ public int queryTeacherInTheClass(String teacher_id, String cs_id) {
          question.setCs_id(rs.getString("cs_id"));
          question.setCs_name(rs.getString("cs_name"));
          //df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
-         question.setQ_time(df.format(rs.getTimestamp("q_time")));
+         question.setQ_asktime(df.format(rs.getTimestamp("q_asktime")));
          //question.setQ_time(rs.getTime("q_time"));
          question.setQ_solved(rs.getString("q_solved"));
          return question;
      }
  }
- public int update(final Question question) {
-    AuthenticationUtil auth = new AuthenticationUtil();
-    String std_id = auth.getCurrentUserName();
+
+
+
+public int updateStudentQuestionContent(final Question question) {
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  return jdbcTemplate.update(
+    "update question set q_content = ? where q_std_id = ? and q_asktime = ?",
+    question.getQ_content(), std_id, question.getQ_asktime());
+}
+
+
+ public int updateTeacherReply(final Question question) {
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "update question set q_reply = ?, q_solved = 1 where q_std_id = ? and cs_id = ?",
-      question.getQ_reply(), question.getQ_std_id(), question.getCs_id());
+      "update question set q_reply = ?, q_replytime = ?, q_solved = 1 where q_std_id = ? and q_asktime = ?",
+      question.getQ_reply(), timestamp, question.getQ_std_id(), question.getQ_asktime());
  }
 
- public int delete(final int id) {
+ public int deleteQuestion(Question question) {
     return jdbcTemplate.update(
-      "delete from question where q_std_id =?", id);
+      "delete from question where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
  }
 
- 
+ //delete teacher reply?? (have to set q_solved to 0).
+ public int deleteQuestionReply(Question question) {
+  return jdbcTemplate.update(
+    "update question set q_reply = null, q_solved = 0, q_replytime = null where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
+}
+ //顯示學生自己問過的問題
 }
 
 
