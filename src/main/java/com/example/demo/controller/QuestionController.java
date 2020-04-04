@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.dao.QuestionDAO;
 import com.example.demo.entity.Question;
+import com.example.demo.util.UserInTheClass;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
 //import com.example.demo.util.CurrentTimeStamp;
@@ -31,6 +32,9 @@ import com.example.demo.util.Logfile;
 public class QuestionController {
   @Autowired
   QuestionDAO dao;
+
+  @Autowired
+  UserInTheClass userintheclass;
 
   @Autowired
    Logfile logfile;
@@ -67,7 +71,7 @@ public class QuestionController {
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
 
-      if(dao.queryStudentInTheClass(std_id, cs_id) == 0){
+      if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
          //if student does not belong to this class.
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
@@ -84,7 +88,7 @@ public class QuestionController {
     public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
-       if(dao.queryTeacherInTheClass(teacher_id, cs_id) == 0){
+       if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
          writtenmessage = "teacher \"" + teacher_id + "\" watching question in class \"" + cs_id + "\".";
@@ -118,10 +122,10 @@ public class QuestionController {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
 
-      if(dao.queryTeacherInTheClass(teacher_id, question.getCs_id()) == 0){
+      if(userintheclass.queryTeacherInTheClass(teacher_id, question.getCs_id()) == 0){
          //if teacher not in this class.
          return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
-      }else if(dao.queryStudentInTheClass(Integer.toString(question.getQ_std_id()), question.getCs_id()) == 0){
+      }else if(userintheclass.queryStudentInTheClass(Integer.toString(question.getQ_std_id()), question.getCs_id()) == 0){
          //if input student not in this class.
          return ResponseEntity.badRequest().body("request failed. input student not in this class!");
       }else{
@@ -165,7 +169,7 @@ public class QuestionController {
       String teacher_id = auth.getCurrentUserName();
       if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
          //if the question not found.
-         return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
+         return ResponseEntity.badRequest().body("request failed. the question with asktime was not found!");
       }else{
          dao.deleteQuestion(question);
          writtenmessage = "teacher \"" + teacher_id + "\" deleted question with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
@@ -192,7 +196,7 @@ public class QuestionController {
    }
  }
    
- 
+
 }
 
 

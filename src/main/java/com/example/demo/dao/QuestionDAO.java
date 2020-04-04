@@ -8,10 +8,6 @@ public interface QuestionDAO {
  
     public int queryCs_id(String cs_id);
 
-    public int queryStudentInTheClass(String std_id, String cs_id);
-    
-    public int queryTeacherInTheClass(String teacher_id, String cs_id);
-
     public int hasBeenReply(int std_id, String q_asktime);
 
     public int hasQuestion(int std_id, String q_asktime);
