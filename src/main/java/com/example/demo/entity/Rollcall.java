@@ -12,11 +12,17 @@ public class Rollcall {
     private String std_department;
     private String tl_type_name;
     private String cs_id;
-    private Date rc_endtime;
-    private String rc_inputsoure;
+    private int rc_id;
+    private String rc_name;
+    private String rc_starttime;
+    private String rc_endtime;
     private int rc_scoring;
+    private String rc_inputsource;
+    private int qrcode;
 
-
+    private int present;
+    private int absent;
+    private int otherwise;
 
 
     public int getStd_id() {
@@ -59,20 +65,36 @@ public class Rollcall {
         this.cs_id = cs_id;
     }
 
-    public Date getRc_endtime() {
+    public int getRc_id() {
+        return this.rc_id;
+    }
+
+    public void setRc_id(int rc_id) {
+        this.rc_id = rc_id;
+    }
+
+    public String getRc_name() {
+        return this.rc_name;
+    }
+
+    public void setRc_name(String rc_name) {
+        this.rc_name = rc_name;
+    }
+
+    public String getRc_starttime() {
+        return this.rc_starttime;
+    }
+
+    public void setRc_starttime(String rc_starttime) {
+        this.rc_starttime = rc_starttime;
+    }
+
+    public String getRc_endtime() {
         return this.rc_endtime;
     }
 
-    public void setRc_endtime(Date rc_endtime) {
+    public void setRc_endtime(String rc_endtime) {
         this.rc_endtime = rc_endtime;
-    }
-    
-    public String getRc_inputsoure() {
-        return this.rc_inputsoure;
-    }
-
-    public void setRc_inputsoure(String rc_inputsoure) {
-        this.rc_inputsoure = rc_inputsoure;
     }
 
     public int getRc_scoring() {
@@ -83,7 +105,52 @@ public class Rollcall {
         this.rc_scoring = rc_scoring;
     }
 
+    public String getRc_inputsource() {
+        return this.rc_inputsource;
+    }
 
+    public void setRc_inputsource(String rc_inputsource) {
+        this.rc_inputsource = rc_inputsource;
+    }
+
+    public int getQrcode() {
+        return this.qrcode;
+    }
+
+    public void setQrcode(int qrcode) {
+        this.qrcode = qrcode;
+    }
+
+    
+    
+
+
+
+
+
+    public int getPresent() {
+        return this.present;
+    }
+
+    public void setPresent(int present) {
+        this.present = present;
+    }
+
+    public int getAbsent() {
+        return this.absent;
+    }
+
+    public void setAbsent(int absent) {
+        this.absent = absent;
+    }
+
+    public int getOtherwise() {
+        return this.otherwise;
+    }
+
+    public void setOtherwise(int otherwise) {
+        this.otherwise = otherwise;
+    }
     
 
     
