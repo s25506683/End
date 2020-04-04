@@ -74,7 +74,7 @@ public class AcceptanceController {
       // AuthenticationUtil auth = new AuthenticationUtil();
       // String std_id = auth.getCurrentUserName(); 
       
-      return dao.findCourseHomework(hw_cs_id); 
+      return dao.findCourseHomework(hw_cs_id);
     }
 
 
