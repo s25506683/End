@@ -18,7 +18,7 @@ public class Rollcall {
     private String rc_endtime;
     private int rc_scoring;
     private String rc_inputsource;
-    private int qrcode;
+    private String qrcode;
     private String record_time;
 
     private int present;
@@ -114,11 +114,11 @@ public class Rollcall {
         this.rc_inputsource = rc_inputsource;
     }
 
-    public int getQrcode() {
+    public String getQrcode() {
         return this.qrcode;
     }
 
-    public void setQrcode(int qrcode) {
+    public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
     }
 

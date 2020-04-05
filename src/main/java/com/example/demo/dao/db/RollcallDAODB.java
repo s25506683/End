@@ -109,11 +109,22 @@ public class RollcallDAODB implements RollcallDAO {
     }
   }
 
-//  public int update(Rollcall rollcall) {
-//     return jdbcTemplate.update(
-//       "update question set q_std_id=?, q_content=?, cs_id=? where q_std_id =?",
-//       homepage1_s.getQ_std_id(), homepage1_s.getQ_content(), homepage1_s.getCs_id(), homepage1_s.getQ_std_id());
-//  }
+  public String findQRcodeInRollcallName(String rc_name){
+    String sql = "select qrcode from rollcall where rc_name = ?";
+    String qrcode = this.jdbcTemplate.queryForObject(sql,String.class,rc_name);
+    return qrcode;
+  }
+  public int findRollcallId(String rc_name){
+    String sql = "select rc_id from rollcall where rc_name = ?";
+    int rc_id = this.jdbcTemplate.queryForObject(sql,Integer.class,rc_name);
+    return rc_id;
+  }
+
+ public int updateQRcodeRollcallRecord(int std_id, int rc_id){
+    return jdbcTemplate.update(
+      "update rc_record set tl_type_id = 1 where std_id = ? and rc_id = ?",
+      std_id, rc_id);
+ }
 
 public int deleteRollcall(String rc_name) {
     return jdbcTemplate.update(

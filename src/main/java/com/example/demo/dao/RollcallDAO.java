@@ -22,7 +22,11 @@ public interface RollcallDAO {
  
  public List<Rollcall> findClassStudentList(String cs_id);
 
- //public int update(HomePage1_s homepage1_s);
+ public String findQRcodeInRollcallName(String rc_name);
+
+ public int findRollcallId(String rc_name);
+
+ public int updateQRcodeRollcallRecord(int std_id, int rc_id);
 
  public int deleteRollcall(String rc_name);
 
