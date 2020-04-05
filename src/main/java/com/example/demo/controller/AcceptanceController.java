@@ -73,7 +73,8 @@ public class AcceptanceController {
     public List<Acceptance> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException{
       // AuthenticationUtil auth = new AuthenticationUtil();
       // String std_id = auth.getCurrentUserName(); 
-      return dao.findCourseHomework(hw_cs_id); 
+      
+      return dao.findCourseHomework(hw_cs_id);
     }
 
 

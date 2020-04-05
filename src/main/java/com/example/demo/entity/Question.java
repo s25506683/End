@@ -11,7 +11,8 @@ public class Question {
     private String q_reply;
     private String cs_id;
     private String cs_name;
-    private String q_time;
+    private String q_asktime;
+    private String q_replytime;
     //private Time q_time;
     private String q_solved;
 
@@ -85,12 +86,20 @@ public class Question {
     // }
 
 
-    public String getQ_time() {
-        return this.q_time;
+    public String getQ_asktime() {
+        return this.q_asktime;
     }
 
-    public void setQ_time(String q_time) {
-        this.q_time = q_time;
+    public void setQ_asktime(String q_asktime) {
+        this.q_asktime = q_asktime;
+    }
+
+    public String getQ_replytime() {
+        return this.q_replytime;
+    }
+
+    public void setQ_replytime(String q_replytime) {
+        this.q_replytime = q_replytime;
     }
 
     public String getQ_solved() {
