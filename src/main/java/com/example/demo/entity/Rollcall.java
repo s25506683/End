@@ -19,6 +19,7 @@ public class Rollcall {
     private int rc_scoring;
     private String rc_inputsource;
     private int qrcode;
+    private String record_time;
 
     private int present;
     private int absent;
@@ -119,6 +120,14 @@ public class Rollcall {
 
     public void setQrcode(int qrcode) {
         this.qrcode = qrcode;
+    }
+
+    public String getRecord_time() {
+        return this.record_time;
+    }
+
+    public void setRecord_time(String record_time) {
+        this.record_time = record_time;
     }
 
     

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,22 +66,75 @@ public class RollcallController {
          
 
      }
-    //@POST
- @GetMapping(value = {"/rollcall/one/{rc_id}"})
-    public List<Rollcall> retrieveOneRollcall(@PathVariable("rc_id") final int rc_id) throws SQLException {
-       return dao.findOneRollcallRecord(rc_id);
-    }
-    
-    //get all rollcall in this class
-    //you will get rc_starttime(String), present(int), absent(int), otherwise(int), rc_scoring(int), rc_inputsource(String) returns.
- @GetMapping(value = {"/rollcall/all/{cs_id}"})
-    public List<Rollcall> retrieveRollcall(@PathVariable("cs_id") final String cs_id) throws SQLException{
-       return dao.findAllRollcallRecord(cs_id);
+   
+   //student get one rollcall's all record of student.
+   //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
+ @GetMapping(value = {"/student/rollcall/one/{rc_id}"})
+    public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromStudent(@PathVariable("rc_id") final int rc_id) throws SQLException {
+
+       if(dao.hasThisRollcallId(rc_id) == 0){
+         //if this rollcall Id not found.
+         return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+       }else{
+         return new ResponseEntity<List<Rollcall>>(dao.findOneRollcallRecord(rc_id), HttpStatus.OK);
+       }
     }
 
- @GetMapping(value = {"/rollcall/{cs_id}"})
-    public List<Rollcall> retrieveRollcall2(@PathVariable("cs_id") final String cs_id) throws SQLException{
-       return dao.findClassList(cs_id);
+   //teacher get one rollcall's all record of student.
+   //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
+ @GetMapping(value = {"/teacher/rollcall/one/{rc_id}"})
+ public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
+
+    if(dao.hasThisRollcallId(rc_id) == 0){
+      //if this rollcall Id not found.
+      return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+    }else{
+      return new ResponseEntity<List<Rollcall>>(dao.findOneRollcallRecord(rc_id), HttpStatus.OK);
+    }
+ }
+    
+    //student get all rollcall in this class
+    //you will get rc_starttime(String), present(int), absent(int), otherwise(int), rc_scoring(int), rc_inputsource(String) returns.
+ @GetMapping(value = {"/student/rollcall/all/{cs_id}"})
+    public ResponseEntity<List<Rollcall>> retrieveAllRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String std_id = auth.getCurrentUserName();
+
+       if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+          //if student not in this class.
+         return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+       }else{
+         return new ResponseEntity<List<Rollcall>>(dao.findAllRollcallRecord(cs_id), HttpStatus.OK);
+       }
+    }
+
+    //teacher get all rollcall in this class
+    //you will get rc_starttime(String), present(int), absent(int), otherwise(int), rc_scoring(int), rc_inputsource(String) returns.
+@GetMapping(value = {"/teacher/rollcall/all/{cs_id}"})
+    public ResponseEntity<List<Rollcall>> retrieveAllRollcallFromTeacher(@PathVariable("cs_id") final String cs_id) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+
+       if(userintheclass.queryStudentInTheClass(teacher_id, cs_id) == 0){
+          //if teacher not in this class.
+         return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+       }else{
+         return new ResponseEntity<List<Rollcall>>(dao.findAllRollcallRecord(cs_id), HttpStatus.OK);
+       }
+    }
+
+    //teacher watch student list in this class.
+    //you will get std_id, std_name, std_department returns.
+ @GetMapping(value = {"/teacher/rollcall/studentList/{cs_id}"})                        
+    public ResponseEntity<List<Rollcall>> retrieveWhatStuentInTheClass(@PathVariable("cs_id") final String cs_id) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+      if(userintheclass.queryStudentInTheClass(teacher_id, cs_id) == 0){
+         //if teacher not in this class.
+        return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+      }else{
+        return new ResponseEntity<List<Rollcall>>(dao.findClassStudentList(cs_id), HttpStatus.OK);
+      }
     }
     
 //  @PutMapping(value = "/rollcall")
@@ -88,16 +142,33 @@ public class RollcallController {
 //        dao.update(homepage1_s);
 //     }
 
-//  @DeleteMapping(value = "/rollcall/{id}")
-//     public void deleteQuestion(@PathVariable("id") int id) {
-//        dao.delete(id);
-//     }
-    
+
+   //teacher delete rollcall and rollcall record in the class.
+   //you have to input rc_name, cs_id in json.
+ @DeleteMapping(value = "/teacher/rollcall/")
+    public ResponseEntity<String> deleteQuestion(@RequestBody Rollcall rollcall) {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+
+       if(userintheclass.queryTeacherInTheClass(teacher_id, rollcall.getCs_id()) == 0){
+          //if teacher not in this class.
+          return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
+       }else{
+         dao.deleteRollcall(rollcall.getRc_name());
+         return ResponseEntity.ok("request successful! the rollcall has already adeleted!");
+       }
+    }
+
+
+
+
+
+
  
 
  //學生端Qrcode點名
  //教師端手動編輯點名
- //老師刪除點名紀錄
+ //老師刪除點名紀錄(done)
  //
 }
 

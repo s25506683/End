@@ -10,6 +10,8 @@ public interface RollcallDAO {
 
  public int hasTheSameRollcallName(String rc_name);
 
+ public int hasThisRollcallId(int rc_id);
+
  public String[] findClassStudent(String cs_id);
 
  public int addRollcallRecord(String rc_name, int std_id);
@@ -18,9 +20,11 @@ public interface RollcallDAO {
 
  public List<Rollcall> findOneRollcallRecord(int rc_id);
  
- public List<Rollcall> findClassList(String cs_id);
+ public List<Rollcall> findClassStudentList(String cs_id);
+
  //public int update(HomePage1_s homepage1_s);
- //public int delete(int id);
+
+ public int deleteRollcall(String rc_name);
 
  
 }
