@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class QuestionController {
   //student post there question to db.
   //you will input q_content, cs_id.
  @PostMapping(value = "/student/question")
-    public ResponseEntity<String> proccessStudentQoestion(@RequestBody final Question question) throws SQLException {
+    public ResponseEntity<String> proccessStudentQoestion(@RequestBody final Question question) throws SQLException,
+          IOException {
        if(question.getQ_content() == ""){
           //if question content is null.
           return ResponseEntity.badRequest().body("request failed. input content is null!");
@@ -67,7 +69,8 @@ public class QuestionController {
   //student get all question in this class.
   //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
  @GetMapping(value = {"/student/question/all/{cs_id}"})
-    public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException{
+    public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
 
@@ -85,7 +88,8 @@ public class QuestionController {
    //teacher get all question in this class.
    //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
  @GetMapping(value = {"/teacher/question/all/{cs_id}"})
-    public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException{
+    public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
        if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
@@ -101,7 +105,8 @@ public class QuestionController {
    //update student's question in this class.
    //You have input q_asktime, q_content.
  @PutMapping(value = "/student/question")
-    public ResponseEntity<String> UpdateStudentQuestionContent(@RequestBody final Question question) throws SQLException {
+    public ResponseEntity<String> UpdateStudentQuestionContent(@RequestBody final Question question) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
        if(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()) == 1){
@@ -118,7 +123,8 @@ public class QuestionController {
     //update teacher's reply in this class.
     //You have input q_reply, q_replytime, q_std_id, q_asktime.
  @PutMapping(value = "/teacher/question")
-    public ResponseEntity<String> processFormUpdate(@RequestBody final Question question) throws SQLException {
+    public ResponseEntity<String> processFormUpdate(@RequestBody final Question question) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
 
@@ -139,7 +145,8 @@ public class QuestionController {
    //student delete there question.
    //input std_id, q_asktime.
  @DeleteMapping(value = "/student/deletequestioncontent/")
-    public ResponseEntity<String> StudentdeleteQuestion(@RequestBody final Question question) throws SQLException{
+    public ResponseEntity<String> StudentdeleteQuestion(@RequestBody final Question question) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
       if(question.getQ_std_id() != std_id){
@@ -164,7 +171,7 @@ public class QuestionController {
    //teacher delete student's question.
    //input std_id, q_asktime.
  @DeleteMapping(value = "/teacher/deletequestioncontent/")
-    public ResponseEntity<String> TeacherdeleteQuestion(@RequestBody final Question question) throws SQLException{
+    public ResponseEntity<String> TeacherdeleteQuestion(@RequestBody final Question question) throws SQLException, IOException{
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
       if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
@@ -182,7 +189,8 @@ public class QuestionController {
    //teacher delete there question's reply.
    //input std_id, q_asktime.
  @DeleteMapping(value = "/teacher/deletequestionreply/")
- public ResponseEntity<String> TeacherdeleteQuestionReply(@RequestBody final Question question) throws SQLException{
+ public ResponseEntity<String> TeacherdeleteQuestionReply(@RequestBody final Question question) throws SQLException,
+       IOException {
    AuthenticationUtil auth = new AuthenticationUtil();
    String teacher_id = auth.getCurrentUserName();
    if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
