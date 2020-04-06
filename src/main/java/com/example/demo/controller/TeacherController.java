@@ -52,7 +52,7 @@ public class TeacherController {
 			
 				if(teacher.getTeacher_mail().contains("@")){
 					dao.insert(teacher);
-					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
+					String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
 					logfile.writeLog(writtenmessage);
 					return ResponseEntity.ok("Response Success!");
 				}

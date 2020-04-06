@@ -20,12 +20,30 @@ public class Logfile {
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 	LocalDateTime now = LocalDateTime.now();
 
-	public void writeLog(String writtenmessage) throws IOException {
+	public void writeLog(String writtenmessage) {
 		String directory = System.getProperty("user.dir");
 		//String filename = "src/main/java/com/example/demo/util/logfile.txt";
 		//String absolutePath = directory + File.separator + filename;
 		String filepath = "src/main/java/com/example/demo/util/";
-		String absolutePath = directory + File.separator + filepath + "logfile2.txt";
+		String absolutePath = directory + File.separator + filepath + "logfile.txt";
+		System.out.println(absolutePath);
+		
+		try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
+			String fileContent = dtf.format(now) + "\t" + writtenmessage + "\n";
+			filewriter.write(fileContent);
+			filewriter.flush();
+			filewriter.close();
+		} catch (IOException e) {
+			System.err.print("Something went wrong");
+		}
+	}
+
+	public void writeLog(String writtenmessage, String cs_id) throws IOException {
+		String directory = System.getProperty("user.dir");
+		//String filename = "src/main/java/com/example/demo/util/logfile.txt";
+		//String absolutePath = directory + File.separator + filename;
+		String filepath = "src/main/java/com/example/demo/util/classlog/";
+		String absolutePath = directory + File.separator + filepath + cs_id + "_logfile.txt";
 		System.out.println(absolutePath);
 		
 		try (FileWriter filewriter = new FileWriter(absolutePath,true)) {

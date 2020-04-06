@@ -59,8 +59,9 @@ public class QuestionController {
           AuthenticationUtil auth = new AuthenticationUtil();
           String std_id = auth.getCurrentUserName();
           question.getCs_id();
-          writtenmessage = "student \"" + std_id + "\" writing question in class \"" + question.getCs_id() + "\".";
-			 logfile.writeLog(writtenmessage);
+          writtenmessage = "student "+ std_id + " writing question in class " + question.getCs_id() + " .";
+         //  logfile.writeLog(writtenmessage);
+          logfile.writeLog(writtenmessage, question.getCs_id());
           return ResponseEntity.ok("request successful!");
        }
     }
