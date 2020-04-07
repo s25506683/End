@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.*;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 
@@ -34,13 +35,21 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		.antMatchers("/student/**").hasRole("USER")
 		.and().rememberMe().tokenValiditySeconds(20).and().cors()
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
-		.and().csrf().disable();  //關掉跨網站的請求(避免回傳錯誤403)
+		.and().csrf().disable()  //關掉跨網站的請求(避免回傳錯誤403)
+
+		// .formLogin()
+		// .loginPage("http://localhost:3000/homepage1").permitAll()
+		// .and()
+		// .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000/homepage1");
+
 		//formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000").permitAll();
 		
-		// .formLogin()
-		// .loginPage("/loginPage")
-		// .loginProcessingUrl("/admin")
-		// .defaultSuccessUrl("/");
+		.formLogin()
+		.loginPage("/loginPage")
+		.loginProcessingUrl("/admin")
+		.defaultSuccessUrl("/")
+		.and()
+  		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000");
 
 
 		

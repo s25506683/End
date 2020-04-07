@@ -17,6 +17,33 @@ public class Acceptance {
  private String hw_name;
  private Date hw_createtime;
  private String hw_content;
+ private String cs_id;
+ private int teacher_id;
+ private int std_id;
+
+ public int getStd_id() {
+     return this.std_id;
+ }
+
+ public void setStd_id(int std_id) {
+     this.std_id = std_id;
+ }
+
+ public String getCs_id() {
+     return this.cs_id;
+ }
+
+ public void setCs_id(String cs_id) {
+     this.cs_id = cs_id;
+ }
+
+ public int getTeacher_id() {
+     return this.teacher_id;
+ }
+
+ public void setTeacher_id(int teacher_id) {
+     this.teacher_id = teacher_id;
+ }
 
  public String getHw_content() {
      return this.hw_content;
