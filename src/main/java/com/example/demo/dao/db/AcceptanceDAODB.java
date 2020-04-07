@@ -26,6 +26,12 @@ public class AcceptanceDAODB implements AcceptanceDAO {
 
 //jdbcTemplate 
 
+public int findHomeworkID(String hw_name) {
+  String sql = "select hw_id from homework where hw_name = ?";
+  int homeworkId = this.jdbcTemplate.queryForObject(sql, Integer.class, hw_name);
+  return homeworkId; //透過hw_id找hw_name
+}
+
 
 public int queryStudentInTheAcceptance(final int accept_std_id, final int accept_hw_id){
   final String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
@@ -33,11 +39,29 @@ public int queryStudentInTheAcceptance(final int accept_std_id, final int accept
   return count; //看這筆驗收中有沒有這個學生
 }
 
+// public int queryHomeworkInTheAcceptance(final int accept_std_id, final String hw_name){
+//   final String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and hw_name = ? ";
+//   final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,hw_name);
+//   return count; //這個學生有沒有驗收過這個作業(看作業名稱)
+// }
+
 public int queryHomeworkInTheClass(final String hw_name, final String hw_cs_id){
   final String sql = "select count(hw_name) as count from homework where hw_name = ? and hw_cs_id = ?"; 
   final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,hw_name,hw_cs_id);
   return count; //這堂課中有沒有這筆homework
 
+}
+
+public int queryStudentInTheClass(final String cs_id, final String std_id){
+  final String sql = "select count(cs_id) as count from class_student where cs_id = ? and std_id = ?";
+  final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,cs_id,std_id);
+  return count; //比對學生有沒有在這堂課中，get時判斷
+}
+
+public int queryTeacherInTheClass(final String cs_id, final String teacher_id){
+  final String sql = "select count(cs_id) as count from class_teacher where cs_id = ? and teacher_id = ?";
+  final int count = this.jdbcTemplate.queryForObject(sql, Integer.class, cs_id,teacher_id);
+  return count; //比對教師有沒有在這個課堂中
 }
 
 
@@ -55,6 +79,7 @@ public int insertHomework(final Acceptance acceptance){
 }
 
 
+
  public List<Acceptance> findCourseHomework(final String hw_cs_id) {
     return this.jdbcTemplate.query( "select hw_name, hw_createtime from homework where hw_cs_id = ?"
        ,new Object[]{hw_cs_id}, new HomeWorkMapper());
@@ -64,6 +89,7 @@ public int insertHomework(final Acceptance acceptance){
      return this.jdbcTemplate.query( "select a.accept_id, a.accept_std_id, a.accept_hw_id, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ? and hw.hw_name = ?"
        , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
  }
+
 
  private static final class AcceptanceMapper implements RowMapper<Acceptance> {
 
@@ -90,6 +116,14 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
       return acceptance;
   }
 
+// private static final class HomeWorkMapper2 implements RowMapper<Acceptance>{
+
+//   public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+//     final Acceptance acceptance = new Acceptance();
+//     acceptance.setHw_name(rs.getString("hw_name"));
+//       return acceptance;
+//     }
+
 
 }
 
@@ -110,9 +144,9 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
  }
 
 
- public int delete(final int accept_std_id, int accept_hw_id) {
+ public int deleteAcceptance(Acceptance acceptance){
     return jdbcTemplate.update(
-      "delete from acceptance where accept_std_id =? and accept_hw_id =?", accept_std_id, accept_hw_id);
+      "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getAccept_std_id(), acceptance.getAccept_hw_id());
  }
 
 
