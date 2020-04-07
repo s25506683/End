@@ -48,17 +48,18 @@ public class AcceptanceController {
 
  @PostMapping(value = "/student/acceptance")
     public ResponseEntity<String> processFormCreate(@RequestBody final Acceptance acceptance) throws SQLException {
+       
+         AuthenticationUtil auth = new AuthenticationUtil();
+         acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
+         acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
 
-         if(dao.queryStudentInTheAcceptance(acceptance.getAccept_std_id(),acceptance.getAccept_hw_id()) == 0){
-            int hw_id  = dao.findHomeworkID(acceptance.getHw_name());
-            acceptance.setAccept_hw_id(hw_id); //透過hw_name找出hw_id傳進去
-           // System.out.print(hw_id);
-
+         if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(), acceptance.getAccept_hw_id()) == 0){
+   
+            
             dao.insertAcceptance(acceptance);
-            AuthenticationUtil auth = new AuthenticationUtil();
-            String accept_std_id = auth.getCurrentUserName();
+            
             acceptance.getAccept_hw_id();
-            writtenmessage = "student \"" + accept_std_id + "\" writing acceptance in class \"" + acceptance.getAccept_hw_id() + "\".";
+            writtenmessage = "student \"" + acceptance.getStd_id() + "\" writing acceptance in class \"" + acceptance.getAccept_hw_id() + "\".";
             logfile.writeLog(writtenmessage);
             return ResponseEntity.ok("登記驗收成功");
    
@@ -130,9 +131,9 @@ public class AcceptanceController {
     public ResponseEntity<String> processFormUpdate(@RequestBody final Acceptance acceptance) throws SQLException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
-      if(Integer.toString(acceptance.getAccept_score()) == ""){
+      if(Integer.toString(acceptance.getAccept_score()).equals("")){
          return ResponseEntity.badRequest().body("請輸入分數，分數不得為空值");
-      }else if(dao.queryStudentInTheAcceptance(acceptance.getAccept_std_id(),acceptance.getAccept_hw_id()) == 1){
+      }else if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 1){
 
          dao.updateScore(acceptance);
          writtenmessage = "teacher \"" + teacher_id + "\" update score in homework \"" + acceptance.getAccept_hw_id() +"\".";
@@ -162,7 +163,7 @@ public class AcceptanceController {
       
     }
 
- @DeleteMapping(value = "/student/acceptance/{accept_std_id}/{accept_hw_id}")
+ @DeleteMapping(value = "/student/acceptance/deleteAcceptance")
     public void deleteAcceptance(@RequestBody final Acceptance acceptance) throws SQLException{
       // AuthenticationUtil auth = new AuthenticationUtil();
       // int std_id = Integer.parseInt(auth.getCurrentUserName());
