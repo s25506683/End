@@ -8,7 +8,7 @@ import java.sql.Date;
 public class Acceptance {
 
  private int accept_id;
- private int accept_std_id;
+//  private int accept_std_id;
  private int accept_hw_id;
  private int accept_score;
  private boolean accept_done;
@@ -85,13 +85,13 @@ public class Acceptance {
   this.accept_id = accept_id;
  }
 
- public int getAccept_std_id() {
-  return accept_std_id;
- }
+//  public int getAccept_std_id() {
+//   return accept_std_id;
+//  }
 
- public void setAccept_std_id(final int accept_std_id) {
-  this.accept_std_id = accept_std_id;
- }
+//  public void setAccept_std_id(final int accept_std_id) {
+//   this.accept_std_id = accept_std_id;
+//  }
 
  public int getAccept_hw_id() {
   return accept_hw_id;

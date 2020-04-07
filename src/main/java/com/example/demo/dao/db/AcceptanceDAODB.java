@@ -69,7 +69,7 @@ public int queryTeacherInTheClass(final String cs_id, final String teacher_id){
  public int insertAcceptance(final Acceptance acceptance) {
     return jdbcTemplate.update(
       "insert into acceptance (accept_std_id, accept_hw_id) values(?, ?)",
-      acceptance.getAccept_std_id(), acceptance.getAccept_hw_id());
+      acceptance.getStd_id(), acceptance.getAccept_hw_id());
  }
 
 public int insertHomework(final Acceptance acceptance){
@@ -96,7 +96,7 @@ public int insertHomework(final Acceptance acceptance){
      public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
       final Acceptance acceptance = new Acceptance();
       acceptance.setAccept_id(rs.getInt("accept_id"));
-      acceptance.setAccept_std_id(rs.getInt("accept_std_id"));
+      acceptance.setStd_id(rs.getInt("accept_std_id"));
       acceptance.setAccept_hw_id(rs.getInt("accept_hw_id"));
       acceptance.setAccept_time(rs.getTime("accept_time"));
       acceptance.setAccept_score(rs.getInt("accept_score"));
@@ -132,7 +132,7 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
  public int updateScore(final Acceptance acceptance) {
     return jdbcTemplate.update(
       "update acceptance set accept_std_id=?, accept_hw_id=?, accept_score=?, accept_done=1 where accept_std_id =? and accept_hw_id = ?",
-      acceptance.getAccept_std_id(), acceptance.getAccept_hw_id(), acceptance.getAccept_score(), acceptance.getAccept_std_id(),acceptance.getAccept_hw_id());
+      acceptance.getStd_id(), acceptance.getAccept_hw_id(), acceptance.getAccept_score(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
  }
 
 
@@ -146,7 +146,7 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
 
  public int deleteAcceptance(Acceptance acceptance){
     return jdbcTemplate.update(
-      "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getAccept_std_id(), acceptance.getAccept_hw_id());
+      "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getStd_id(), acceptance.getAccept_hw_id());
  }
 
 

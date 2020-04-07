@@ -8,7 +8,7 @@ public interface AcceptanceDAO {
 
  public int findHomeworkID(String hw_name);
 
- public int queryStudentInTheAcceptance(int accept_std_id , int accept_hw_id);
+ public int queryStudentInTheAcceptance(int Std_id , int accept_hw_id);
 
  public int queryHomeworkInTheClass(String hw_name ,String hw_cs_id);
 
