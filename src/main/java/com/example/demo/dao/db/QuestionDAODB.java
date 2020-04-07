@@ -63,6 +63,12 @@ public int hasQuestion(int std_id, String q_asktime){
      return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime", new Object[]{cs_id}, new QuestionMapper());
  }
 
+ public String findCsId(int std_id, String q_asktime){
+  String sql = "select cs_id from question where q_std_id = ? and q_asktime = ?";
+  String cs_id = this.jdbcTemplate.queryForObject(sql,String.class, std_id, q_asktime);
+  return cs_id;
+ }
+
  private static final class QuestionMapper implements RowMapper<Question> {
   private SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
      public Question mapRow(final ResultSet rs, final int rowNum) throws SQLException {

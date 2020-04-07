@@ -59,7 +59,7 @@ public class QuestionController {
           AuthenticationUtil auth = new AuthenticationUtil();
           String std_id = auth.getCurrentUserName();
           question.getCs_id();
-          writtenmessage = "student "+ std_id + " writing question in class " + question.getCs_id() + " .";
+          writtenmessage = "student "+ std_id + " writing question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
          //  logfile.writeLog(writtenmessage);
           logfile.writeLog(writtenmessage, question.getCs_id());
           return ResponseEntity.ok("request successful!");
@@ -80,7 +80,7 @@ public class QuestionController {
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
          writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
-         logfile.writeLog(writtenmessage);
+         logfile.writeLog(writtenmessage, cs_id);
          return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
        }
        
@@ -96,15 +96,15 @@ public class QuestionController {
        if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
-         writtenmessage = "teacher \"" + teacher_id + "\" watching question in class \"" + cs_id + "\".";
-         logfile.writeLog(writtenmessage);
+         writtenmessage = "teacher that you watching question in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage, cs_id);
          return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
        }
     }
 
 
    //update student's question in this class.
-   //You have input q_asktime, q_content.
+   //You have input q_asktime, q_content, q_std_id, cs_id.
  @PutMapping(value = "/student/question")
     public ResponseEntity<String> UpdateStudentQuestionContent(@RequestBody final Question question) throws SQLException,
           IOException {
@@ -114,15 +114,15 @@ public class QuestionController {
          return ResponseEntity.badRequest().body("request failed. your question has already replied from teacher!");
        }else{
          dao.updateStudentQuestionContent(question);
-         writtenmessage = "student \"" + std_id + "\" update question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
-         logfile.writeLog(writtenmessage);
+         writtenmessage = "student \"" + std_id + "\" update question " + question.getQ_content() + " in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
+         logfile.writeLog(writtenmessage, question.getCs_id());
          return ResponseEntity.ok("request successful! your question update completed!");
        }
     }
    
 
     //update teacher's reply in this class.
-    //You have input q_reply, q_replytime, q_std_id, q_asktime.
+    //You have input q_reply, cs_id, q_std_id, q_asktime.
  @PutMapping(value = "/teacher/question")
     public ResponseEntity<String> processFormUpdate(@RequestBody final Question question) throws SQLException,
           IOException {
@@ -138,7 +138,7 @@ public class QuestionController {
       }else{
          dao.updateTeacherReply(question);
          writtenmessage = "teacher \"" + teacher_id + "\" reply question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\", student \"" + question.getQ_std_id() + "\".";
-         logfile.writeLog(writtenmessage);
+         logfile.writeLog(writtenmessage, question.getCs_id());
          return ResponseEntity.ok("request successful! your reply update completed!");
       }
     }
