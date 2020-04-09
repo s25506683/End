@@ -187,7 +187,7 @@ public class RollcallController {
  //教師端手動update編輯點名
  //老師刪除點名紀錄(done)
  //老師端更新QRcode
- //學生看到所有點名
+ //學生看到自己的所有點名紀錄
 }
 
 
