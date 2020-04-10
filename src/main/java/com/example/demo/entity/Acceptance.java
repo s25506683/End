@@ -15,7 +15,16 @@ public class Acceptance {
  private Time accept_time;
  private String hw_cs_id;
  private String hw_name;
- private Date hw_createtime;
+ private String hw_createtime;
+
+ public String getHw_createtime() {
+     return this.hw_createtime;
+ }
+
+ public void setHw_createtime(String hw_createtime) {
+     this.hw_createtime = hw_createtime;
+ }
+
  private String hw_content;
  private String cs_id;
  private int teacher_id;
@@ -53,13 +62,7 @@ public class Acceptance {
      this.hw_content = hw_content;
  }
 
- public Date getHw_createtime() {
-     return this.hw_createtime;
- }
 
- public void setHw_createtime(Date hw_createtime) {
-     this.hw_createtime = hw_createtime;
- }
 
  public String getHw_cs_id() {
      return this.hw_cs_id;
