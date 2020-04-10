@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.demo.dao.RollcallDAO;
 import com.example.demo.entity.Rollcall;
 import com.example.demo.util.AuthenticationUtil;
+import com.example.demo.util.CurrentTimeStamp;
 import com.example.demo.util.UserInTheClass;
 
 @RestController
@@ -35,7 +36,7 @@ public class RollcallController {
   UserInTheClass userintheclass;
 
    //add rollcall and rollcall record.
-   //you will inoput cs_id, rc_name, rc_endtime, rc_inputsource, rc_scoring, qrcode.
+   //you will inoput cs_id, rc_inputsource, qrcode, (longitude), (latitude).
   @PostMapping(value = "/teacher/rollcall/addrollcall")
      public ResponseEntity<String> processFormCreate(@RequestBody Rollcall rollcall) throws SQLException {
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -44,12 +45,14 @@ public class RollcallController {
         if(userintheclass.queryTeacherInTheClass(teacher_id, rollcall.getCs_id()) == 0){
             //if teacher not in this class.
             return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
-        }else if(dao.hasTheSameRollcallName(rollcall.getRc_name()) == 1){
-            //if the rollcall name has been used.
-           return ResponseEntity.badRequest().body("request failed.This rollcall name has already been used!");
         }else{
+
+           CurrentTimeStamp ts = new CurrentTimeStamp();
+           rollcall.setRc_starttime(ts.getCurrentTimeStamp());
            //add rollcall.
            dao.addRollcall(rollcall);
+           rollcall.setRc_id(dao.findRcId(rollcall.getCs_id(), rollcall.getRc_starttime()));
+
            String[] studentInfoarr = dao.findClassStudent(rollcall.getCs_id());
            //calculate the array(String) of length.
            int size = studentInfoarr.length;
@@ -58,7 +61,7 @@ public class RollcallController {
            //using for loop to convert array(String) to int, also input rollcall record every student in the class.
            for(int i=0 ; i<size ; i++) {
               //studentInfointarr[i] = Integer.parseInt(studentInfoarr[i]);
-              dao.addRollcallRecord(rollcall.getRc_name(), Integer.parseInt(studentInfoarr[i]));
+              dao.addRollcallRecord(rollcall.getRc_id(), Integer.parseInt(studentInfoarr[i]));
               System.out.println(studentInfointarr[i]+"\n");
             }
            return ResponseEntity.ok("request successful! the rollcall has already added!");
@@ -67,7 +70,7 @@ public class RollcallController {
 
      }
    
-   //student get one rollcall's all record of student.
+   //student get one rollcall's record.
    //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
  @GetMapping(value = {"/student/rollcall/oneRollcall/{rc_id}"})
     public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromStudent(@PathVariable("rc_id") final int rc_id) throws SQLException {
@@ -80,7 +83,7 @@ public class RollcallController {
        }
     }
 
-   //teacher get one rollcall's all record of student.
+   //student get one rollcall's record.
    //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/{rc_id}"})
  public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
@@ -93,7 +96,7 @@ public class RollcallController {
     }
  }
     
-    //student get all rollcall in this class
+    //student get all rollcall in this class.
     //you will get rc_starttime(String), present(int), absent(int), otherwise(int), rc_scoring(int), rc_inputsource(String) returns.
  @GetMapping(value = {"/student/rollcall/allRollcall/{cs_id}"})
     public ResponseEntity<List<Rollcall>> retrieveAllRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException{
@@ -115,7 +118,7 @@ public class RollcallController {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
 
-       if(userintheclass.queryStudentInTheClass(teacher_id, cs_id) == 0){
+       if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
           //if teacher not in this class.
          return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
        }else{
@@ -138,30 +141,46 @@ public class RollcallController {
     }
     
     //student QRcode rollcall.
-    //you will input rc_name, qrcode.
+    //you will input rc_id, qrcode.
  @PutMapping(value = "/student/rollcall/QRcodeRollcall")
     public ResponseEntity<String> processUpdateRollcallStudentWithQRcode(@RequestBody Rollcall rollcall) throws SQLException {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
 
-      //這裡效率不高，看能不能改成只要一次資料庫請求就好
-      String qrcode = dao.findQRcodeInRollcallName(rollcall.getRc_name());
-      int rc_id = dao.findRollcallId(rollcall.getRc_name());
-      //
+      String qrcode = dao.findQRcodeInRollcallName(rollcall.getRc_id());
 
-      if(rollcall.getQrcode().equals(qrcode)){
+
+      if(dao.rollcallIsEnd(rollcall.getRc_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. This rollcall was closed!");
+
+      }else if(rollcall.getQrcode().equals(qrcode)){
         //if input qrcode equals rollcall's qrcode.
-        dao.updateQRcodeRollcallRecord(std_id, rc_id);
+        dao.updateRollcallRecord(std_id, rollcall.getRc_id());
         return ResponseEntity.ok("request successful! the QRcode rollcall record has already added!");
+
       }else{
         return ResponseEntity.badRequest().body("request failed. QRcode was round in this class!");
       }
        
     }
 
+    //teacher renew a QRcode.
+    //you have to input rc_id, qrcode.
+    @PutMapping(value = "/teacher/rollcall/updateQRcode")
+    public ResponseEntity<String> teacherUpdateQRcode(@RequestBody Rollcall rollcall) throws SQLException {
+
+      if(dao.rollcallByHand(rollcall.getRc_id()).equals("手動點名")){
+        return ResponseEntity.badRequest().body("request failed. This rollcall only update by hand!");
+      }else{
+        dao.updateQRcode(rollcall.getRc_id(), rollcall.getQrcode());
+        return ResponseEntity.ok("request successful! the QRcode has already changed!");
+      }
+
+    }
+
 
    //teacher delete rollcall and rollcall record in the class.
-   //you have to input rc_name, cs_id in json.
+   //you have to input rc_id, cs_id in json.
  @DeleteMapping(value = "/teacher/rollcall/deleteRollcall")
     public ResponseEntity<String> deleteQuestion(@RequestBody Rollcall rollcall) {
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -171,7 +190,7 @@ public class RollcallController {
           //if teacher not in this class.
           return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
        }else{
-         dao.deleteRollcall(rollcall.getRc_name());
+         dao.deleteRollcall(rollcall.getRc_id());
          return ResponseEntity.ok("request successful! the rollcall has already deleted!");
        }
     }
@@ -188,6 +207,7 @@ public class RollcallController {
  //老師刪除點名紀錄(done)
  //老師端更新QRcode
  //學生看到所有點名
+ //student QRcode rollcall. 的input rc_name 改成 rc_id.
 }
 
 

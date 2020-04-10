@@ -15,7 +15,7 @@ public class Rollcall {
     private int rc_id;
     private String rc_name;
     private String rc_starttime;
-    private String rc_endtime;
+    private int rc_end;
     private int rc_scoring;
     private String rc_inputsource;
     private String qrcode;
@@ -90,14 +90,14 @@ public class Rollcall {
         this.rc_starttime = rc_starttime;
     }
 
-    public String getRc_endtime() {
-        return this.rc_endtime;
+    public int getRc_end() {
+        return this.rc_end;
     }
 
-    public void setRc_endtime(String rc_endtime) {
-        this.rc_endtime = rc_endtime;
+    public void setRc_end(int rc_end) {
+        this.rc_end = rc_end;
     }
-
+   
     public int getRc_scoring() {
         return this.rc_scoring;
     }

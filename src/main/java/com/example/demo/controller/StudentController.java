@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,10 +38,11 @@ public class StudentController {
 	Logfile logfile;
 
 	String writtenmessage = new String();
-	
+
 	@PostMapping(value = "/student_re")
 
-	public ResponseEntity<String> processFormCreate(@RequestBody final Student student) throws SQLException {
+	public ResponseEntity<String> processFormCreate(@RequestBody final Student student)
+			throws SQLException, IOException {
 		
 		//if has userAccount in DB
 		if(dao.queryUser(student.getStd_id()) == 0){

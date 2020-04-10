@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.RollcallDAO;
 import com.example.demo.entity.Rollcall;
+import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
 public class RollcallDAODB implements RollcallDAO {
@@ -28,15 +29,16 @@ public class RollcallDAODB implements RollcallDAO {
 
   public int addRollcall(final Rollcall rollcall) {
      return jdbcTemplate.update(
-       "insert into rollcall (cs_id, rc_name, rc_endtime, rc_inputsource, rc_scoring, qrcode) values(?, ?, ?, ?, ?, ?)",
-       rollcall.getCs_id(), rollcall.getRc_name(), rollcall.getRc_endtime(), rollcall.getRc_inputsource(), rollcall.getRc_scoring(), rollcall.getQrcode());
+       "insert into rollcall (cs_id, rc_starttime, rc_inputsource, qrcode) values(?, ?, ?, ?)",
+       rollcall.getCs_id(), rollcall.getRc_starttime(), rollcall.getRc_inputsource(), rollcall.getQrcode());
   }
 
-  public int hasTheSameRollcallName(String rc_name){
-    String sql = "select count(rc_name) as count from rollcall where rc_name = ?";
-    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,rc_name);
-    return count;
+  public int findRcId(String cs_id, String rc_starttime){
+    String sql = "select rc_id as count from rollcall where cs_id = ? and rc_starttime = ?";
+    int rc_id = this.jdbcTemplate.queryForObject(sql,Integer.class,cs_id, rc_starttime);
+    return rc_id;
   }
+
 
   public int hasThisRollcallId(int rc_id){
     String sql = "select count(rc_id) as count from rollcall where rc_id = ?";
@@ -52,10 +54,10 @@ public class RollcallDAODB implements RollcallDAO {
     return studentInfoarr;
   }
 
-  public int addRollcallRecord(String rc_name, int std_id){
+  public int addRollcallRecord(int rc_id, int std_id){
     return jdbcTemplate.update(
-       "insert into rc_record (rc_id, std_id, tl_type_id) values((select rc_id from rollcall where rc_name = ?), ?, 0)",
-       rc_name, std_id);
+       "insert into rc_record (rc_id, std_id, tl_type_id) values(?, ?, 0)",
+       rc_id, std_id);
   }
 
   public List<Rollcall> findOneRollcallRecord(final int rc_id) {
@@ -64,7 +66,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findAllRollcallRecord(final String cs_id) {
-     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id = 1 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise, rc.rc_scoring, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id"
+     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id = 1 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id"
      , new Object[]{cs_id}, new RollcallMapper2());
   }
 
@@ -93,7 +95,6 @@ public class RollcallDAODB implements RollcallDAO {
         rollcall2.setPresent(rs.getInt("present"));
         rollcall2.setAbsent(rs.getInt("absent"));
         rollcall2.setOtherwise(rs.getInt("otherwise"));
-        rollcall2.setRc_scoring(rs.getInt("rc_scoring"));
         rollcall2.setRc_inputsource(rs.getString("rc_inputsource"));
         return rollcall2;
     }
@@ -109,26 +110,39 @@ public class RollcallDAODB implements RollcallDAO {
     }
   }
 
-  public String findQRcodeInRollcallName(String rc_name){
-    String sql = "select qrcode from rollcall where rc_name = ?";
-    String qrcode = this.jdbcTemplate.queryForObject(sql,String.class,rc_name);
+  public String findQRcodeInRollcallName(int rc_id){
+    String sql = "select qrcode from rollcall where rc_id = ?";
+    String qrcode = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
     return qrcode;
   }
-  public int findRollcallId(String rc_name){
-    String sql = "select rc_id from rollcall where rc_name = ?";
-    int rc_id = this.jdbcTemplate.queryForObject(sql,Integer.class,rc_name);
-    return rc_id;
+
+  public String rollcallByHand(int rc_id){
+    String sql = "select rc_inputsource from rollcall where rc_id = ?";
+    String rc_inputsource = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
+    return rc_inputsource;
   }
 
- public int updateQRcodeRollcallRecord(int std_id, int rc_id){
+  public int rollcallIsEnd(int rc_id){
+    String sql = "select rc_end from rollcall where rc_id = ?";
+    int rc_end = this.jdbcTemplate.queryForObject(sql,Integer.class,rc_id);
+    return rc_end;
+  }
+
+ public int updateRollcallRecord(int std_id, int rc_id){
     return jdbcTemplate.update(
       "update rc_record set tl_type_id = 1 where std_id = ? and rc_id = ?",
       std_id, rc_id);
  }
 
-public int deleteRollcall(String rc_name) {
+ public int updateQRcode(int rc_id, String qrcode){
+  return jdbcTemplate.update(
+    "update rollcall set qrcode = ? where rc_id = ?",
+    qrcode, rc_id);
+ }
+
+public int deleteRollcall(int rc_id) {
     return jdbcTemplate.update(
-      "delete from rollcall where rc_name =?", rc_name);
+      "delete from rollcall where rc_id =?", rc_id);
  }
 
  

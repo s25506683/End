@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class TeacherController {
 	LocalDateTime now = LocalDateTime.now();
 
 	@PostMapping(value = "/teacher_re")
-	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher) throws SQLException {
+	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher) throws SQLException, IOException {
 		
 		// if(newTeacher.getTeacher_name().equals(null)){ //透過name判斷是否重複
 
@@ -51,7 +52,7 @@ public class TeacherController {
 			
 				if(teacher.getTeacher_mail().contains("@")){
 					dao.insert(teacher);
-					final String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
+					String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
 					logfile.writeLog(writtenmessage);
 					return ResponseEntity.ok("Response Success!");
 				}
