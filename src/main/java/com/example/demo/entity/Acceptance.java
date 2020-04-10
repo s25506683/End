@@ -8,15 +8,51 @@ import java.sql.Date;
 public class Acceptance {
 
  private int accept_id;
- private int accept_std_id;
+//  private int accept_std_id;
  private int accept_hw_id;
  private int accept_score;
  private boolean accept_done;
  private Time accept_time;
  private String hw_cs_id;
  private String hw_name;
- private Date hw_createtime;
+ private String hw_createtime;
+
+ public String getHw_createtime() {
+     return this.hw_createtime;
+ }
+
+ public void setHw_createtime(String hw_createtime) {
+     this.hw_createtime = hw_createtime;
+ }
+
  private String hw_content;
+ private String cs_id;
+ private int teacher_id;
+ private int std_id;
+
+ public int getStd_id() {
+     return this.std_id;
+ }
+
+ public void setStd_id(int std_id) {
+     this.std_id = std_id;
+ }
+
+ public String getCs_id() {
+     return this.cs_id;
+ }
+
+ public void setCs_id(String cs_id) {
+     this.cs_id = cs_id;
+ }
+
+ public int getTeacher_id() {
+     return this.teacher_id;
+ }
+
+ public void setTeacher_id(int teacher_id) {
+     this.teacher_id = teacher_id;
+ }
 
  public String getHw_content() {
      return this.hw_content;
@@ -26,13 +62,7 @@ public class Acceptance {
      this.hw_content = hw_content;
  }
 
- public Date getHw_createtime() {
-     return this.hw_createtime;
- }
 
- public void setHw_createtime(Date hw_createtime) {
-     this.hw_createtime = hw_createtime;
- }
 
  public String getHw_cs_id() {
      return this.hw_cs_id;
@@ -58,13 +88,13 @@ public class Acceptance {
   this.accept_id = accept_id;
  }
 
- public int getAccept_std_id() {
-  return accept_std_id;
- }
+//  public int getAccept_std_id() {
+//   return accept_std_id;
+//  }
 
- public void setAccept_std_id(final int accept_std_id) {
-  this.accept_std_id = accept_std_id;
- }
+//  public void setAccept_std_id(final int accept_std_id) {
+//   this.accept_std_id = accept_std_id;
+//  }
 
  public int getAccept_hw_id() {
   return accept_hw_id;
