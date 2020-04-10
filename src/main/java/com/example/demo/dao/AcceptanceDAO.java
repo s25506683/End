@@ -6,9 +6,11 @@ import com.example.demo.entity.Acceptance;
 
 public interface AcceptanceDAO {
 
+ public int queryStudentAcceptDone(int accept_std_id, boolean accept_done, int accept_hw_id);
+
  public int findHomeworkID(String hw_name);
 
- public int queryStudentInTheAcceptance(int Std_id , int accept_hw_id);
+ public int queryStudentInTheAcceptance(int Std_id , int accept_hw_id); 
 
  public int queryHomeworkInTheClass(String hw_name ,String hw_cs_id);
 
@@ -29,6 +31,8 @@ public interface AcceptanceDAO {
  public int updateContent(Acceptance acceptance);
 
  public int deleteAcceptance(Acceptance acceptance);
+
+ public int deleteHomework(Acceptance acceptance);
  
 
 }

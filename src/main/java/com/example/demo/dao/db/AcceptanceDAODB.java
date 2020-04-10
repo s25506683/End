@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.AcceptanceDAO;
 import com.example.demo.entity.Acceptance;
+import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
 public class AcceptanceDAODB implements AcceptanceDAO {
@@ -25,6 +26,12 @@ public class AcceptanceDAODB implements AcceptanceDAO {
  JdbcTemplate jdbcTemplate;
 
 //jdbcTemplate 
+
+public int queryStudentAcceptDone(final int accept_std_id, boolean accept_done, final int accept_hw_id){
+  String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_done = ? and accept_hw_id = ?";
+  final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,accept_done,accept_hw_id);
+  return count; //查看學生是否已經驗收完成 
+}
 
 public int findHomeworkID(String hw_name) {
   String sql = "select hw_id from homework where hw_name = ?";
@@ -73,9 +80,11 @@ public int queryTeacherInTheClass(final String cs_id, final String teacher_id){
  }
 
 public int insertHomework(final Acceptance acceptance){
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
   return jdbcTemplate.update(
-    "insert into homework (hw_name, hw_content, hw_cs_id) values(?, ?, ?)",
-    acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_cs_id());
+    "insert into homework (hw_name, hw_content, hw_cs_id, hw_createtime) values(?, ?, ?, ?)",
+    acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_cs_id(), timestamp);
 }
 
 
@@ -112,7 +121,7 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
   public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
     final Acceptance acceptance = new Acceptance();
     acceptance.setHw_name(rs.getString("hw_name"));
-    acceptance.setHw_createtime (rs.getDate("hw_createtime"));
+    acceptance.setHw_createtime (rs.getString("hw_createtime"));
       return acceptance;
   }
 
@@ -149,6 +158,10 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
       "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getStd_id(), acceptance.getAccept_hw_id());
  }
 
+
+ public int deleteHomework(Acceptance acceptance){
+   return jdbcTemplate.update("delete from homework where hw_name =? and hw_cs_id =?", acceptance.getHw_name(), acceptance.getHw_cs_id());
+ }
 
  
  

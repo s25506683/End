@@ -55,7 +55,6 @@ public class AcceptanceController {
 
          if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(), acceptance.getAccept_hw_id()) == 0){
    
-            
             dao.insertAcceptance(acceptance);
             
             acceptance.getAccept_hw_id();
@@ -164,21 +163,33 @@ public class AcceptanceController {
     }
 
  @DeleteMapping(value = "/student/acceptance/deleteAcceptance")
-    public void deleteAcceptance(@RequestBody final Acceptance acceptance) throws SQLException{
-      // AuthenticationUtil auth = new AuthenticationUtil();
-      // int std_id = Integer.parseInt(auth.getCurrentUserName());
-      // if(dao.queryStudentInTheAcceptance(acceptance.getAccept_std_id(),acceptance.getAccept_hw_id()) == 0){
-      //    return ResponseEntity.badRequest().body("此學生尚未驗收");
-      // }else{
-      //    dao.delete(accept_std_id,accept_hw_id);
-      //    writtenmessage = "student \"" + std_id + "\" deleted acceptance with homework ID \"" + acceptance.getAccept_hw_id() + "\".";
-      //    logfile.writeLog(writtenmessage);
-      //    return ResponseEntity.ok("取消驗收成功");
+    public ResponseEntity<String> deleteAcceptance(@RequestBody final Acceptance acceptance) throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
+      acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
+      
+      if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 0){
+         return ResponseEntity.badRequest().body("此學生尚未點選驗收");
+      }else if(dao.queryStudentAcceptDone(acceptance.getStd_id(), acceptance.isAccept_done(), acceptance.getAccept_hw_id()) == 0){
+         return ResponseEntity.badRequest().body("老師已驗收完成無法取消驗收");
 
-      //}
-      dao.deleteAcceptance(acceptance);
+      }else{
+         dao.deleteAcceptance(acceptance);
+         writtenmessage = "student \"" + acceptance.getStd_id() + "\" deleted acceptance with homework ID \"" + acceptance.getAccept_hw_id() + "\".";
+         logfile.writeLog(writtenmessage);
+         return ResponseEntity.ok("取消驗收成功");
+      }      
 
     }  
+
+ @DeleteMapping(value = "/teacher/acceptance/deleteHomework")
+    public ResponseEntity<String> deleteHomework(@RequestBody final Acceptance acceptance) throws SQLException{
+      
+      dao.deleteHomework(acceptance);
+      return ResponseEntity.ok("刪除作業完成!");
+
+    }
+    
  
 }
    
