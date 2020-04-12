@@ -1,0 +1,15 @@
+2020/04/12 18:36:21	teacher 16283 adding rollcall at 2020-04-12 18:36:53 in the class .
+2020/04/12 18:57:00	student 406401628 QRcode rollcall failed, because the rollcall was closed.(input's rc_id = 23 , qrcode = 456789123)
+2020/04/12 19:15:39	student 406401628 QRcode rollcall update to present in rc_id = 37.
+2020/04/12 19:15:39	student 406401628 QRcode rollcall failed, because the rollcall was closed.(input's rc_id = 23 , qrcode = 45678941)
+2020/04/12 19:20:05	teacher 16283 renew the QRcode to 246542 in rc_id = 23.
+2020/04/12 19:24:02	teacher 16283 renew the QRcode to 246asdasdas542 in rc_id = 23.
+2020/04/12 19:35:41	teacher 16283 update student rollcall record to 缺席 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:37:03	teacher 16283 update student rollcall record to 出席 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:37:03	teacher 16283 update student rollcall record to 病假 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:37:03	teacher 16283 update student rollcall record to 出席 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:38:53	teacher 16283 update student rollcall record to 缺席 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:38:53	teacher 16283 update student rollcall record to 病假 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:38:53	teacher 16283 update student rollcall record to 出席 in rc_id = 1, std_id = 406401599.
+2020/04/12 19:45:58	teacher 16283 adding rollcall at 2020-04-12 19:46:08 in the class.
+2020/04/12 19:45:58	teacher 16283 delete rollcall in class 10811000DMG741D7411023900 with rc_id = 38.

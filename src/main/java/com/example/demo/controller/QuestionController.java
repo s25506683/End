@@ -40,8 +40,8 @@ public class QuestionController {
   @Autowired
    Logfile logfile;
    
-  String writtenmessage = new String();
-
+   String writtenmessage = new String();
+   String partition = "Question";
 
   //student post there question to db.
   //you will input q_content, cs_id.
@@ -60,8 +60,7 @@ public class QuestionController {
           String std_id = auth.getCurrentUserName();
           question.getCs_id();
           writtenmessage = "student "+ std_id + " writing question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
-         //  logfile.writeLog(writtenmessage);
-          logfile.writeLog(writtenmessage, question.getCs_id());
+          logfile.writeLog(writtenmessage, question.getCs_id(), partition);
           return ResponseEntity.ok("request successful!");
        }
     }
@@ -80,7 +79,7 @@ public class QuestionController {
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
          writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
-         logfile.writeLog(writtenmessage, cs_id);
+         logfile.writeLog(writtenmessage, cs_id, partition);
          return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
        }
        
@@ -97,7 +96,7 @@ public class QuestionController {
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
          writtenmessage = "teacher that you watching question in class \"" + cs_id + "\".";
-         logfile.writeLog(writtenmessage, cs_id);
+         logfile.writeLog(writtenmessage, cs_id, partition);
          return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
        }
     }
@@ -115,7 +114,7 @@ public class QuestionController {
        }else{
          dao.updateStudentQuestionContent(question);
          writtenmessage = "student \"" + std_id + "\" update question " + question.getQ_content() + " in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
-         logfile.writeLog(writtenmessage, question.getCs_id());
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
          return ResponseEntity.ok("request successful! your question update completed!");
        }
     }
@@ -138,7 +137,7 @@ public class QuestionController {
       }else{
          dao.updateTeacherReply(question);
          writtenmessage = "teacher \"" + teacher_id + "\" reply question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\", student \"" + question.getQ_std_id() + "\".";
-         logfile.writeLog(writtenmessage, question.getCs_id());
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
          return ResponseEntity.ok("request successful! your reply update completed!");
       }
     }
