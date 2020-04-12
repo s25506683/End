@@ -77,4 +77,63 @@ This is a sample text.
 2020/04/04 01:22:05	student "406401598" does not have permission to delete question with student "406401599", question's asktime "2020-04-04 00:31:26"!
 2020/04/04 01:25:58	student "406401598" does not have permission to delete question with student "406401599", question's asktime "2020-04-04 00:31:26"!
 2020/04/05 00:12:37	teacher "22345" reply question in class "2" with question's asktime "2020-04-03 20:37:54", student "406401599".
-2020/04/06 10:47:55	student "406401599" watching question in class "2".
+2020/04/05 12:12:16	student "406401616" writing acceptance in class "16".
+2020/04/05 12:21:26	teacher "16283" create new homework in class "0".
+2020/04/05 12:41:59	teacher "16283" create new homework in class "2".
+2020/04/05 15:05:39	teacher "406401616" watching acceptancelist in class "2".
+2020/04/05 15:40:33	student "406401616" watching homework in class "2".
+2020/04/05 15:53:06	student "406401616" watching homework in class "2".
+2020/04/05 15:56:42	teacher "406401616" watching acceptancelist in class "2".
+2020/04/05 15:56:42	teacher "406401616" watching acceptancelist in class "2".
+2020/04/05 15:56:42	teacher "406401616" watching acceptancelist in class "2".
+2020/04/05 16:06:33	teacher "16283" update score in homework "null".
+2020/04/05 16:08:51	teacher "16283" update score in homework "18".
+2020/04/05 23:50:26	student "406401616" writing acceptance in class "null".
+2020/04/06 00:42:38	student "406401616" writing acceptance in class "17".
+2020/04/06 00:42:38	student "406401616" writing acceptance in class "17".
+2020/04/06 00:47:56	student "406401616" writing acceptance in class "17".
+2020/04/07 16:51:19	student "406401616" writing acceptance in class "17".
+2020/04/07 16:54:50	student "406401616" writing acceptance in class "17".
+2020/04/07 20:13:19	student "406401616" writing acceptance in class "20".
+2020/04/07 20:13:19	teacher "16283" update score in homework "17".
+2020/04/07 20:17:45	teacher "16283" update content in homework "0".
+2020/04/07 20:55:55	student "406401616" writing acceptance in class "20".
+2020/04/07 21:10:39	student "406401616" writing acceptance in class "20".
+2020/04/07 21:10:39	student "406401616" writing acceptance in class "20".
+2020/04/07 21:16:38	student "406401616" writing acceptance in class "20".
+2020/04/07 21:17:15	student "406401616" writing acceptance in class "20".
+2020/04/07 21:53:14	teacher "16283" update score in homework "20".
+2020/04/07 21:53:14	teacher "16283" update score in homework "20".
+2020/04/07 21:53:14	teacher "16283" update score in homework "20".
+2020/04/07 22:01:12	teacher "16283" update score in homework "20".
+2020/04/07 22:09:54	student "406401616" writing acceptance in class "17".
+2020/04/08 17:20:52	teacher "16283" create new homework in class "2".
+2020/04/08 17:20:52	student "406401616" watching homework in class "2".
+2020/04/10 13:51:52	teacher "16283" create new homework in class "2".
+2020/04/10 13:57:50	teacher "406401616" watching acceptancelist in class "2".
+2020/04/10 14:09:41	student "406401616" deleted acceptance with homework ID "20".
+2020/04/10 14:09:41	student "406401616" deleted acceptance with homework ID "17".
+2020/04/10 14:09:41	teacher "16283" create new homework in class "2".
+2020/04/10 14:34:26	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:34:26	student "406401616" writing acceptance in class "17".
+2020/04/10 14:34:26	student "406401616" writing acceptance in class "23".
+2020/04/10 14:39:59	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:39:59	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:39:59	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:44:38	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:44:38	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:51:28	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:51:28	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 14:51:28	student "406401616" deleted acceptance with homework ID "16".
+2020/04/10 15:10:26	student "406401616" deleted acceptance with homework ID "17".
+2020/04/10 15:10:26	student "406401599" deleted acceptance with homework ID "16".
+2020/04/10 15:12:50	student "406401599" writing acceptance in class "16".
+2020/04/10 15:12:50	student "406401599" deleted acceptance with homework ID "16".
+2020/04/10 15:15:58	teacher "16283" create new homework in class "2".
+2020/04/10 15:27:37	teacher "16283" create new homework in class "2".
+2020/04/10 15:27:37	teacher "16283" update content in homework "0".
+2020/04/10 15:27:37	teacher "16283" update content in homework "0".
+2020/04/10 15:27:37	teacher "16283" create new homework in class "2".
+2020/04/10 15:27:37	teacher "16283" update content in homework "0".
+2020/04/10 15:27:37	teacher "16283" create new homework in class "2".
+2020/04/10 15:27:37	teacher "16283" update content in homework "0".

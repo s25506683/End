@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.*;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @EnableWebSecurity
@@ -30,8 +31,11 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
 		.antMatchers("/student/**").hasRole("USER")
 		.and().rememberMe().tokenValiditySeconds(100).and().cors()
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
-		.and().csrf().disable();   //關掉跨網站的請求(避免回傳錯誤403)
-		//.formLogin().loginPage("/login/").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000");
+		.and().csrf().disable()   //關掉跨網站的請求(避免回傳錯誤403)
+		
+		.formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000").permitAll()
+  		.and()
+  		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000");
 		
 	}
 
