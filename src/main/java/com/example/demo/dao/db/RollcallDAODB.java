@@ -39,10 +39,33 @@ public class RollcallDAODB implements RollcallDAO {
     return rc_id;
   }
 
+  public String findCs_id(int rc_id){
+    String sql = "select cs_id from rollcall where rc_id = ?";
+    String cs_id = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
+    return cs_id;
+  }
+
+  public String findTlTypeName(int tl_type_id){
+    String sql = "select tl_type_name from takeleave_type where tl_type_id = ?";
+    String tl_type_name = this.jdbcTemplate.queryForObject(sql,String.class,tl_type_id);
+    return tl_type_name;
+  }
 
   public int hasThisRollcallId(int rc_id){
     String sql = "select count(rc_id) as count from rollcall where rc_id = ?";
     int count = this.jdbcTemplate.queryForObject(sql,Integer.class,rc_id);
+    return count;
+  }
+
+  public int hasThisCsId(String cs_id){
+    String sql = "select count(cs_id) as count from class where cs_id = ?";
+    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,cs_id);
+    return count;
+  }
+
+  public int hasThisRcRecord(int std_id, int rc_id){
+    String sql = "select count(rc_id) as count from rc_record where std_id = ? and rc_id = ?";
+    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id, rc_id);
     return count;
   }
 
@@ -74,6 +97,12 @@ public class RollcallDAODB implements RollcallDAO {
      return this.jdbcTemplate.query("select s.std_id, s.std_name, s.std_department from student s inner join class_student cs on cs.std_id = s.std_id where cs.cs_id = ?"
      , new Object[]{cs_id}, new RollcallMapper3());
   }
+
+  public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
+     return this.jdbcTemplate.query("select rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
+      , new Object[]{std_id, cs_id}, new RollcallMapper4());
+  }
+
 
   private static final class RollcallMapper implements RowMapper<Rollcall> {
      public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
@@ -110,6 +139,20 @@ public class RollcallDAODB implements RollcallDAO {
     }
   }
 
+  private static final class RollcallMapper4 implements RowMapper<Rollcall> {
+   public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+      final Rollcall rollcall4 = new Rollcall();
+        rollcall4.setRc_id(rs.getInt("rc_id"));
+        rollcall4.setRecord_id(rs.getInt("record_id"));
+        rollcall4.setRc_starttime(rs.getString("rc_starttime"));
+        rollcall4.setRecord_time(rs.getString("record_time"));
+        rollcall4.setRc_inputsource(rs.getString("rc_inputsource"));
+        rollcall4.setTl_type_name(rs.getString("tl_typr_name"));
+        return rollcall4;
+    }
+  }
+
+
   public String findQRcodeInRollcallName(int rc_id){
     String sql = "select qrcode from rollcall where rc_id = ?";
     String qrcode = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
@@ -138,6 +181,12 @@ public class RollcallDAODB implements RollcallDAO {
   return jdbcTemplate.update(
     "update rollcall set qrcode = ? where rc_id = ?",
     qrcode, rc_id);
+ }
+
+ public int updateRollcall(int rc_id, int std_id, int tl_type_id){
+  return jdbcTemplate.update(
+    "update rc_record set tl_type_id = ? where rc_id = ? and std_id = ?",
+    tl_type_id, rc_id, std_id);
  }
 
 public int deleteRollcall(int rc_id) {

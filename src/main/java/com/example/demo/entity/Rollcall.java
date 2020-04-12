@@ -13,6 +13,7 @@ public class Rollcall {
     private String tl_type_name;
     private String cs_id;
     private int rc_id;
+    private int record_id;
     private String rc_name;
     private String rc_starttime;
     private int rc_end;
@@ -20,6 +21,8 @@ public class Rollcall {
     private String rc_inputsource;
     private String qrcode;
     private String record_time;
+    private int tl_type_id;
+
 
     private int present;
     private int absent;
@@ -72,6 +75,14 @@ public class Rollcall {
 
     public void setRc_id(int rc_id) {
         this.rc_id = rc_id;
+    }
+
+    public int getRecord_id() {
+        return this.record_id;
+    }
+
+    public void setRecord_id(int record_id) {
+        this.record_id = record_id;
     }
 
     public String getRc_name() {
@@ -128,6 +139,14 @@ public class Rollcall {
 
     public void setRecord_time(String record_time) {
         this.record_time = record_time;
+    }
+
+    public int getTl_type_id() {
+        return this.tl_type_id;
+    }
+
+    public void setTl_type_id(int tl_type_id) {
+        this.tl_type_id = tl_type_id;
     }
 
     
