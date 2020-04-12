@@ -45,7 +45,7 @@ public class RollcallController {
 
 
    //add rollcall and rollcall record(teacher).
-   //you will inoput cs_id, rc_inputsource, qrcode, (longitude), (latitude).
+   //you will input cs_id, rc_inputsource(QRcode點名、手動點名), qrcode, (longitude), (latitude).
   @PostMapping(value = "/teacher/rollcall/addrollcall")
      public ResponseEntity<String> processFormCreate(@RequestBody Rollcall rollcall) throws SQLException, IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
