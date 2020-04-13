@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.net.InetAddress;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		InetAddress ip;
+		ip = InetAddress.getLocalHost();
+		System.out.println(ip.getHostAddress());
 		
 		http.httpBasic().and().authorizeRequests()     //例外處理
         .antMatchers("/css/**", "/index").permitAll()
@@ -33,9 +38,9 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
 //		.anyRequest().denyAll()    //除了上述條件以外全部擋住
 		.and().csrf().disable()   //關掉跨網站的請求(避免回傳錯誤403)
 		
-		.formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000").permitAll()
+		.formLogin().loginPage("/login").defaultSuccessUrl("http://" + ip.getHostAddress() + ":3000/homepage1").failureUrl("http://" + ip.getHostAddress() + ":3000").permitAll()
   		.and()
-  		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000");
+  		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://" + ip.getHostAddress() + ":3000");
 		
 	}
 

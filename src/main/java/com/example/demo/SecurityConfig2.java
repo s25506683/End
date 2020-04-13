@@ -42,9 +42,9 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		.and().csrf().disable()  //關掉跨網站的請求(避免回傳錯誤403
 
 		
-		.formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepage1").failureUrl("http://localhost:3000").permitAll()
+		.formLogin().loginPage("/login").defaultSuccessUrl("http://" + ip.getHostAddress() + ":3000/homepage1").failureUrl("http://" + ip.getHostAddress() + ":3000").permitAll()
   		.and()
-  		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000");
+  		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://" + ip.getHostAddress() + ":3000");
 
 	}
 
