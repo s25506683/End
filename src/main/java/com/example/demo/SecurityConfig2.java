@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,6 +29,9 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
+		InetAddress ip;
+		ip = InetAddress.getLocalHost();
+		System.out.println(ip.getHostAddress());
 
 		http.httpBasic().and().authorizeRequests()     //例外處理
         .antMatchers("/css/**", "/index").permitAll()
