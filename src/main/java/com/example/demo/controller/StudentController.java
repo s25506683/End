@@ -6,10 +6,12 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.object.SqlCall;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,17 +78,11 @@ public class StudentController {
 
 	}
 
-	// @POST
+	
 	@GetMapping(value = { "/student/information/" })
 	public Student retrieveOneStudent() throws SQLException {
 		AuthenticationUtil auth = new AuthenticationUtil();
 		int std_id = Integer.parseInt(auth.getCurrentUserName());
-		////////////////////////
-		String user_email = "s25506683@gmail.com";
-		String newpassword = "12uweyrui";
-		mailservice.prepareAndSend(user_email, newpassword);
-		//SendNewPasswordByMail(user_email, newpassword);
-		////////////////////////
 		return dao.findOne(std_id);
 	}
 
@@ -95,10 +91,49 @@ public class StudentController {
 		return dao.findAll();
 	}
 
-	@PutMapping(value = "/student")
-	public void processFormUpdate(@RequestBody final Student student) throws SQLException {
-		dao.update(student);
+	//student change own password after login.
+	//you have to input old_std_password, std_password.
+	@PutMapping(value = "/student/resetPassword/")
+	public ResponseEntity<String> processFormUpdate(@RequestBody final Student student) throws SQLException {
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
+		//macth old password in database.
+		if(passwordEncoder.matches(student.getOld_std_password(), dao.getPassword(std_id))){
+			//if student input old password is right.
+			dao.updateStudentPassword(std_id, student.getStd_password());	//new password encode.
+			return ResponseEntity.ok("password update successful!");
+		}else{
+			return ResponseEntity.badRequest().body("request failed. old password was round!");
+		}
+		
 	}
+
+	//send new uuid password to student's email address.
+	//you have to  input std_id, std_email, std_password.
+	@PutMapping(value = "/sendStudentEmailWithNewPassword/")
+	public ResponseEntity<String> sendNewPasswordToStudentEmail(@RequestBody final Student student) throws SQLException {
+
+		UUID uuid  =  UUID.randomUUID();
+		String[] idarr = uuid.toString().split("-");
+		String id = idarr[0];
+
+		if(dao.resetPasswordVerify(student.getStd_id(), student.getStd_mail(), student.getStd_phone()) == 0){
+			//if student verify failed.
+			return ResponseEntity.badRequest().body("request failed. Email or Phone Number has round!");
+		}else{
+
+			dao.updateStudentPassword(student.getStd_id(), id);
+			String user_email = student.getStd_mail();
+			String newpassword = id;
+			mailservice.prepareAndSend(user_email, newpassword, student.getStd_id());
+			return ResponseEntity.ok("email send(NewPassword) successful!");
+		}
+		
+		
+	}	
 
 	@DeleteMapping(value = "/student/{std_id}")
 	public void deleteStudent(@PathVariable("std_id") final int std_id) {

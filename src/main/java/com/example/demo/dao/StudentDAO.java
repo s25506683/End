@@ -9,13 +9,19 @@ public interface StudentDAO {
 
 	public int queryUser(int std_id);
 
+	public String getPassword(int std_id);
+
+	//public int passwordHasRound(int std_id, String old_std_password);
+
+	public int resetPasswordVerify(int std_id, String std_mail, String std_phone);
+
 	public int insert(Student student);
 
 	public List<Student> findAll();
 
 	public Student findOne(int std_id);
 
-	public int update(Student student);
+	public int updateStudentPassword(int std_id, String std_password);
 
 	public int delete(int std_id);
 }
