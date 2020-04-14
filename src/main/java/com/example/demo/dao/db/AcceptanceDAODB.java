@@ -39,6 +39,11 @@ public int findHomeworkID(String hw_name) {
   return homeworkId; //透過hw_id找hw_name
 }
 
+public String findCsID(int hw_id){
+  String sql = "select hw_cs_id from homework where hw_id = ?";
+  String CsId = this.jdbcTemplate.queryForObject(sql, String.class ,hw_id);
+  return CsId;
+}
 
 public int queryStudentInTheAcceptance(final int accept_std_id, final int accept_hw_id){
   final String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
