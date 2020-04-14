@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -35,31 +36,34 @@ import com.example.demo.util.UserInTheClass;
 
 @RestController
 public class AcceptanceController {
-  @Autowired
-  AcceptanceDAO dao;
+   @Autowired
+   AcceptanceDAO dao;
 
-  @Autowired
-  UserInTheClass userintheclass;
+   @Autowired
+   UserInTheClass userintheclass;
 
-  @Autowired
-  Logfile logfile;
+   @Autowired
+   Logfile logfile;
 
-  String writtenmessage = new String();
+   String writtenmessage = new String();
+   String partition = "Acceptance";
 
- @PostMapping(value = "/student/acceptance")
-    public ResponseEntity<String> processFormCreate(@RequestBody final Acceptance acceptance) throws SQLException {
+   @PostMapping(value = "/student/acceptance")
+   public ResponseEntity<String> processFormCreate(@RequestBody final Acceptance acceptance)
+         throws SQLException, IOException {
        
          AuthenticationUtil auth = new AuthenticationUtil();
          acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
          acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
+         acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
 
          if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(), acceptance.getAccept_hw_id()) == 0){
    
             dao.insertAcceptance(acceptance);
-            
             acceptance.getAccept_hw_id();
-            writtenmessage = "student \"" + acceptance.getStd_id() + "\" writing acceptance in class \"" + acceptance.getAccept_hw_id() + "\".";
-            logfile.writeLog(writtenmessage);
+
+            writtenmessage = "student \"" + acceptance.getStd_id() + "\" writing acceptance in homework \"" + acceptance.getAccept_hw_id() + "\".";
+            logfile.writeLog(writtenmessage, acceptance.getCs_id(), partition);
             return ResponseEntity.ok("登記驗收成功");
    
          }else{
@@ -71,8 +75,10 @@ public class AcceptanceController {
     //@POST
 
 @PostMapping(value = "/teacher/acceptance/homework")
-   public ResponseEntity<String> processFormCreate2(@RequestBody final Acceptance acceptance) throws SQLException{
+   public ResponseEntity<String> processFormCreate2(@RequestBody final Acceptance acceptance) throws SQLException,
+         IOException {
 
+   
       if(acceptance.getHw_content() == ""){
          return ResponseEntity.badRequest().body("作業內容不得為空");
       }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 1){
@@ -83,7 +89,7 @@ public class AcceptanceController {
          String teacher_id= auth.getCurrentUserName();
          acceptance.getHw_cs_id();
          writtenmessage = "teacher \"" + teacher_id + "\" create new homework in class \"" + acceptance.getHw_cs_id() + "\".";
-			logfile.writeLog(writtenmessage);
+			logfile.writeLog(writtenmessage, acceptance.getHw_cs_id(), partition);
          return ResponseEntity.ok("新增作業成功");
       }
       //新增作業
@@ -92,7 +98,8 @@ public class AcceptanceController {
 
 
  @GetMapping(value = {"/student/acceptance/{hw_cs_id}"})
-    public ResponseEntity<List<Acceptance>> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException{
+    public ResponseEntity<List<Acceptance>> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName(); 
      
@@ -102,7 +109,7 @@ public class AcceptanceController {
          return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
       }else{
          writtenmessage = "student \"" + std_id + "\" watching homework in class \"" + hw_cs_id + "\".";
-         logfile.writeLog(writtenmessage);
+         logfile.writeLog(writtenmessage, hw_cs_id, partition);
          return new ResponseEntity<List<Acceptance>>(dao.findCourseHomework(hw_cs_id), HttpStatus.OK);
       }
 
@@ -111,7 +118,8 @@ public class AcceptanceController {
 
 
  @GetMapping(value = {"/student/acceptance/hw/{cs_id}/{hw_name}"})
-    public ResponseEntity<List<Acceptance>> retrieveAcceptance(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException{
+    public ResponseEntity<List<Acceptance>> retrieveAcceptance(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
       if(dao.queryStudentInTheClass(cs_id,std_id) == 0){
@@ -119,7 +127,7 @@ public class AcceptanceController {
          return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
       }else{
          writtenmessage = "teacher \"" + std_id + "\" watching acceptancelist in class \"" + cs_id + "\".";
-         logfile.writeLog(writtenmessage);
+         logfile.writeLog(writtenmessage, cs_id, partition);
           return new ResponseEntity<List<Acceptance>>(dao.findHomeworkDetail(cs_id,hw_name),HttpStatus.OK); //
       }
      
@@ -127,16 +135,19 @@ public class AcceptanceController {
 
     
  @PutMapping(value = "/teacher/updateScore")
-    public ResponseEntity<String> processFormUpdate(@RequestBody final Acceptance acceptance) throws SQLException {
+    public ResponseEntity<String> processFormUpdate(@RequestBody final Acceptance acceptance) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
+      acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
+
       if(Integer.toString(acceptance.getAccept_score()).equals("")){
          return ResponseEntity.badRequest().body("請輸入分數，分數不得為空值");
       }else if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 1){
 
          dao.updateScore(acceptance);
          writtenmessage = "teacher \"" + teacher_id + "\" update score in homework \"" + acceptance.getAccept_hw_id() +"\".";
-         logfile.writeLog(writtenmessage);
+         logfile.writeLog(writtenmessage, acceptance.getCs_id(), partition);
          return ResponseEntity.ok("已修改成績");
          
       }else{
@@ -146,28 +157,32 @@ public class AcceptanceController {
     }
 
  @PutMapping(value = "/teacher/updateContent")
-    public ResponseEntity<String> processFormUpdate2(@RequestBody final Acceptance acceptance) throws SQLException{
+    public ResponseEntity<String> processFormUpdate2(@RequestBody final Acceptance acceptance) throws SQLException,
+          IOException {
        
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
+      
       if(acceptance.getHw_content() == ""){
          return ResponseEntity.badRequest().body("作業內容不得為空");
       }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 0){
          return ResponseEntity.badRequest().body("無此作業，請先新增作業");
       }
        dao.updateContent(acceptance);
-       writtenmessage = "teacher \"" + teacher_id + "\" update content in homework \"" + acceptance.getAccept_hw_id() + "\".";
-       logfile.writeLog(writtenmessage);
+       writtenmessage = "teacher \"" + teacher_id + "\" update content in homework \"" + acceptance.getHw_name() + "\".";
+       logfile.writeLog(writtenmessage, acceptance.getHw_cs_id(), partition);
        return ResponseEntity.ok("修改成功");
       
     }
 
  @DeleteMapping(value = "/student/acceptance/deleteAcceptance")
-    public ResponseEntity<String> deleteAcceptance(@RequestBody final Acceptance acceptance) throws SQLException{
+    public ResponseEntity<String> deleteAcceptance(@RequestBody final Acceptance acceptance) throws SQLException,
+          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
       acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
-      
+      acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
+
       if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 0){
          return ResponseEntity.badRequest().body("此學生尚未點選驗收");
       }else if(dao.queryStudentAcceptDone(acceptance.getStd_id(), acceptance.isAccept_done(), acceptance.getAccept_hw_id()) == 0){
@@ -176,16 +191,22 @@ public class AcceptanceController {
       }else{
          dao.deleteAcceptance(acceptance);
          writtenmessage = "student \"" + acceptance.getStd_id() + "\" deleted acceptance with homework ID \"" + acceptance.getAccept_hw_id() + "\".";
-         logfile.writeLog(writtenmessage);
+         logfile.writeLog(writtenmessage, acceptance.getCs_id(), partition);
          return ResponseEntity.ok("取消驗收成功");
       }      
 
     }  
 
  @DeleteMapping(value = "/teacher/acceptance/deleteHomework")
-    public ResponseEntity<String> deleteHomework(@RequestBody final Acceptance acceptance) throws SQLException{
+    public ResponseEntity<String> deleteHomework(@RequestBody final Acceptance acceptance) throws SQLException,
+          IOException {
       
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+     
       dao.deleteHomework(acceptance);
+      writtenmessage = "teacher \"" + teacher_id + "\" deleted homework with homework \"" + acceptance.getHw_name() + "\".";
+      logfile.writeLog(writtenmessage, acceptance.getHw_cs_id(), partition);
       return ResponseEntity.ok("刪除作業完成!");
 
     }
