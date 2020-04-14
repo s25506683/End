@@ -51,6 +51,25 @@ public class StudentDAODB implements StudentDAO {
 		return count;
 	}
 
+	public String getPassword(int std_id){
+		String sql = "select std_password from student where std_id = ?";
+		String std_password = this.jdbcTemplate.queryForObject(sql,String.class,std_id);
+		return std_password;
+	}
+
+	//public int passwordHasRound(int std_id, String old_std_password){
+		//String sql = "select count(std_id) as count from student where std_id = ? and std_password = ?";
+		//int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id, old_std_password);
+		//return count;
+	//}
+
+	public int resetPasswordVerify(int std_id, String std_mail, String std_phone){
+		String sql = "select count(std_id) as count from student where std_id = ? and std_mail = ? and std_phone = ?";
+		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id, std_mail, std_phone);
+		System.out.println(count);
+		return count;
+	}
+
 	public int insert(Student student) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode(student.getStd_password());
@@ -88,11 +107,18 @@ public class StudentDAODB implements StudentDAO {
 		}
 	}
 
-	public int update(Student student) {
 
-    return jdbcTemplate.update("update student set std_password=?,  std_name=?, std_gender=?, std_department=? , std_phone=?, std_mail=?, std_image=? where std_id =?",
+	public int update(Student student) {
+    	return jdbcTemplate.update("update student set std_password=?,  std_name=?, std_gender=?, std_department=? , std_phone=?, std_mail=?, std_image=? where std_id =?",
 		student.getStd_password(),student.getStd_name(), student.getStd_gender(), student.getStd_department(), student.getStd_phone(), student.getStd_mail(), student.getStd_image(), student.getStd_id());
- }
+ 	}
+
+ 	public int updateStudentPassword(int std_id, String std_password){
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String password = passwordEncoder.encode(std_password);
+		return jdbcTemplate.update("update student set std_password = ? where std_id = ?",
+		password, std_id);
+	 }
 
 
 	public int delete(int std_id) {
