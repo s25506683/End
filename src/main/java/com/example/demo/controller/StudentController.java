@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.entity.Student;
 import com.example.demo.dao.StudentDAO;
+import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
+
+
+import com.example.demo.util.MailService;
 
 @RestController
 public class StudentController {
@@ -35,12 +40,16 @@ public class StudentController {
 
 	@Autowired
 	Logfile logfile;
+	
+	@Autowired
+	MailService mailservice;
 
 	String writtenmessage = new String();
-	
+
 	@PostMapping(value = "/student_re")
 
-	public ResponseEntity<String> processFormCreate(@RequestBody final Student student) throws SQLException {
+	public ResponseEntity<String> processFormCreate(@RequestBody final Student student)
+			throws SQLException, IOException {
 		
 		//if has userAccount in DB
 		if(dao.queryUser(student.getStd_id()) == 0){
@@ -68,8 +77,16 @@ public class StudentController {
 	}
 
 	// @POST
-	@GetMapping(value = { "/student/{std_id}" })
-	public Student retrieveOneStudent(@PathVariable("std_id") final int std_id) throws SQLException {
+	@GetMapping(value = { "/student/information/" })
+	public Student retrieveOneStudent() throws SQLException {
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int std_id = Integer.parseInt(auth.getCurrentUserName());
+		////////////////////////
+		String user_email = "s25506683@gmail.com";
+		String newpassword = "12uweyrui";
+		mailservice.prepareAndSend(user_email, newpassword);
+		//SendNewPasswordByMail(user_email, newpassword);
+		////////////////////////
 		return dao.findOne(std_id);
 	}
 

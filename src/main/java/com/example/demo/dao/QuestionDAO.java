@@ -16,6 +16,8 @@ public interface QuestionDAO {
 
     public List<Question> findQuestion(String cs_id);
 
+    public String findCsId(int std_id, String q_asktime);
+
     //public Question findOne(String cs_id,int std_id);
 
     public int updateStudentQuestionContent(Question question);
