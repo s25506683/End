@@ -1,0 +1,12 @@
+2020/04/15 17:08:55	teacher 16283 adding announcement at 2020-04-15 17:09:54 in the class.
+2020/04/15 17:16:22	student 406401599 watching announcement at 2020-04-15 17:17:29 in the class.
+2020/04/15 17:16:22	student 406401599 watching announcement at 2020-04-15 17:17:47 in the class.
+2020/04/15 17:18:11	student 406401599 watching announcement at 2020-04-15 17:18:15 in the class.
+2020/04/15 17:18:21	student 406401599 watching announcement at 2020-04-15 17:18:23 in the class.
+2020/04/15 17:18:21	student 406401599 watching announcement at 2020-04-15 17:18:24 in the class.
+2020/04/15 17:18:21	student 406401599 watching announcement at 2020-04-15 17:18:25 in the class.
+2020/04/15 17:24:16	student 406401599 watching announcement at 2020-04-15 17:24:16 in the class.
+2020/04/15 17:24:16	student 406401599 watching announcement at 2020-04-15 17:24:16 in the class.
+2020/04/15 17:24:17	student 406401599 watching announcement at 2020-04-15 17:24:17 in the class.
+2020/04/15 17:25:36	teacher 16283 edit announcement at 2020-04-15 17:25:36 in the class.
+2020/04/15 17:25:44	teacher 16283 delete announcement at 2020-04-15 17:25:44 in the class.
