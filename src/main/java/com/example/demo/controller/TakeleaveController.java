@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class TakeleaveController {
   Logfile logfile;
 
   String writtenmessage = new String();
+  String parttition = "Takeleave";
 
 
   @GetMapping(value = {"/student/takeleave/all"})
@@ -67,20 +69,40 @@ public class TakeleaveController {
         return ResponseEntity.badRequest().body("你已申請過請假，請耐心等待老師的回覆");
          //學生申請請假
       }
-
-
-    // @PutMapping(value = {"/teacher/takeleave"})
-    //   public ResponseEntity<String> 
-
-
-
-
-      
     }
 
 
+  @PutMapping(value = "/teacher/takeleave")
+     public ResponseEntity<String> processFormUpdate(@RequestBody final Takeleave takeleave) throws SQLException {
+
+      
+              takeleave.setTl_type_id(dao.findTltypeID(takeleave.getRc_id(),takeleave.getStd_id()));
+             
+
+              if(takeleave.getTl_state() == 2){ //教師不准許請假
+
+                //dao.UnAllowleave(takeleave);
+                return ResponseEntity.badRequest().body("教師不准假");
+
+              }else if(takeleave.getTl_state() == 1){ //教師准許請假
+
+                dao.Allowleave(takeleave);
+                dao.updateTltypeID(takeleave);
+                return ResponseEntity.ok("請假審核成功");
+
+              }else{
+
+                return ResponseEntity.badRequest().body("此學生尚未申請請假");
+
+              }
+			
+}         
+
+    
 
 
+
+  
 
  
 }

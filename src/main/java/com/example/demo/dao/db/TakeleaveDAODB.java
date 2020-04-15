@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.TakeleaveDAO;
 import com.example.demo.entity.Takeleave;
+import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
@@ -24,6 +25,17 @@ public class TakeleaveDAODB implements TakeleaveDAO {
  JdbcTemplate jdbcTemplate;
 
 //jdbcTemplate 
+
+public int updateTltypeID(final Takeleave takeleave){
+    return jdbcTemplate.update("update rc_record set rc_id = ?, std_id = ?, tl_type_id = ? where rc_id = ? and std_id = ?",
+    takeleave.getRc_id(), takeleave.getStd_id(), takeleave.getTl_type_id(), takeleave.getRc_id(), takeleave.getStd_id());
+}
+
+public int findTltypeID(final int rc_id, final int std_id){
+    String sql = "select tl_type_id from takeleave where rc_id = ? and std_id = ?";
+    final int typeID = this.jdbcTemplate.queryForObject(sql, Integer.class, rc_id, std_id);
+    return typeID; //找tl_type
+}
 
 public int queryStudentInTakeleave(final int rc_id, final int std_id){
     String sql = "select count(std_id) as count from takeleave where rc_id = ? and std_id = ?";
@@ -63,10 +75,18 @@ private static final class TakeleaveMapper implements RowMapper<Takeleave> {
     }
 }
 
-// public int LeaveforReview(final Takeleave takeleave){
-//     return jdbcTemplate.update("update takeleave set rc_id = ?, std_id = ?, tl_state = ? where rc_id = ? and std_id = ?",
-//     )
-// }
+public int Allowleave(final Takeleave takeleave){
+
+    return jdbcTemplate.update("update takeleave set rc_id = ?, std_id = ?, tl_state = 1 where rc_id = ? and std_id = ?",
+    takeleave.getRc_id(), takeleave.getStd_id(),takeleave.getRc_id(), takeleave.getStd_id());
+}
+
+public int UnAllowleave(final Takeleave takeleave){
+
+    return jdbcTemplate.update("update takeleave set rc_id = ?, std_id = ?, tl_state = 2 where rc_id = ? and std_id = ?",
+    takeleave.getRc_id(), takeleave.getStd_id(),takeleave.getRc_id(), takeleave.getStd_id());
+    
+}
 
 
  
