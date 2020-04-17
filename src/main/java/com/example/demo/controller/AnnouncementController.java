@@ -22,6 +22,7 @@ import com.example.demo.entity.Announcement;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 import com.example.demo.util.Logfile;
+import com.example.demo.util.MapHelperTest;
 import com.example.demo.util.UserInTheClass;
 
 @RestController
@@ -34,6 +35,9 @@ public class AnnouncementController {
 
   @Autowired
   Logfile logfile;
+
+  @Autowired
+  MapHelperTest maphelpertest;
 
   String writtenmessage = new String();
   String partition = "Announcement";
@@ -89,8 +93,7 @@ public class AnnouncementController {
     //student get all announcement in the class.
     //you will get at_id, at_title, at_content, at_posttime returns.
  @GetMapping(value = {"/student/announcement/{cs_id}/get/"})
-    public ResponseEntity<List<Announcement>> studentRetrieveAnnouncement(@PathVariable("cs_id") String cs_id) throws SQLException,
-            IOException {
+    public ResponseEntity<List<Announcement>> studentRetrieveAnnouncement(@PathVariable("cs_id") String cs_id) throws Exception {
         AuthenticationUtil auth = new AuthenticationUtil();
         String std_id = auth.getCurrentUserName();
 
@@ -98,6 +101,7 @@ public class AnnouncementController {
             //if student not in this class.
             return new ResponseEntity<List<Announcement>>(HttpStatus.BAD_REQUEST);
         }else{
+            maphelpertest.getDistance();
             writtenmessage = "student "+ std_id + " watching announcement at in the class.";
             logfile.writeLog(writtenmessage, cs_id, partition);
             return new ResponseEntity<List<Announcement>>(dao.findAllAnnouncementInTheClass(cs_id), HttpStatus.OK);

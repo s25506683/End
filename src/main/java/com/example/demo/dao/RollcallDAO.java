@@ -35,6 +35,8 @@ public interface RollcallDAO {
  public String findQRcodeInRollcallName(int rc_id);
 
  public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id);
+ 
+ public List<Rollcall> findRollcallByPerson(String cs_id);
 
  public String rollcallByHand(int rc_id);
 

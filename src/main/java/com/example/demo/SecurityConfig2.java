@@ -44,7 +44,7 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		
 
 		
-		.formLogin().loginPage("/login").defaultSuccessUrl("http://" + ip.getHostAddress() + ":3000/homepage1").failureUrl("http://" + ip.getHostAddress() + ":3000").permitAll()
+		.formLogin().loginPage("/login").defaultSuccessUrl("http://" + ip.getHostAddress() + ":3000/homepages").failureUrl("http://" + ip.getHostAddress() + ":3000").permitAll()
   		.and()
   		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://" + ip.getHostAddress() + ":3000");
 
