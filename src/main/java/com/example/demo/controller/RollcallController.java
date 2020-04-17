@@ -187,7 +187,7 @@ public class RollcallController {
  }
 
    //teacher get all student's rollcall record (by student).
-   //you will get std_id, present, absent, otherwise returns.
+   //you will get std_id, std_name, std_department, present, absent, otherwise returns.
    @GetMapping(value = {"/teacher/rollcall/RecordbyPerson/{cs_id}"})
    public ResponseEntity<List<Rollcall>> retrieveRollcallRecordByStudent(@PathVariable("cs_id") final String cs_id) throws SQLException,
        IOException {
