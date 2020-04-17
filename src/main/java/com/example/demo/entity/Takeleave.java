@@ -10,6 +10,26 @@ public class Takeleave {
     private int tl_type_id;
     private String tl_teacher_reply;
     private String tl_createtime;
+    private String record_time;
+    private String std_name;
+
+    public String getRecord_time() {
+        return this.record_time;
+    }
+
+    public void setRecord_time(String record_time) {
+        this.record_time = record_time;
+    }
+
+    public String getStd_name() {
+        return this.std_name;
+    }
+
+    public void setStd_name(String std_name) {
+        this.std_name = std_name;
+    }
+
+
 
 
     public int getTl_state() {

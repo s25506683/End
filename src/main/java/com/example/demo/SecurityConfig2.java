@@ -35,7 +35,6 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 
 		http.httpBasic().and().authorizeRequests()     //例外處理
 		.antMatchers("/css/**", "/index").permitAll()
-		.antMatchers("/student_re/**").permitAll()
 		.antMatchers("/teacher/**").hasRole("ADMIN")
 		.antMatchers("/student/**").hasRole("USER")
 		.and().rememberMe().tokenValiditySeconds(20).and().cors()
