@@ -81,21 +81,8 @@ public class RollcallController {
          
 
      }
-   
-   //student get one rollcall's record.
-   //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
- @GetMapping(value = {"/student/rollcall/oneRollcall/{rc_id}"})
-    public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromStudent(@PathVariable("rc_id") final int rc_id) throws SQLException {
 
-       if(dao.hasThisRollcallId(rc_id) == 0){
-         //if this rollcall Id not found.
-         return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
-       }else{
-         return new ResponseEntity<List<Rollcall>>(dao.findOneRollcallRecord(rc_id), HttpStatus.OK);
-       }
-    }
-
-   //student get one rollcall's record.
+   //teacher get one rollcall's record(all student record).
    //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/{rc_id}"})
  public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
@@ -152,11 +139,12 @@ public class RollcallController {
       }
     }
 
-   //student get own rollcall's record (all class).
-   //you will get rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_typr_name returns.
- @GetMapping(value = {"/student/rollcall/oneRollcall/{cs_id)"})
- public ResponseEntity<List<Rollcall>> retrieveOwnRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException,
+   //student get own rollcall's record (one class).
+   //you will get rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name returns.
+ @GetMapping(value = {"/student/rollcall/personalRecord/{cs_id}"})
+ public ResponseEntity<List<Rollcall>> retrievepersonalRecord(@PathVariable("cs_id") final String cs_id) throws SQLException,
      IOException {
+
   AuthenticationUtil auth = new AuthenticationUtil();
   int std_id = Integer.parseInt(auth.getCurrentUserName());
 
@@ -172,7 +160,54 @@ public class RollcallController {
     return new ResponseEntity<List<Rollcall>>(dao.findStudentOwnRollcallInClass(std_id, cs_id), HttpStatus.OK);
   }
  }
- 
+
+   //teacher get student's own rollcall's record (one class, all rollcall record).
+   //you will get rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name returns.
+ @GetMapping(value = {"/teacher/rollcall/personalRecord/{cs_id}/{std_id}"})
+ public ResponseEntity<List<Rollcall>> retrieveStudentPersonalRecord(@PathVariable("cs_id") final String cs_id, @PathVariable("std_id") final int std_id) throws SQLException,
+     IOException {
+
+  AuthenticationUtil auth = new AuthenticationUtil();
+  int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+  if(dao.hasThisCsId(cs_id) == 0){
+    //if cs_id was round.
+    return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+  }else if(userintheclass.queryTeacherInTheClass(Integer.toString(teacher_id), cs_id) == 0){
+    //if teacher not in this class.
+    return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+  }else if(userintheclass.queryStudentInTheClass(Integer.toString(std_id), cs_id) == 0){
+    //if student not in this class.
+    return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+  }else{
+    writtenmessage = "teacher "+ teacher_id + " watching student " + std_id + "'s personal rollcall record in the class.";
+    logfile.writeLog(writtenmessage, cs_id, partition);
+    return new ResponseEntity<List<Rollcall>>(dao.findStudentOwnRollcallInClass(std_id, cs_id), HttpStatus.OK);
+  }
+ }
+
+   //teacher get all student's rollcall record (by student).
+   //you will get std_id, std_name, std_department, present, absent, otherwise returns.
+   @GetMapping(value = {"/teacher/rollcall/RecordbyPerson/{cs_id}"})
+   public ResponseEntity<List<Rollcall>> retrieveRollcallRecordByStudent(@PathVariable("cs_id") final String cs_id) throws SQLException,
+       IOException {
+  
+    AuthenticationUtil auth = new AuthenticationUtil();
+    int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+  
+    if(dao.hasThisCsId(cs_id) == 0){
+      //if cs_id was round.
+      return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+    }else if(userintheclass.queryTeacherInTheClass(Integer.toString(teacher_id), cs_id) == 0){
+      //if teacher not in this class.
+      return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+    }else{
+      writtenmessage = "teacher "+ teacher_id + " watching rollcall by person in the class.";
+      logfile.writeLog(writtenmessage, cs_id, partition);
+      return new ResponseEntity<List<Rollcall>>(dao.findRollcallByPerson(cs_id), HttpStatus.OK);
+    }
+   }
+   
     //student QRcode rollcall.
     //you will input rc_id, qrcode.
  @PutMapping(value = "/student/rollcall/QRcodeRollcall")

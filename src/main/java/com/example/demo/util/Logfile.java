@@ -22,7 +22,7 @@ import ch.qos.logback.core.pattern.color.BoldBlueCompositeConverter;
 public class Logfile {
 
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
-	LocalDateTime now = LocalDateTime.now();
+	//LocalDateTime now = LocalDateTime.now();
 
 	public void writeLog(String writtenmessage) {
 		String directory = System.getProperty("user.dir");
@@ -31,7 +31,7 @@ public class Logfile {
 		System.out.println(absolutePath);
 		
 		try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
-			String fileContent = dtf.format(now) + "\t" + writtenmessage + "\n";
+			String fileContent = dtf.format(LocalDateTime.now()) + "\t" + writtenmessage + "\n";
 			filewriter.write(fileContent);
 			filewriter.flush();
 			filewriter.close();
@@ -55,7 +55,7 @@ public class Logfile {
 				System.out.println(absolutePath);
 			
 				try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
-					String fileContent = dtf.format(now) + "\t" + writtenmessage + "\n";
+					String fileContent = dtf.format(LocalDateTime.now()) + "\t" + writtenmessage + "\n";
 					filewriter.write(fileContent);
 					filewriter.flush();
 					filewriter.close();
@@ -63,7 +63,7 @@ public class Logfile {
 					File file = new File(absolutePath);
 					file.createNewFile();
 					FileWriter filewriter = new FileWriter(absolutePath);
-					String fileContent = dtf.format(now) + "\t" + writtenmessage + "\n";
+					String fileContent = dtf.format(LocalDateTime.now()) + "\t" + writtenmessage + "\n";
 					filewriter.write(fileContent);
 					filewriter.flush();
 					filewriter.close();
