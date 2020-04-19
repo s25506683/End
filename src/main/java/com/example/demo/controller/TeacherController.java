@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Teacher;
+import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
 import com.example.demo.dao.TeacherDAO;
 
@@ -77,8 +78,10 @@ public class TeacherController {
 	}
 
 	//@POST
-	@GetMapping(value = { "/teacher/{teacher_id}" })
-	public Teacher retrieveOneStudent(@PathVariable("teacher_id") int teacher_id) throws SQLException {
+	@GetMapping(value = { "/teacher/information/" })
+	public Teacher retrieveOneStudent() throws SQLException {
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
 		return dao.findOne(teacher_id);
 	}
 
