@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
+
 import com.example.demo.dao.TakeleaveDAO;
 import com.example.demo.entity.Takeleave;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
+import com.example.demo.util.UserInTheClass;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,18 +36,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class TakeleaveController {
 
   @Autowired
+  UserInTheClass userintheclass;
+
+  @Autowired
   TakeleaveDAO dao;
 
   @Autowired
   Logfile logfile;
 
   String writtenmessage = new String();
-  String parttition = "Takeleave";
+  String partition = "Takeleave";
 
 
   @GetMapping(value = {"/teacher/takeleave/AllStudent/{cs_id}"}) //教師看到所有學生的請假申請
     public ResponseEntity<List<Takeleave>> retrieveAllTakeleave(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
+      // AuthenticationUtil auth = new AuthenticationUtil();
+      // String teacher_id = auth.getCurrentUserName();
+      // writtenmessage = "teacher \"" + teacher_id + "\" watching student takeleave record in class \"";
+      // logfile.writeLog(writtenmessage, Takeleave.getCs_id, partition);
       return new ResponseEntity<List<Takeleave>>(dao.findTakeleaveInTheClass(cs_id), HttpStatus.OK);
 
     }
@@ -58,6 +68,15 @@ public class TakeleaveController {
     return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id), HttpStatus.OK);
 
     }
+
+  @GetMapping(value = {"/student/takeleave/StudentAbsence"}) //學生查看自己的缺課紀錄
+  public ResponseEntity<List<Takeleave>> retrieveStudentAbsence() throws SQLException{
+
+    AuthenticationUtil auth = new AuthenticationUtil();
+    String std_id = auth.getCurrentUserName(); 
+    return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleave(std_id), HttpStatus.OK);
+  
+  }
 
 
   
@@ -105,7 +124,7 @@ public class TakeleaveController {
 
               if(takeleave.getTl_state() == 2){ //教師不准許請假
 
-                //dao.UnAllowleave(takeleave);
+                dao.UnAllowleave(takeleave);
                 return ResponseEntity.badRequest().body("教師不准假");
 
               }else if(takeleave.getTl_state() == 1){ //教師准許請假

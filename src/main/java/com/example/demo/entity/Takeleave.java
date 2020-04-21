@@ -12,6 +12,24 @@ public class Takeleave {
     private String tl_createtime;
     private String record_time;
     private String std_name;
+    private String rc_inputsource;
+    private String cs_id;
+
+    public String getCs_id() {
+        return this.cs_id;
+    }
+
+    public void setCs_id(String cs_id) {
+        this.cs_id = cs_id;
+    }
+
+    public String getRc_inputsource() {
+        return this.rc_inputsource;
+    }
+
+    public void setRc_inputsource(String rc_inputsource) {
+        this.rc_inputsource = rc_inputsource;
+    }
 
     public String getRecord_time() {
         return this.record_time;
