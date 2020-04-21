@@ -86,6 +86,19 @@ public class RollcallController {
 
      }
 
+   //teacher find rc_id using qrcode.
+   //you will get rc_id return.
+ @GetMapping(value = {"/teacher/rollcall/findRCID/"})
+ public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@RequestBody Rollcall rollcall) throws SQLException {
+
+    if(dao.hasThisQRcode(rollcall.getQrcode()) == 0){
+      //if this qrcode Id not found.
+      return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+    }else{
+      return new ResponseEntity<List<Rollcall>>(dao.findRcIdWithQRcode(rollcall.getQrcode()), HttpStatus.OK);
+    }
+ }
+
    //teacher get one rollcall's record(all student record).
    //you will get std_id, std_name, std_department, record_time, tl_type_name returns.
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/{rc_id}"})
