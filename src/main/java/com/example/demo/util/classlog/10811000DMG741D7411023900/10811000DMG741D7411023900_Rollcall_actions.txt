@@ -13,3 +13,6 @@
 2020/04/12 19:38:53	teacher 16283 update student rollcall record to 出席 in rc_id = 1, std_id = 406401599.
 2020/04/12 19:45:58	teacher 16283 adding rollcall at 2020-04-12 19:46:08 in the class.
 2020/04/12 19:45:58	teacher 16283 delete rollcall in class 10811000DMG741D7411023900 with rc_id = 38.
+2020/04/21 21:53:52	student 406401599 GPS rollcall update to present in rc_id = 2.
+2020/04/21 22:00:02	student 406401599 GPS rollcall update to present in rc_id = 2.
+2020/04/21 22:00:54	student 406401599 GPS rollcall update to present in rc_id = 2.

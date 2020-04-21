@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.dao.AnnouncementDAO;
@@ -22,7 +20,6 @@ import com.example.demo.entity.Announcement;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 import com.example.demo.util.Logfile;
-import com.example.demo.util.MapHelperTest;
 import com.example.demo.util.UserInTheClass;
 
 @RestController
@@ -36,8 +33,7 @@ public class AnnouncementController {
   @Autowired
   Logfile logfile;
 
-  @Autowired
-  MapHelperTest maphelpertest;
+
 
   String writtenmessage = new String();
   String partition = "Announcement";
@@ -101,7 +97,8 @@ public class AnnouncementController {
             //if student not in this class.
             return new ResponseEntity<List<Announcement>>(HttpStatus.BAD_REQUEST);
         }else{
-            maphelpertest.getDistance();
+            //System.out.println("\n\n\n\n\n\n");
+            //System.out.println(maphelper.GetPointDistance("25.015369,121.427966", 2));
             writtenmessage = "student "+ std_id + " watching announcement at in the class.";
             logfile.writeLog(writtenmessage, cs_id, partition);
             return new ResponseEntity<List<Announcement>>(dao.findAllAnnouncementInTheClass(cs_id), HttpStatus.OK);
