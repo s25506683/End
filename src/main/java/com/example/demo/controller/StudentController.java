@@ -86,7 +86,7 @@ public class StudentController {
 		return dao.findOne(std_id);
 	}
 
-	@GetMapping(value = { "/student" })
+	@GetMapping(value = { "/student/" })
 	public List<Student> retrieveStudent() throws SQLException {
 		return dao.findAll();
 	}
