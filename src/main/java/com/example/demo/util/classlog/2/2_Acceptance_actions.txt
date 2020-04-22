@@ -4,3 +4,7 @@
 2020/04/14 21:50:35	teacher "16283" update content in homework "0".
 2020/04/14 21:52:14	teacher "16283" update content in homework "GOGOG".
 2020/04/14 22:01:09	teacher "16283" deleted homework with homework ID "0".
+2020/04/17 16:09:02	student "406401616" watching homework in class "2".
+2020/04/17 16:09:27	student "406401616" watching homework in class "2".
+2020/04/21 18:51:26	student "406401616" watching homework in class "2".
+2020/04/21 18:52:03	student "406401616" watching homework in class "2".

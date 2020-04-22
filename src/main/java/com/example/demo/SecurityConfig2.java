@@ -69,6 +69,7 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		// .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000");
 		
 		// .formLogin().disable();
+
 	}
 
 	@Autowired

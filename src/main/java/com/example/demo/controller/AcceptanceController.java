@@ -53,7 +53,7 @@ public class AcceptanceController {
          throws SQLException, IOException {
        
          AuthenticationUtil auth = new AuthenticationUtil();
-         acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
+         acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName())); //將取出的值轉Int
          acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
          acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
 

@@ -44,26 +44,25 @@ public class HomePage1_sController {
     
  @GetMapping(value = {"/student/HomePage1_s/one/"})
     public List<HomePage1_s> retrieveStudentCourse() throws SQLException {
-      //String principal = SecurityContextHolder.getContext().getAuthentication().getName();
-      //System.out.println(principal);
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
       System.out.println(std_id);
       return dao.findStudentCourse(Integer.parseInt(std_id));
       
-    } 
+    }
+  @GetMapping(value = {"/teacher/HomePage1_s/one/"})
+    public List<HomePage1_s> retrieveTeacherCourse() throws SQLException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+      return dao.findTeacherCourse(Integer.parseInt(teacher_id));
+    }
     
  @GetMapping(value = {"/HomePage1_s/all"})   
     public List<HomePage1_s> retrieveAllCourse() throws SQLException{
        return dao.findAllCourse();
     }
 
-@GetMapping(value = {"/teacher/HomePage1_s/one/"})
-    public List<HomePage1_s> retrieveTeacherCourse() throws SQLException {
-      AuthenticationUtil auth = new AuthenticationUtil();
-      String teacher_id = auth.getCurrentUserName();
-      return dao.findTeacherCourse(Integer.parseInt(teacher_id));
-    }
+
     
     
 //  @PutMapping(value = "/question")

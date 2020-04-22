@@ -16,6 +16,8 @@ public interface RollcallDAO {
 
  public String findTlTypeName(int tl_type_id);
 
+ public int hasThisQRcode(String qrcode);
+
  public int hasThisRollcallId(int rc_id);
 
  public int hasThisCsId(String cs_id);
@@ -35,6 +37,10 @@ public interface RollcallDAO {
  public String findQRcodeInRollcallName(int rc_id);
 
  public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id);
+ 
+ public List<Rollcall> findRollcallByPerson(String cs_id);
+
+ public List<Rollcall> findRcIdWithQRcode(String qrcode);
 
  public String rollcallByHand(int rc_id);
 

@@ -34,7 +34,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public int findRcId(String cs_id, String rc_starttime){
-    String sql = "select rc_id as count from rollcall where cs_id = ? and rc_starttime = ?";
+    String sql = "select rc_id from rollcall where cs_id = ? and rc_starttime = ?";
     int rc_id = this.jdbcTemplate.queryForObject(sql,Integer.class,cs_id, rc_starttime);
     return rc_id;
   }
@@ -49,6 +49,12 @@ public class RollcallDAODB implements RollcallDAO {
     String sql = "select tl_type_name from takeleave_type where tl_type_id = ?";
     String tl_type_name = this.jdbcTemplate.queryForObject(sql,String.class,tl_type_id);
     return tl_type_name;
+  }
+
+  public int hasThisQRcode(String qrcode){
+    String sql = "select count(qrcode) as count from rollcall where qrcode = ?";
+    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,qrcode);
+    return count;
   }
 
   public int hasThisRollcallId(int rc_id){
@@ -103,6 +109,16 @@ public class RollcallDAODB implements RollcallDAO {
       , new Object[]{std_id, cs_id}, new RollcallMapper4());
   }
 
+  public List<Rollcall> findRollcallByPerson(String cs_id){
+    return this.jdbcTemplate.query("select rcre.std_id, st.std_name, st.std_department, sum(case when rcre.tl_type_id = 1 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise from rc_record as rcre inner join rollcall as rc on rc.rc_id = rcre.rc_id inner join student as st on st.std_id = rcre.std_id where rc.cs_id = ? group by rcre.std_id order by rcre.std_id"
+      , new Object[]{cs_id}, new RollcallMapper5());
+  }
+
+  public List<Rollcall> findRcIdWithQRcode(String qrcode){
+    return this.jdbcTemplate.query( "select rc_id from rollcall where qrcode = ?"
+    , new Object[]{qrcode}, new RollcallMapper6());
+  }
+
 
   private static final class RollcallMapper implements RowMapper<Rollcall> {
      public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
@@ -147,8 +163,29 @@ public class RollcallDAODB implements RollcallDAO {
         rollcall4.setRc_starttime(rs.getString("rc_starttime"));
         rollcall4.setRecord_time(rs.getString("record_time"));
         rollcall4.setRc_inputsource(rs.getString("rc_inputsource"));
-        rollcall4.setTl_type_name(rs.getString("tl_typr_name"));
+        rollcall4.setTl_type_name(rs.getString("tl_type_name"));
         return rollcall4;
+    }
+  }
+  
+  private static final class RollcallMapper5 implements RowMapper<Rollcall> {
+    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Rollcall rollcall5 = new Rollcall();
+         rollcall5.setStd_id(rs.getInt("std_id"));
+         rollcall5.setStd_name(rs.getString("std_name"));
+         rollcall5.setStd_department(rs.getString("std_department"));
+         rollcall5.setPresent(rs.getInt("present"));
+         rollcall5.setAbsent(rs.getInt("absent"));
+         rollcall5.setOtherwise(rs.getInt("otherwise"));
+         return rollcall5;
+     }
+   }
+
+   private static final class RollcallMapper6 implements RowMapper<Rollcall> {
+    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Rollcall rollcall6 = new Rollcall();
+        rollcall6.setRc_id(rs.getInt("rc_id"));
+        return rollcall6;
     }
   }
 

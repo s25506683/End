@@ -22,6 +22,7 @@ public class Rollcall {
     private String qrcode;
     private String record_time;
     private int tl_type_id;
+    private String gps_point;
 
 
     private int present;
@@ -147,6 +148,14 @@ public class Rollcall {
 
     public void setTl_type_id(int tl_type_id) {
         this.tl_type_id = tl_type_id;
+    }
+
+    public String getGps_point() {
+        return this.gps_point;
+    }
+
+    public void setGps_point(String gps_point) {
+        this.gps_point = gps_point;
     }
 
     

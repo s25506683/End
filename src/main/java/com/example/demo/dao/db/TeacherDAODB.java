@@ -25,12 +25,24 @@ public class TeacherDAODB implements TeacherDAO {
 
 //jdbcTemplate 
 
-	public int queryUser(int teacher_id){
+	public int queryUser(int teacher_id) {
 		String sql = "select count(teacher_id) as count from teacher where teacher_id = ?";
-		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,teacher_id);
+		int count = this.jdbcTemplate.queryForObject(sql, Integer.class, teacher_id);
 		return count;
 	}
 
+	public String getPassword(int teacher_id) {
+		String sql = "select tescher_password from teacher where teacher_id = ?";
+		String teacher_password = this.jdbcTemplate.queryForObject(sql, String.class, teacher_id);
+		return teacher_password;
+	}
+	
+	public int updateTeacherPassword(int teacher_id,String teacher_password) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String password = passwordEncoder.encode(teacher_password);
+		return jdbcTemplate.update("update teacher set teacher_password = ? where teacher_id = ?",
+		password, teacher_id);
+	}
 
 	public int insert(Teacher teacher) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -38,7 +50,8 @@ public class TeacherDAODB implements TeacherDAO {
 		return jdbcTemplate.update(
 				"insert into teacher (teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image) values(?, ?, ?, ?, ?, ?, ?, ?)",
 				teacher.getTeacher_id(), password, teacher.getTeacher_name(), teacher.getTeacher_gender(),
-				teacher.getTeacher_department(), teacher.getTeacher_phone(), teacher.getTeacher_mail(), teacher.getTeacher_image());
+				teacher.getTeacher_department(), teacher.getTeacher_phone(), teacher.getTeacher_mail(),
+				teacher.getTeacher_image());
 	}
 
 	public Teacher findOne(int teacher_id) {
@@ -54,8 +67,8 @@ public class TeacherDAODB implements TeacherDAO {
 
 	private static final class TeacherMapper implements RowMapper<Teacher> {
 
-		public Teacher mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Teacher teacher = new Teacher();
+		public Teacher mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+			final Teacher teacher = new Teacher();
 			teacher.setTeacher_id(rs.getInt("teacher_id"));
 			teacher.setTeacher_password(rs.getString("teacher_password"));
 			teacher.setTeacher_name(rs.getString("teacher_name"));
@@ -67,6 +80,8 @@ public class TeacherDAODB implements TeacherDAO {
 			return teacher;
 		}
 	}
+
+
 
 //	public int update(Student student) {
 //		return jdbcTemplate.update("update registration set std_id=?, std_password=? where std_id =?",

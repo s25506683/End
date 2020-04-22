@@ -8,6 +8,10 @@ public interface TeacherDAO {
 
 	public int queryUser(int teacher_id);
 
+	public String getPassword(int teacher_id);
+
+	public int updateTeacherPassword(int teacher_id, String teacher_password);
+
 	public int insert(Teacher teacher);
 
 	public List<Teacher> findAll();
