@@ -20,10 +20,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 @Configuration
-@Order(2)
-public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
+@Order(3)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	public SecurityConfig2() {
+	public SecurityConfig() {
         super();
     }
 	
@@ -32,21 +32,31 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 		InetAddress ip;
 		ip = InetAddress.getLocalHost();
 		System.out.println(ip.getHostAddress());
+		http
+        .authorizeRequests()
+        .antMatchers("/").permitAll()
+        .antMatchers("/login").permitAll()
+        .and()
+        .httpBasic()
+        .and().csrf().disable();
+        // 
+        // .and()
+        // .formLogin()
+        //  .loginPage("/login").failureUrl("/login-error")
+        //  .and()
+        //  .exceptionHandling().accessDeniedPage("/");
+                // .anyRequest()
+				// .and()
+			// .httpBasic()
+			// .and().rememberMe().tokenValiditySeconds(600).and().cors();
+		
 		// http
-		// 	.antMatcher("/login")
+		// 	.antMatcher("/student/**")
 		// 	.authorizeRequests()
 		// 		.anyRequest().hasRole("USER")
 		// 		.and()
 		// 	.httpBasic()
 		// 	.and().rememberMe().tokenValiditySeconds(600).and().cors();
-		
-		http
-			.antMatcher("/student/**")
-			.authorizeRequests()
-				.anyRequest().hasRole("USER")
-				.and()
-			.httpBasic()
-			.and().rememberMe().tokenValiditySeconds(600).and().cors();
 			//.and()
 			//.authorizeRequests()
 			//	.anyRequest().authenticated()
