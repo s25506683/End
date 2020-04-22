@@ -3,6 +3,22 @@ package com.example.demo.entity;
 public class Teacher {
 
 	private int teacher_id;
+	private String teacher_password;
+	private String teacher_name;
+	private String teacher_gender;
+	private String teacher_department;
+	private String teacher_phone;
+	private String teacher_mail;
+	private String teacher_image;
+	private String old_teacher_password;
+
+	public String getOld_teacher_password() {
+		return this.old_teacher_password;
+	}
+
+	public void setOld_teacher_password(String old_teacher_password) {
+		this.old_teacher_password = old_teacher_password;
+	}
 
 	public int getTeacher_id() {
 		return teacher_id;
@@ -68,12 +84,6 @@ public class Teacher {
 		this.teacher_image = teacher_image;
 	}
 
-	private String teacher_password;
-	private String teacher_name;
-	private String teacher_gender;
-	private String teacher_department;
-	private String teacher_phone;
-	private String teacher_mail;
-	private String teacher_image;
+	
 
 }

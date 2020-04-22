@@ -10,7 +10,6 @@ public class Student {
 	private String std_phone;
 	private String std_mail;
 	private String std_image;
-
 	private String old_std_password;
 
 	public int getStd_id() {

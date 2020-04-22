@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogFile;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -90,15 +91,21 @@ public class TeacherController {
 		return dao.findAll();
 	}
 
+	@PutMapping(value = "/teacher/resetPassword")
+	public ResponseEntity<String> processFormUpdate(@RequestBody final Teacher teacher)throws SQLException {
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
 
-//	@PutMapping(value = "/student")
-//	public void processFormUpdate(@RequestBody Student student) throws SQLException {
-//		dao.update(student);
-//	}
-//
-//	@DeleteMapping(value = "/student/{std_id}")
-//	public void deleteStudent(@PathVariable("std_id") int std_id) {
-//		dao.delete(std_id);
-//	}
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+		if(passwordEncoder.matches(teacher.getOld_teacher_password(), dao.getPassword(teacher_id))){
+			dao.updateTeacherPassword(teacher_id, teacher.getTeacher_password());
+			return ResponseEntity.ok("修改密碼成功");
+		}else{	
+			return ResponseEntity.badRequest().body("修改密碼失敗");
+		}
+	}
 
 }
+
+
