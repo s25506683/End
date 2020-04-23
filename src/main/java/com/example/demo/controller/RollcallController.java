@@ -49,11 +49,14 @@ public class RollcallController {
 
 
    //add rollcall and rollcall record(teacher).
-   //you will input cs_id, rc_inputsource(QRcode點名、手動點名、GPS點名), qrcode, latitude, longitude.
+   //you will input cs_id, rc_inputsource(QRcode點名、手動點名、GPS點名), qrcode, gps_point(String like "25.015369,121.427966") --- which is longitude and latitude.
   @PostMapping(value = "/teacher/rollcall/addrollcall")
      public ResponseEntity<String> processFormCreate(@RequestBody Rollcall rollcall) throws SQLException, IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
+      String[] gpsarr = rollcall.getGps_point().split(",");
+      rollcall.setLongitude(gpsarr[0]);
+      rollcall.setLatitude(gpsarr[1]);
 
         if(userintheclass.queryTeacherInTheClass(teacher_id, rollcall.getCs_id()) == 0){
             //if teacher not in this class.

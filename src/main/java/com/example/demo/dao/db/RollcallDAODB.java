@@ -29,8 +29,8 @@ public class RollcallDAODB implements RollcallDAO {
 
   public int addRollcall(final Rollcall rollcall) {
      return jdbcTemplate.update(
-       "insert into rollcall (cs_id, rc_starttime, rc_inputsource, qrcode) values(?, ?, ?, ?)",
-       rollcall.getCs_id(), rollcall.getRc_starttime(), rollcall.getRc_inputsource(), rollcall.getQrcode());
+       "insert into rollcall (cs_id, rc_starttime, rc_inputsource, qrcode, longitude, latitude) values(?, ?, ?, ?, ?, ?)",
+       rollcall.getCs_id(), rollcall.getRc_starttime(), rollcall.getRc_inputsource(), rollcall.getQrcode(), rollcall.getLongitude(), rollcall.getLatitude());
   }
 
   public int findRcId(String cs_id, String rc_starttime){
