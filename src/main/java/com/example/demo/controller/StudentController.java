@@ -129,6 +129,9 @@ public class StudentController {
 			String user_email = student.getStd_mail();
 			String newpassword = id;
 			mailservice.prepareAndSend(user_email, newpassword, student.getStd_id());
+			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+			System.out.println(user_email+"\n"+newpassword+"\n"+student.getStd_id());
+			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
 			return ResponseEntity.ok("email send(NewPassword) successful!");
 		}
 		
