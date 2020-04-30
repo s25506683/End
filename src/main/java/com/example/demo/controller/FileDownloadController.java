@@ -60,8 +60,8 @@ public class  FileDownloadController {
     }
 
     //下載announcement的actions
-    @RequestMapping(value = "/downloadfile/{cs_id}/")
-    public void download(@PathVariable("cs_id") String cs_id)throws IOException {
+    @RequestMapping(value = "/AnnouncementActions/{cs_id}/")
+    public void downloadAnnouncementActions(@PathVariable("cs_id") String cs_id)throws IOException {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletResponse response = requestAttributes.getResponse();
         // 设置信息给客户端不解析
@@ -72,6 +72,60 @@ public class  FileDownloadController {
         // 设置编码
         String hehe = new String(filename.getBytes("utf-8"), "iso-8859-1");
         // 设置扩展头，当Content-Type 的类型为要下载的类型时 , 这个信息头会告诉浏览器这个文件的名字和类型。
+        response.setHeader("Content-Disposition", "attachment;filename=" + hehe);
+        String filepath = cs_id + "/" + filename;
+        FileUtil.download(filepath, response);
+    }
+
+    //下載acceptance的actions
+    @RequestMapping(value = "/AcceptanceActions/{cs_id}/")
+    public void downloadAcceptanceActions(@PathVariable("cs_id") String cs_id)throws IOException {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = requestAttributes.getResponse();
+        
+        String filename = cs_id + "_Acceptance_actions.txt";
+        String type = new MimetypesFileTypeMap().getContentType(filename);
+        
+        response.setHeader("Content-type",type);
+        
+        String hehe = new String(filename.getBytes("utf-8"), "iso-8859-1");
+        
+        response.setHeader("Content-Disposition", "attachment;filename=" + hehe);
+        String filepath = cs_id + "/" + filename;
+        FileUtil.download(filepath, response);
+    }
+
+    //下載question的actions
+    @RequestMapping(value = "/QuestionActions/{cs_id}/")
+    public void downloadQuestionActions(@PathVariable("cs_id") String cs_id)throws IOException {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = requestAttributes.getResponse();
+        
+        String filename = cs_id + "_Question_actions.txt";
+        String type = new MimetypesFileTypeMap().getContentType(filename);
+        
+        response.setHeader("Content-type",type);
+        
+        String hehe = new String(filename.getBytes("utf-8"), "iso-8859-1");
+        
+        response.setHeader("Content-Disposition", "attachment;filename=" + hehe);
+        String filepath = cs_id + "/" + filename;
+        FileUtil.download(filepath, response);
+    }
+
+    //下載rollcall的actions
+    @RequestMapping(value = "/RollcallActions/{cs_id}/")
+    public void downloadRollcallActions(@PathVariable("cs_id") String cs_id)throws IOException {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = requestAttributes.getResponse();
+        
+        String filename = cs_id + "_Rollcall_actions.txt";
+        String type = new MimetypesFileTypeMap().getContentType(filename);
+        
+        response.setHeader("Content-type",type);
+        
+        String hehe = new String(filename.getBytes("utf-8"), "iso-8859-1");
+        
         response.setHeader("Content-Disposition", "attachment;filename=" + hehe);
         String filepath = cs_id + "/" + filename;
         FileUtil.download(filepath, response);

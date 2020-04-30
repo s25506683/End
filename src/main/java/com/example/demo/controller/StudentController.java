@@ -112,7 +112,7 @@ public class StudentController {
 	}
 
 	//send new uuid password to student's email address.
-	//you have to  input std_id, std_email, std_password.
+	//you have to  input std_id, std_email, std_phone.
 	@PutMapping(value = "/sendStudentEmailWithNewPassword/")
 	public ResponseEntity<String> sendNewPasswordToStudentEmail(@RequestBody final Student student) throws SQLException {
 
