@@ -22,6 +22,7 @@ import com.example.demo.entity.Announcement;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 import com.example.demo.util.Logfile;
+import com.example.demo.util.MailService;
 import com.example.demo.util.UserInTheClass;
 
 @RestController
@@ -34,6 +35,9 @@ public class AnnouncementController {
 
   @Autowired
   Logfile logfile;
+
+  @Autowired
+  MailService mailservice;
 
 
 
@@ -48,6 +52,7 @@ public class AnnouncementController {
             IOException {
         AuthenticationUtil auth = new AuthenticationUtil();
         String teacher_id = auth.getCurrentUserName();
+        int teacher_idMail = Integer.parseInt(auth.getCurrentUserName());
 
         if(dao.queryClassHasExists(announcement.getCs_id()) == 0){
             //if this class not exist.
@@ -59,6 +64,13 @@ public class AnnouncementController {
             CurrentTimeStamp ts = new CurrentTimeStamp();
             announcement.setAt_posttime(ts.getCurrentTimeStamp());
             dao.postAnnouncement(announcement);
+
+            String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
+             for(int i = 0; i < studentMailList.length; i++){
+                mailservice.sendAnnouncementforStudent(studentMailList[i], teacher_idMail, announcement);
+             }
+
+
             writtenmessage = "teacher "+ teacher_id + " adding announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
             return ResponseEntity.ok("request successful! the announcement has already added!");
@@ -154,6 +166,27 @@ public class AnnouncementController {
             return ResponseEntity.ok("announcement delete completed!");
         }
     }
+
+
+@PostMapping(value = "/teacher/announcement/sendEmailforStudent")
+    public ResponseEntity<String> sendEmailforStudent(@RequestBody final Announcement announcement) throws SQLException{
+        AuthenticationUtil auth = new AuthenticationUtil();
+        int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+        String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
+
+        for(int i = 0; i < studentMailList.length; i++){
+            mailservice.sendAnnouncementforStudent(studentMailList[i], teacher_id, announcement);
+        }
+
+        return ResponseEntity.ok("send announcement for student");
+
+        
+        
+
+        
+    }
+
 
 
 

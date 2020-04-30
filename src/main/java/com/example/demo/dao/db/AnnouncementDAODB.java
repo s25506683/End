@@ -69,6 +69,19 @@ public class AnnouncementDAODB implements AnnouncementDAO {
  }
 
 
+ public String[] findStudentEmail(String cs_id){
+    String sql = "select group_concat( s.std_mail SEPARATOR ',') as AllstudentMail from student s inner join class_student cs on cs.std_id = s.std_id where cs.cs_id = ?";
+    String studentMail = this.jdbcTemplate.queryForObject(sql, String.class, cs_id);
+    String[] studentMailList = studentMail.split(",");
+    return studentMailList;
+ }
+
+public String findClassName(String cs_id){
+   String sql = "select cs_name from class where cs_id = ?";
+   String Csname = this.jdbcTemplate.queryForObject(sql, String.class, cs_id);
+   return Csname;
+}
+
 
 
 }
