@@ -23,6 +23,8 @@ public class Rollcall {
     private String record_time;
     private int tl_type_id;
     private String gps_point;
+    private String longitude;
+    private String latitude;
 
 
     private int present;
@@ -156,6 +158,22 @@ public class Rollcall {
 
     public void setGps_point(String gps_point) {
         this.gps_point = gps_point;
+    }
+
+    public String getLongitude() {
+        return this.longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return this.latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     

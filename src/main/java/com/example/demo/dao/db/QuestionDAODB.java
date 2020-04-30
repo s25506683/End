@@ -60,7 +60,7 @@ public int hasQuestion(int std_id, String q_asktime){
   }*/
 
  public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime", new Object[]{cs_id}, new QuestionMapper());
+     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_replytime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime", new Object[]{cs_id}, new QuestionMapper());
  }
 
  public String findCsId(int std_id, String q_asktime){
@@ -81,6 +81,7 @@ public int hasQuestion(int std_id, String q_asktime){
          question.setCs_name(rs.getString("cs_name"));
          //df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
          question.setQ_asktime(df.format(rs.getTimestamp("q_asktime")));
+         question.setQ_replytime(rs.getString("q_replytime"));
          //question.setQ_time(rs.getTime("q_time"));
          question.setQ_solved(rs.getString("q_solved"));
          return question;

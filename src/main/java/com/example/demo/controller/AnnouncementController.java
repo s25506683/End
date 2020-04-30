@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.example.demo.dao.AnnouncementDAO;
 import com.example.demo.entity.Announcement;
 import com.example.demo.util.AuthenticationUtil;
@@ -89,7 +91,7 @@ public class AnnouncementController {
     //student get all announcement in the class.
     //you will get at_id, at_title, at_content, at_posttime returns.
  @GetMapping(value = {"/student/announcement/{cs_id}/get/"})
-    public ResponseEntity<List<Announcement>> studentRetrieveAnnouncement(@PathVariable("cs_id") String cs_id) throws Exception {
+    public ResponseEntity<List<Announcement>> studentRetrieveAnnouncement(HttpServletRequest request, @PathVariable("cs_id") String cs_id) throws Exception {
         AuthenticationUtil auth = new AuthenticationUtil();
         String std_id = auth.getCurrentUserName();
 
@@ -97,8 +99,6 @@ public class AnnouncementController {
             //if student not in this class.
             return new ResponseEntity<List<Announcement>>(HttpStatus.BAD_REQUEST);
         }else{
-            //System.out.println("\n\n\n\n\n\n");
-            //System.out.println(maphelper.GetPointDistance("25.015369,121.427966", 2));
             writtenmessage = "student "+ std_id + " watching announcement at in the class.";
             logfile.writeLog(writtenmessage, cs_id, partition);
             return new ResponseEntity<List<Announcement>>(dao.findAllAnnouncementInTheClass(cs_id), HttpStatus.OK);
