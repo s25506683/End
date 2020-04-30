@@ -25,6 +25,14 @@ public class TeacherDAODB implements TeacherDAO {
 
 //jdbcTemplate 
 
+	public int resetPasswordVerify(int teacher_id, String teacher_mail, String teacher_phone){
+		String sql = "select count(teacher_id) as count from teacher where teacher_id = ? and teacher_mail = ? and teacher_phone = ?";
+		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,teacher_id, teacher_mail, teacher_phone);
+		return count;
+	}
+
+
+
 	public int queryUser(int teacher_id) {
 		String sql = "select count(teacher_id) as count from teacher where teacher_id = ?";
 		int count = this.jdbcTemplate.queryForObject(sql, Integer.class, teacher_id);
@@ -32,7 +40,7 @@ public class TeacherDAODB implements TeacherDAO {
 	}
 
 	public String getPassword(int teacher_id) {
-		String sql = "select tescher_password from teacher where teacher_id = ?";
+		String sql = "select teacher_password from teacher where teacher_id = ?";
 		String teacher_password = this.jdbcTemplate.queryForObject(sql, String.class, teacher_id);
 		return teacher_password;
 	}

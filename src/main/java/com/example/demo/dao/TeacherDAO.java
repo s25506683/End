@@ -18,6 +18,8 @@ public interface TeacherDAO {
 
 	public Teacher findOne(int teacher_id);
 
+	public int resetPasswordVerify(int teacher_id, String teacher_mail, String teacher_phone);
+
 //	public int update(Teacher teacher);
 //
 //	public int delete(int std_id);

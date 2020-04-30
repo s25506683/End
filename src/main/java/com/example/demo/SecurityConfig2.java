@@ -46,7 +46,8 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 				.anyRequest().hasRole("USER")
 				.and()
 			.httpBasic()
-			.and().rememberMe().tokenValiditySeconds(600).and().cors();
+			.and().rememberMe().tokenValiditySeconds(600).and().cors()
+			.and().csrf().disable();
 			//.and()
 			//.authorizeRequests()
 			//	.anyRequest().authenticated()

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.logging.LogFile;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.demo.entity.Teacher;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
+import com.example.demo.util.MailService;
 import com.example.demo.dao.TeacherDAO;
 
 @RestController
@@ -39,6 +41,11 @@ public class TeacherController {
 
 	@Autowired
 	Logfile logfile;
+
+	@Autowired
+	MailService mailservice;
+
+	String writtenmessage = new String();
 
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	LocalDateTime now = LocalDateTime.now();
@@ -91,6 +98,7 @@ public class TeacherController {
 		return dao.findAll();
 	}
 
+	//修改密碼有些問題
 	@PutMapping(value = "/teacher/resetPassword")
 	public ResponseEntity<String> processFormUpdate(@RequestBody final Teacher teacher)throws SQLException {
 		AuthenticationUtil auth = new AuthenticationUtil();
@@ -104,6 +112,29 @@ public class TeacherController {
 		}else{	
 			return ResponseEntity.badRequest().body("修改密碼失敗");
 		}
+	}
+
+
+	@PutMapping(value = "/sendTeacherEmailWithNewPassword/")
+	public ResponseEntity<String> sendNewPasswordToStudentEmail(@RequestBody final Teacher teacher) throws SQLException{
+
+		UUID uuid  =  UUID.randomUUID();
+		String[] idarr = uuid.toString().split("-");
+		String id = idarr[0];
+
+		if(dao.resetPasswordVerify(teacher.getTeacher_id(), teacher.getTeacher_mail(), teacher.getTeacher_phone()) == 0){
+
+			return ResponseEntity.badRequest().body("請求失敗，Email或phone沒有找到");
+		}else{
+
+			dao.updateTeacherPassword(teacher.getTeacher_id(), id);
+			String user_email = teacher.getTeacher_mail();
+			String newpassword = id;
+			mailservice.prepareAndSendwithTeacher(user_email, newpassword, teacher.getTeacher_id());
+			return ResponseEntity.ok("寄新密碼成功!!");
+		}
+
+
 	}
 
 }
