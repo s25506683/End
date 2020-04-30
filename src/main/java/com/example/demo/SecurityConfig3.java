@@ -23,6 +23,7 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
  public SecurityConfig3() {
         super();
     }
+
  
  @Override
  protected void configure(HttpSecurity http) throws Exception {
@@ -79,6 +80,7 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
      
   
  //  auth.inMemoryAuthentication()     // 驗證資訊存放於記憶體
+
     //    .passwordEncoder(passwordEncoder)
     //    .withUser("admin") 
     //        .password(passwordEncoder.encode("admin12345678"))

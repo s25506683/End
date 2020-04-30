@@ -49,13 +49,14 @@ public class TakeleaveController {
 
 
   @GetMapping(value = {"/teacher/takeleave/AllStudent/{cs_id}"}) //教師看到所有學生的請假申請
-    public ResponseEntity<List<Takeleave>> retrieveAllTakeleave(@PathVariable("cs_id") final String cs_id, @RequestBody Takeleave takeleave) throws SQLException,
+    public ResponseEntity<List<Takeleave>> retrieveAllTakeleave(@PathVariable("cs_id") final String cs_id) throws SQLException,
       IOException {
 
-      AuthenticationUtil auth = new AuthenticationUtil();
-      String teacher_id = auth.getCurrentUserName();
-      writtenmessage = "teacher \"" + teacher_id + "\" watching student takeleave record in class \"";
-      logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
+      // AuthenticationUtil auth = new AuthenticationUtil();
+      // String teacher_id = auth.getCurrentUserName();
+      // writtenmessage = "teacher \"" + teacher_id + "\" watching student takeleave record in class \"";
+      // logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
+      
       return new ResponseEntity<List<Takeleave>>(dao.findTakeleaveInTheClass(cs_id), HttpStatus.OK);
 
     }

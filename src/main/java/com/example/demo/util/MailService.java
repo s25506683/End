@@ -33,4 +33,25 @@ public class MailService {
              // runtime exception; compiler will not force you to handle it
          }
     }
+
+
+
+    public void prepareAndSendwithTeacher(String recipient, String message, int teacher_id) {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+              MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+              messageHelper.setFrom("qrgomanager@gmail.com");
+              messageHelper.setTo(recipient);
+              messageHelper.setSubject("您的QRgo系統帳號為" + teacher_id + "的密碼已經變更");
+              messageHelper.setText("您的新密碼為：" + message + "\n請儘速登入系統更改密碼！");
+          };
+          try {
+              mailSender.send(messagePreparator);
+              //System.out.println("sent");
+          } catch (MailException e) {
+              //System.out.println(e);
+              // runtime exception; compiler will not force you to handle it
+          }
+     }
+
+
 }

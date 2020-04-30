@@ -26,6 +26,7 @@ public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
  public SecurityConfig2() {
         super();
     }
+
  
  @Override
  protected void configure(final HttpSecurity http) throws Exception {
