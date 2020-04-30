@@ -18,4 +18,10 @@ public interface AnnouncementDAO {
 
     public int deleteAnnouncement(Announcement announcement);
 
+    // public int sendEmailforStudent(String cs_id);
+
+    public String[] findStudentEmail(String cs_id);
+
+    public String findClassName(String cs_id);
+
 }
