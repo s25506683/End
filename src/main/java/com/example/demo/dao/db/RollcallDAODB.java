@@ -90,7 +90,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findOneRollcallRecord(final int rc_id) {
-    return this.jdbcTemplate.query( "select rcre.std_id, s.std_name, s.std_department, rcre.record_time, tltype.tl_type_name from rc_record rcre inner join student s on s.std_id = rcre.std_id inner join takeleave_type tltype on tltype.tl_type_id = rcre.tl_type_id where rcre.rc_id = ? order by rcre.std_id"
+    return this.jdbcTemplate.query( "select rcre.std_id, s.std_name, s.std_department, rcre.record_time, tltype.tl_type_name, rcre.tl_type_id from rc_record rcre inner join student s on s.std_id = rcre.std_id inner join takeleave_type tltype on tltype.tl_type_id = rcre.tl_type_id where rcre.rc_id = ? order by rcre.std_id"
     , new Object[]{rc_id}, new RollcallMapper());
   }
 
@@ -128,6 +128,7 @@ public class RollcallDAODB implements RollcallDAO {
          rollcall.setStd_department(rs.getString("std_department"));
          rollcall.setRecord_time(rs.getString("record_time"));
          rollcall.setTl_type_name(rs.getString("tl_type_name"));
+         rollcall.setTl_type_id(rs.getInt("tl_type_id"));
          return rollcall;
      }
   }

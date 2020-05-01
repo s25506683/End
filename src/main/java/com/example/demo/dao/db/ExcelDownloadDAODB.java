@@ -27,22 +27,20 @@ public class ExcelDownloadDAODB implements ExcelDownloadDAO {
 
 
 
-    public String findRcStarttime(int rc_id){
-        String sql = "select rc_starttime from rollcall where rc_id = ?";
-        String rc_starttime = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
-        return rc_starttime;
+    public String findRcClassInfo(int rc_id){
+        String sql = "select concat(rc.cs_id, ',', cs.cs_name, ',', rc.rc_starttime, ',', rc.rc_inputsource) from rollcall as rc inner join class as cs on cs.cs_id = rc.cs_id where rc_id = ?";
+        String classinfo = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
+        return classinfo;
     }
 
     public List<ExcelDownload> findOneRollcallRecord(int rc_id){
-        return this.jdbcTemplate.query( "select rc.cs_id, rc.rc_inputsource, rcre.std_id, st.std_name, st.std_department, rcre.record_time, tk.tl_type_name from rc_record as rcre inner join rollcall as rc on rc.rc_id = rcre.rc_id inner join takeleave_type as tk on tk.tl_type_id = rcre.tl_type_id inner join student as st on st.std_id = rcre.std_id where rc.rc_id = ?"
+        return this.jdbcTemplate.query( "select rcre.std_id, st.std_name, st.std_department, rcre.record_time, tk.tl_type_name from rc_record as rcre inner join takeleave_type as tk on tk.tl_type_id = rcre.tl_type_id inner join student as st on st.std_id = rcre.std_id where rcre.rc_id = ?"
     , new Object[]{rc_id}, new ExcelDownloadMapper());
     }
 
     private static final class ExcelDownloadMapper implements RowMapper<ExcelDownload> {
         public ExcelDownload mapRow(final ResultSet rs, final int rowNum) throws SQLException {
            final ExcelDownload exceldownload = new ExcelDownload();
-            exceldownload.setCs_id(rs.getString("cs_id"));
-            exceldownload.setRc_inputsource(rs.getString("rc_inputsource"));
             exceldownload.setStd_id(rs.getInt("std_id"));
             exceldownload.setStd_name(rs.getString("std_name"));
             exceldownload.setStd_department(rs.getString("std_department"));
