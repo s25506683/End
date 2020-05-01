@@ -71,12 +71,12 @@ public class TakeleaveController {
 
     }
 
-  @GetMapping(value = {"/student/takeleave/StudentAbsence"}) //學生查看自己的缺課紀錄
-  public ResponseEntity<List<Takeleave>> retrieveStudentAbsence() throws SQLException{
+  @GetMapping(value = {"/student/takeleave/StudentAbsence/{cs_id}"}) //學生查看自己的缺課紀錄
+  public ResponseEntity<List<Takeleave>> retrieveStudentAbsence(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
     AuthenticationUtil auth = new AuthenticationUtil();
     String std_id = auth.getCurrentUserName(); 
-    return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleave(std_id), HttpStatus.OK);
+    return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleave(std_id,cs_id), HttpStatus.OK);
   
   }
 
