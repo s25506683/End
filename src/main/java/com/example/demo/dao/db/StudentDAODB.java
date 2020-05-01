@@ -123,7 +123,12 @@ public class StudentDAODB implements StudentDAO {
 	
 	public int updateStudentMail(int std_id, String std_mail){
 		return jdbcTemplate.update("update student set std_mail = ? where std_id = ?",
-		std_mail,std_id);
+		std_mail, std_id);
+	}
+
+	public int updateStudentPhone(int std_id, String std_phone){
+		return jdbcTemplate.update("update student set std_phone = ? where std_id = ?",
+		std_phone, std_id);
 	}
 
 
