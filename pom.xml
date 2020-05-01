@@ -58,7 +58,12 @@
   			<artifactId>spring-boot-starter-mail</artifactId>
   		</dependency>
 
-		
+		<!-- Spring boot download excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
 
 
 

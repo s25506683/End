@@ -24,7 +24,7 @@ import com.example.demo.util.FileUtil;
 
 
 @RestController
-@RequestMapping("/download")
+@RequestMapping("/downloadTxt")
 public class  FileDownloadController {
 
 
