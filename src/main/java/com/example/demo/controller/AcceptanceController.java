@@ -79,8 +79,8 @@ public class AcceptanceController {
          IOException {
 
    
-      if(acceptance.getHw_content() == ""){
-         return ResponseEntity.badRequest().body("作業內容不得為空");
+      if(acceptance.getHw_content() == "" || acceptance.getHw_name() == ""){
+         return ResponseEntity.badRequest().body("作業名稱與內容不得為空");
       }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 1){
          return ResponseEntity.badRequest().body("這堂課已有此作業，請更改作業名稱"); //資料庫內已有相同名稱作業
       }else{
@@ -200,8 +200,9 @@ public class AcceptanceController {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
       
-      if(acceptance.getHw_content() == ""){
-         return ResponseEntity.badRequest().body("作業內容不得為空");
+
+      if(acceptance.getHw_content() == "" || acceptance.getHw_name() == ""){
+         return ResponseEntity.badRequest().body("作業內容或名稱不得為空");
       }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 0){
          return ResponseEntity.badRequest().body("無此作業，請先新增作業");
       }

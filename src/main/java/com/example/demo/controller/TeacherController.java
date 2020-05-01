@@ -114,6 +114,41 @@ public class TeacherController {
 		}
 	}
 
+	@PutMapping(value = "/teacher/resetEmail")
+	public ResponseEntity<String> processForUpdateMail(@RequestBody final Teacher teacher)throws SQLException{
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+		if(dao.queryUser(teacher.getTeacher_id()) == 0){
+
+				if(teacher.getTeacher_mail().contains("@")){
+					dao.updateTeacherMail(teacher_id, teacher.getTeacher_mail());
+					writtenmessage = "teacher \"" + teacher_id + "\" update new Email \"";    
+					logfile.writeLog(writtenmessage);
+					return ResponseEntity.ok("修改Email成功!");
+				}
+				else{
+					return ResponseEntity.badRequest().body("email格式錯誤");
+				}
+			
+		}else{
+			return ResponseEntity.badRequest().body("此帳號已存在");
+		}
+	}
+
+	@PutMapping(value = "/teacher/resetPhone")
+	public ResponseEntity<String> processUpdatePhone(@RequestBody final Teacher teacher)throws SQLException{
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+		if(teacher.getTeacher_phone().length() == 10){
+			dao.updateTeacherPhone(teacher_id, teacher.getTeacher_phone());
+			return ResponseEntity.ok("修改Phone成功!");
+		}else{
+			return ResponseEntity.badRequest().body("phone格式不正確，請輸入10位數字的電話號碼");
+		}
+		
+	}
 
 	@PutMapping(value = "/sendTeacherEmailWithNewPassword/")
 	public ResponseEntity<String> sendNewPasswordToStudentEmail(@RequestBody final Teacher teacher) throws SQLException{

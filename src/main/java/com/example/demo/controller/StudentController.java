@@ -111,6 +111,36 @@ public class StudentController {
 		
 	}
 
+	//student change own Email after login.
+	//you have to input old std_mail, std_mail.
+	@PutMapping(value = "/student/resetEmail")
+	public ResponseEntity<String> processFormUpdateMail(@RequestBody final Student student) throws SQLException{
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+		if(dao.queryUser(student.getStd_id()) == 0){
+			//if input's std_id out of range(or less than) 9
+			
+				//if input email's format is alright
+				if(student.getStd_mail().contains("@")){
+					dao.insert(student);
+					writtenmessage = "student \"" + std_id + "\" update new Email \"";    
+					logfile.writeLog(writtenmessage);
+					return ResponseEntity.ok("request successful!");
+				}else{
+					return ResponseEntity.badRequest().body("request failed. Email format error!");
+				}
+			
+			
+		}else{
+			return ResponseEntity.badRequest().body("This account has already exist!");
+			
+		}
+		
+	}
+
+
+
 	//send new uuid password to student's email address.
 	//you have to  input std_id, std_email, std_phone.
 	@PutMapping(value = "/sendStudentEmailWithNewPassword/")

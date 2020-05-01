@@ -52,6 +52,16 @@ public class TeacherDAODB implements TeacherDAO {
 		password, teacher_id);
 	}
 
+	public int updateTeacherMail(int teacher_id, String teacher_mail){
+		return jdbcTemplate.update("update teacher set teacher_mail = ? where teacher_id = ?",
+		teacher_mail,teacher_id);
+	}
+
+	public int updateTeacherPhone(int teacher_id, String teacher_phone){
+		return jdbcTemplate.update("update teacher set teacher_phone = ? where teacher_id = ?",
+		teacher_phone,teacher_id);
+	}
+
 	public int insert(Teacher teacher) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode(teacher.getTeacher_password());
