@@ -23,5 +23,7 @@ public interface StudentDAO {
 
 	public int updateStudentPassword(int std_id, String std_password);
 
+	public int updateStudentMail(int std_id, String std_mail);
+
 	public int delete(int std_id);
 }

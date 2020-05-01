@@ -120,6 +120,12 @@ public class StudentDAODB implements StudentDAO {
 		password, std_id);
 	 }
 
+	
+	public int updateStudentMail(int std_id, String std_mail){
+		return jdbcTemplate.update("update student set std_mail = ? where std_id = ?",
+		std_mail,std_id);
+	}
+
 
 	public int delete(int std_id) {
 		return jdbcTemplate.update("delete from registration where std_id =?", std_id);

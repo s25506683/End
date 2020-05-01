@@ -143,3 +143,5 @@ This is a sample text.
 2020/04/15 17:19:24	406401588 now has already registered!
 2020/04/16 21:35:25	student "406401616" apply takeleave in rollcall "2".
 2020/04/19 17:17:37	student "406401616" apply takeleave in rollcall "23".
+2020/05/01 18:08:19	student "406401599" apply takeleave in rollcall "1".
+2020/05/01 19:57:16	teacher "16283" update new Email "

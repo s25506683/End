@@ -12,6 +12,10 @@ public interface TeacherDAO {
 
 	public int updateTeacherPassword(int teacher_id, String teacher_password);
 
+	public int updateTeacherMail(int teacher_id, String teacher_mail);
+
+	public int updateTeacherPhone(int teacher_id, String teacher_phone);
+
 	public int insert(Teacher teacher);
 
 	public List<Teacher> findAll();
