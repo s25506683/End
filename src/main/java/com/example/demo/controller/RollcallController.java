@@ -91,14 +91,14 @@ public class RollcallController {
 
    //teacher find rc_id using qrcode.
    //you will get rc_id return.
- @GetMapping(value = {"/teacher/rollcall/findRCID/"})
- public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@RequestBody Rollcall rollcall) throws SQLException {
+ @GetMapping(value = {"/teacher/rollcall/findRCID/{qrcode}/"})
+ public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@PathVariable("qrcode") final String qrcode) throws SQLException {
 
-    if(dao.hasThisQRcode(rollcall.getQrcode()) == 0){
+    if(dao.hasThisQRcode(qrcode) == 0){
       //if this qrcode Id not found.
       return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
     }else{
-      return new ResponseEntity<List<Rollcall>>(dao.findRcIdWithQRcode(rollcall.getQrcode()), HttpStatus.OK);
+      return new ResponseEntity<List<Rollcall>>(dao.findRcIdWithQRcode(qrcode), HttpStatus.OK);
     }
  }
 
