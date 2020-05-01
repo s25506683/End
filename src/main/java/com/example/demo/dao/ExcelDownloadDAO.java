@@ -8,7 +8,7 @@ public interface ExcelDownloadDAO {
 
 public List<ExcelDownload> findOneRollcallRecord(int rc_id);
 
-public String findRcStarttime(int rc_id);
+public String findRcClassInfo(int rc_id);
 
 
 

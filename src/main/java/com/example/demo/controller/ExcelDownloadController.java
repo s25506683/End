@@ -45,10 +45,12 @@ public class ExcelDownloadController {
 
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletResponse response = requestAttributes.getResponse();
-        String filename = dao.findRcStarttime(rc_id);
+        String classinfo[] = dao.findRcClassInfo(rc_id).split(",");
         String function = "Rollcall";
+
+
         
-        excelutil.write(dao.findOneRollcallRecord(rc_id), filename, function, response);
+        excelutil.write(dao.findOneRollcallRecord(rc_id), classinfo, function, response);
 
 
     }
