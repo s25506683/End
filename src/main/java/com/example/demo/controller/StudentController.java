@@ -123,10 +123,10 @@ public class StudentController {
 			
 				//if input email's format is alright
 				if(student.getStd_mail().contains("@")){
-					dao.insert(student);
-					writtenmessage = "student \"" + std_id + "\" update new Email \"";    
+					dao.updateStudentMail(std_id, student.getStd_mail());
+					writtenmessage = "student \"" + std_id + "\" update new Email \"";  
 					logfile.writeLog(writtenmessage);
-					return ResponseEntity.ok("request successful!");
+					return ResponseEntity.ok("update new Email successful!");
 				}else{
 					return ResponseEntity.badRequest().body("request failed. Email format error!");
 				}
@@ -137,6 +137,26 @@ public class StudentController {
 			
 		}
 		
+	}
+
+
+	//student change owm Phone after login.
+	//you have to input old std_phone, std_phone
+	@PutMapping(value = "/student/resetPhone")
+	public ResponseEntity<String> processFormUpdatePhone(@RequestBody final Student student) throws SQLException{
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int std_id = Integer.parseInt(auth.getCurrentUserName());
+	
+		
+		if(student.getStd_phone().length() == 10){
+			dao.updateStudentPhone(std_id, student.getStd_phone());
+			return ResponseEntity.ok("update new Phone successful!");
+		}else{
+			return ResponseEntity.badRequest().body("input Phone number format error! Only 10 number. ");
+		}
+	
+	
+	
 	}
 
 

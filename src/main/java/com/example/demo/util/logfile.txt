@@ -145,3 +145,5 @@ This is a sample text.
 2020/04/19 17:17:37	student "406401616" apply takeleave in rollcall "23".
 2020/05/01 18:08:19	student "406401599" apply takeleave in rollcall "1".
 2020/05/01 19:57:16	teacher "16283" update new Email "
+2020/05/01 20:55:59	student "406401599" update new Email "
+2020/05/01 20:56:40	student "406401599" update new Email "
