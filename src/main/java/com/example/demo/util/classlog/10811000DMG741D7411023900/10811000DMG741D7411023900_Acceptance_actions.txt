@@ -2,3 +2,35 @@
 2020/04/14 21:54:23	student "406401599" writing acceptance in homework "15".
 2020/04/14 21:54:23	student "406401599" deleted acceptance with homework ID "15".
 2020/04/14 22:03:26	teacher "16283" deleted homework with homework "gogog".
+2020/05/01 16:52:18	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 16:52:21	teacher "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 16:52:23	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 16:57:48	teacher "16283" create new homework in class "10811000DMG741D7411023900".
+2020/05/01 16:58:12	teacher "16283" create new homework in class "10811000DMG741D7411023900".
+2020/05/01 16:58:39	teacher "16283" create new homework in class "10811000DMG741D7411023900".
+2020/05/01 17:00:58	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:01:04	teacher "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:01:19	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:10:22	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:29:42	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:29:43	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:29:46	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:29:46	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:30:19	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:30:22	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:30:45	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:33:26	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:36:59	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:38:56	student "406401616" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:39:17	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:39:19	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:39:37	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:39:38	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:39:58	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:40:00	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:40:50	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:40:51	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:41:10	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:41:15	student "406401599" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/01 17:41:23	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/01 17:42:27	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".

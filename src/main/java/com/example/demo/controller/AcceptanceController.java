@@ -115,7 +115,26 @@ public class AcceptanceController {
 
     } //第一頁驗收中學生可以看到作業的相關內容
 
+   
+    @GetMapping(value = {"/teacher/acceptance/{hw_cs_id}"})
+    public ResponseEntity<List<Acceptance>> retrieveOneAcceptanceTeacher(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
+          IOException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName(); 
+     
+      
+      if(dao.queryTeacherInTheClass(hw_cs_id,teacher_id) == 0){
+         //如果學生不屬於這個課堂
+         return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
+      }else{
+         writtenmessage = "teacher \"" + teacher_id + "\" watching homework in class \"" + hw_cs_id + "\".";
+         logfile.writeLog(writtenmessage, hw_cs_id, partition);
+         return new ResponseEntity<List<Acceptance>>(dao.findCourseHomeworkformTeacher(hw_cs_id), HttpStatus.OK);
+      }
 
+    } //第一頁驗收中教師可以看到作業的相關內容
+
+   
 
  @GetMapping(value = {"/student/acceptance/hw/{cs_id}/{hw_name}"})
     public ResponseEntity<List<Acceptance>> retrieveAcceptance(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException,
@@ -126,12 +145,30 @@ public class AcceptanceController {
          //如果學生不屬於這個課堂
          return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
       }else{
-         writtenmessage = "teacher \"" + std_id + "\" watching acceptancelist in class \"" + cs_id + "\".";
+         writtenmessage = "student \"" + std_id + "\" watching acceptancelist in class \"" + cs_id + "\".";
          logfile.writeLog(writtenmessage, cs_id, partition);
           return new ResponseEntity<List<Acceptance>>(dao.findHomeworkDetail(cs_id,hw_name),HttpStatus.OK); //
       }
      
     }
+
+
+    @GetMapping(value = {"/teacher/acceptance/hw/{cs_id}/{hw_name}"})
+    public ResponseEntity<List<Acceptance>> retrieveAcceptanceTeacher(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException,
+          IOException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+      if(dao.queryTeacherInTheClass(cs_id,teacher_id) == 0){
+         //如果學生不屬於這個課堂
+         return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
+      }else{
+         writtenmessage = "teacher \"" + teacher_id + "\" watching acceptancelist in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage, cs_id, partition);
+          return new ResponseEntity<List<Acceptance>>(dao.findHomeworkDetailformTeacher(cs_id,hw_name),HttpStatus.OK); //
+      }
+     
+    }
+   
 
     
  @PutMapping(value = "/teacher/updateScore")

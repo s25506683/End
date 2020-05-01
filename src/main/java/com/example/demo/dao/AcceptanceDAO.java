@@ -24,9 +24,13 @@ public interface AcceptanceDAO {
 
  public int insertHomework(Acceptance acceptance);
 
- public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name);
+ public List<Acceptance> findCourseHomework(String hw_cs_id); //驗收中學生可以看到作業的相關內容
 
- public List<Acceptance> findCourseHomework(String hw_cs_id);
+ public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name); //學生查看驗收排序資料
+
+ public List<Acceptance> findCourseHomeworkformTeacher(String hw_cs_id); //驗收中教師可以看到作業的內容
+
+ public List<Acceptance> findHomeworkDetailformTeacher(String cs_id, String hw_name);//教師查看作業驗收的排序
 
  public int updateScore(Acceptance acceptance);
 

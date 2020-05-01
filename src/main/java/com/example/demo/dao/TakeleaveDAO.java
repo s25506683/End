@@ -12,7 +12,7 @@ public List<Takeleave> findTakeleaveInTheClass(String cs_id);
 
 public List<Takeleave> findStudentTakeleaveRecord(String std_id, String cs_id);
 
-public List<Takeleave> findStudentTakeleave(String std_id);
+public List<Takeleave> findStudentTakeleave(String std_id, String cs_id);
 
 public int queryStudentInTakeleave(int rc_id, int std_id);
 

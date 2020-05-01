@@ -105,6 +105,16 @@ public int insertHomework(final Acceptance acceptance){
  }
 
 
+ public List<Acceptance> findCourseHomeworkformTeacher(final String hw_cs_id){
+  return this.jdbcTemplate.query( "select hw_name, hw_createtime from homework where hw_cs_id = ?"
+  ,new Object[]{hw_cs_id}, new HomeWorkMapper());
+ }
+
+ public List<Acceptance> findHomeworkDetailformTeacher(final String cs_id, final String hw_name) {  
+  return this.jdbcTemplate.query( "select a.accept_id, a.accept_std_id, a.accept_hw_id, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where hw.hw_cs_id = ? and hw.hw_name = ?"
+    , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
+}
+
  private static final class AcceptanceMapper implements RowMapper<Acceptance> {
 
      public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {

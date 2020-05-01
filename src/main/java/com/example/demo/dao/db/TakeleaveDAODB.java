@@ -77,9 +77,9 @@ public List<Takeleave> findStudentTakeleaveRecord(final String std_id, final Str
         new Object[]{std_id, cs_id}, new TakeleaveMapper1());
 }
 
-public List<Takeleave> findStudentTakeleave(final String std_id){
-    return this.jdbcTemplate.query("select rcre.record_time, rc.rc_inputsource from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id where rcre.std_id = ?",
-        new Object[]{std_id}, new TakeleaveMapper2());
+public List<Takeleave> findStudentTakeleave(final String std_id, final String cs_id){
+    return this.jdbcTemplate.query("select rcre.record_time, rc.rc_inputsource from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ?",
+        new Object[]{std_id, cs_id}, new TakeleaveMapper2());
 }
 
 private static final class TakeleaveMapper implements RowMapper<Takeleave> {
