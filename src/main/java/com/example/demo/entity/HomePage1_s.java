@@ -13,6 +13,8 @@ public class HomePage1_s {
     private int std_id;
     private int teacher_id;
 
+    //user_role value '0' is student, '1' is teacher.
+    private int user_role;
 
 
 
@@ -55,7 +57,7 @@ public class HomePage1_s {
     public void setCs_photo(String cs_photo) {
         this.cs_photo = cs_photo;
     }
-    
+
     public int getStd_id() {
         return this.std_id;
     }
@@ -64,6 +66,8 @@ public class HomePage1_s {
         this.std_id = std_id;
     }
     
+    
+    
     public int getTeacher_id() {
         return this.teacher_id;
     }
@@ -71,6 +75,14 @@ public class HomePage1_s {
     public void setTeacher_id(int teacher_id) {
         this.teacher_id = teacher_id;
     }
+
+	public int getUser_role() {
+		return this.user_role;
+	}
+
+	public void setUser_role(int user_role) {
+		this.user_role = user_role;
+	}
     
     
 

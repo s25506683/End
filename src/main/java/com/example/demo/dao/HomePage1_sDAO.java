@@ -16,5 +16,9 @@ public interface HomePage1_sDAO {
  //public int update(HomePage1_s homepage1_s);
  //public int delete(int id);
 
+ public List<HomePage1_s> queryUserRole(int user_id);
+
+//  public List<HomePage1_s> CheckUserRole(int std_id);
+
  
 }

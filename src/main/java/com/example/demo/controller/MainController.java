@@ -28,14 +28,14 @@ import ch.qos.logback.core.joran.conditional.ElseAction;
 @Controller
 public class MainController {
 
-    @CrossOrigin
-    @RequestMapping("/login_s")
-    public void login(HttpServletResponse response) {
+    // @CrossOrigin
+    // @RequestMapping("/login_s")
+    // public void login(HttpServletResponse response) {
 
-        response.addHeader("Access-Control-Allow-Origin", "*");
-        response.addHeader("Location", "http://localhost:3000/homepages");
-        response.setStatus(302);
-    }
+    //     response.addHeader("Access-Control-Allow-Origin", "*");
+    //     response.addHeader("Location", "http://localhost:3000/homepages");
+    //     response.setStatus(302);
+    // }
 
 
 
