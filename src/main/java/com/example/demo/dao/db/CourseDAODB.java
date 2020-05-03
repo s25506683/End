@@ -25,14 +25,28 @@ public class CourseDAODB implements CourseDAO {
 //jdbcTemplate 
 
 
-public int TeacherNewCourse(Course course) {
+  public int TeacherNewCourse(Course course) {
     return jdbcTemplate.update(
       "insert into class (cs_id, cs_name, cs_photo) values(?, ?, ?)",
       course.getCs_id(), course.getCs_name(), course.getCs_photo());
-      
- }
+  }
 
- 
+  public List<Course> findClassStudentList(final String cs_id){
+    return this.jdbcTemplate.query("select s.std_id, s.std_name, s.std_department from student s inner join class_student cs on cs.std_id = s.std_id where cs.cs_id = ?"
+    , new Object[]{cs_id}, new RollcallMapper());
+  }
+
+  private static final class RollcallMapper implements RowMapper<Course> {
+    public Course mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Course course = new Course();
+        course.setStd_id(rs.getInt("std_id"));
+        course.setStd_name(rs.getString("std_name"));
+        course.setStd_department(rs.getString("std_department"));
+        return course;
+    }
+  }
+
+
  
 }
 

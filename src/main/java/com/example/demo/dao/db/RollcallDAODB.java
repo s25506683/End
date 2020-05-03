@@ -95,19 +95,19 @@ public class RollcallDAODB implements RollcallDAO {
        rc_id, std_id);
   }
 
+  public List<Rollcall> findOneRollcallSummaryRecord(int rc_id){
+    return this.jdbcTemplate.query( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0) as otherwise from rc_record where rc_id = ?"
+    , new Object[]{rc_id}, new RollcallMapper7());
+  }
+
   public List<Rollcall> findOneRollcallRecord(final int rc_id) {
     return this.jdbcTemplate.query( "select rcre.std_id, s.std_name, s.std_department, rcre.record_time, tltype.tl_type_name, rcre.tl_type_id from rc_record rcre inner join student s on s.std_id = rcre.std_id inner join takeleave_type tltype on tltype.tl_type_id = rcre.tl_type_id where rcre.rc_id = ? order by rcre.std_id"
     , new Object[]{rc_id}, new RollcallMapper());
   }
 
   public List<Rollcall> findAllRollcallRecord(final String cs_id) {
-     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id = 1 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id"
+     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id > 3 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id"
      , new Object[]{cs_id}, new RollcallMapper2());
-  }
-
- public List<Rollcall> findClassStudentList(final String cs_id){
-     return this.jdbcTemplate.query("select s.std_id, s.std_name, s.std_department from student s inner join class_student cs on cs.std_id = s.std_id where cs.cs_id = ?"
-     , new Object[]{cs_id}, new RollcallMapper3());
   }
 
   public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
@@ -154,11 +154,11 @@ public class RollcallDAODB implements RollcallDAO {
 
   private static final class RollcallMapper3 implements RowMapper<Rollcall> {
     public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-       final Rollcall rollcall = new Rollcall();
-        rollcall.setStd_id(rs.getInt("std_id"));
-        rollcall.setStd_name(rs.getString("std_name"));
-        rollcall.setStd_department(rs.getString("std_department"));
-        return rollcall;
+       final Rollcall rollcall3 = new Rollcall();
+        rollcall3.setStd_id(rs.getInt("std_id"));
+        rollcall3.setStd_name(rs.getString("std_name"));
+        rollcall3.setStd_department(rs.getString("std_department"));
+        return rollcall3;
     }
   }
 
@@ -195,6 +195,17 @@ public class RollcallDAODB implements RollcallDAO {
         return rollcall6;
     }
   }
+
+  private static final class RollcallMapper7 implements RowMapper<Rollcall> {
+    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Rollcall rollcall7 = new Rollcall();
+         rollcall7.setPresent(rs.getInt("present"));
+         rollcall7.setLong_distance(rs.getInt("long_distance"));
+         rollcall7.setTakeleave(rs.getInt("takeleave"));
+         rollcall7.setOtherwise(rs.getInt("otherwise"));
+         return rollcall7;
+     }
+   }
 
 
   public String findQRcodeInRollcallName(int rc_id){
