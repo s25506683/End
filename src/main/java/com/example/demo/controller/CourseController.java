@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +18,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.bind.annotation.RequestMethod;
 //import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.dao.ClassDAO;
+import com.example.demo.dao.CourseDAO;
 
 //import org.springframework.web.servlet.ModelAndView;
-
-import com.example.demo.dao.CustomerDAO;
-import com.example.demo.entity.Customer;
+import com.example.demo.entity.Course;
 
 @RestController
-public class ClassController {
+public class CourseController {
   @Autowired
-  ClassDAO dao;
+  CourseDAO dao;
+
+
+@PostMapping(value = "/teacher/Course/newclass")
+  public ResponseEntity<String> processFormCreate(@RequestBody final Course course) throws SQLException{
+
+    if(course.getCs_id() == "" || course.getCs_name() == ""){
+      return ResponseEntity.badRequest().body("作業ID與名稱不能為空");
+    }
+    return ResponseEntity.ok("新增課程成功!!");
+  }
 
 
  
