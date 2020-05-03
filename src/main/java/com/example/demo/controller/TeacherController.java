@@ -98,7 +98,7 @@ public class TeacherController {
 		return dao.findAll();
 	}
 
-	//修改密碼有些問題
+
 	@PutMapping(value = "/teacher/resetPassword")
 	public ResponseEntity<String> processFormUpdate(@RequestBody final Teacher teacher)throws SQLException {
 		AuthenticationUtil auth = new AuthenticationUtil();
@@ -110,7 +110,7 @@ public class TeacherController {
 			dao.updateTeacherPassword(teacher_id, teacher.getTeacher_password());
 			return ResponseEntity.ok("修改密碼成功");
 		}else{	
-			return ResponseEntity.badRequest().body("修改密碼失敗");
+			return ResponseEntity.badRequest().body("修改密碼失敗，請輸入正確的舊密碼");
 		}
 	}
 
