@@ -44,14 +44,19 @@ public class HomePage1_sController {
     //@POST
 
 
- @GetMapping(value = {"/CheckUserRole"})
-    public List<HomePage1_s> checkTheUserRole() throws SQLException{
-
+  //check login user's role.
+  //'1' is teacher, '0' is student.
+ @GetMapping(value = {"/CheckUserRole/"})
+    public ResponseEntity<String> checkTheUserRole() throws SQLException{
 
       AuthenticationUtil auth = new AuthenticationUtil();
       int user_id = Integer.parseInt(auth.getCurrentUserName());
 
-      return dao.queryUserRole(user_id);
+      if(dao.queryUserRole(user_id) == 1){
+        return ResponseEntity.ok("1");
+      }else{
+        return ResponseEntity.ok("0");
+      }
       
     }
  
