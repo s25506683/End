@@ -29,6 +29,8 @@ public class CourseController {
   CourseDAO dao;
 
 
+//student post there course to db.
+//you will input cs_id, cs_name, cs_cs_photo.
 @PostMapping(value = "/teacher/Course/newclass")
   public ResponseEntity<String> processFormCreate(@RequestBody final Course course) throws SQLException{
 
@@ -39,6 +41,8 @@ public class CourseController {
     dao.TeacherNewCourse(course);
     return ResponseEntity.ok("新增課程成功!!");
   }
+
+
 
 
  
