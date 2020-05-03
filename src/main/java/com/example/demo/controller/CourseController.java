@@ -50,7 +50,8 @@ public class CourseController {
     if(course.getCs_id() == "" || course.getCs_name() == ""){
       return ResponseEntity.badRequest().body("作業ID與名稱不能為空");
     }
-    
+
+    dao.TeacherNewCourse(course);
     return ResponseEntity.ok("新增課程成功!!");
   }
 
