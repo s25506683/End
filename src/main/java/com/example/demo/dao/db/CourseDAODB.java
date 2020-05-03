@@ -25,10 +25,36 @@ public class CourseDAODB implements CourseDAO {
 //jdbcTemplate 
 
 
-  public int TeacherNewCourse(Course course) {
+
+
+  public int TeacherCreateCourse(Course course) {
     return jdbcTemplate.update(
-      "insert into class (cs_id, cs_name, cs_photo) values(?, ?, ?)",
-      course.getCs_id(), course.getCs_name(), course.getCs_photo());
+      "insert into class (cs_id, cs_name) values(?, ?)",
+      course.getCs_id(), course.getCs_name());
+  }
+
+  public int TeacherAddToClass(int teacher_id, String cs_id){
+    return jdbcTemplate.update(
+      "insert into class_teacher (teacher_id, cs_id) values(?, ?)",
+      teacher_id, cs_id);
+  }
+
+  public int StudentJoinClass(int std_id, String cs_id){
+    return jdbcTemplate.update(
+      "insert into class_student (std_id, cs_id) values(?, ?)",
+      std_id, cs_id);
+  }
+
+  public int hasSameClassId(String cs_id){
+    String sql = "select count(cs_id) as count from class where cs_id = ?";
+    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,cs_id);
+    return count;
+  }
+
+  public int hasThisQRcode(String cs_qrcode){
+    String sql = "select count(cs_qrcode) as count from class where cs_qrcode = ?";
+    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,cs_qrcode);
+    return count;
   }
 
   public List<Course> findClassStudentList(final String cs_id){
@@ -44,6 +70,12 @@ public class CourseDAODB implements CourseDAO {
         course.setStd_department(rs.getString("std_department"));
         return course;
     }
+  }
+
+  public int updateCsQRcode(String cs_id, String cs_qrcode){
+    return jdbcTemplate.update(
+        "update class set cs_qrcode = ? where cs_id = ?",
+        cs_qrcode, cs_id);
   }
 
 

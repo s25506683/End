@@ -43,17 +43,70 @@ public class CourseController {
 
 
 
+  //teacher create a new class.
+  //you will input cs_id, cs_name.
+  @PostMapping(value = "/teacher/course/addclass/")
+  public ResponseEntity<String> processFormCreate(@RequestBody Course course) throws SQLException{
 
-  @PostMapping(value = "/teacher/Course/newclass")
-  public ResponseEntity<String> processFormCreate(@RequestBody final Course course) throws SQLException{
+    AuthenticationUtil auth = new AuthenticationUtil();
+    int teacher_id = Integer.parseInt(auth.getCurrentUserName());
 
     if(course.getCs_id() == "" || course.getCs_name() == ""){
-      return ResponseEntity.badRequest().body("作業ID與名稱不能為空");
+      //if input's classId or className value is null.
+      return ResponseEntity.badRequest().body("request failed! ClassID and ClassName can not be null!");
+    }else if(dao.hasSameClassId(course.getCs_id()) == 1){
+      //if the classId has same with db.
+      return ResponseEntity.badRequest().body("request failed! ClassID has already exist in database, please input a new ClassID");
+    }else{
+      dao.TeacherCreateCourse(course);
+      dao.TeacherAddToClass(teacher_id, course.getCs_id());
+      return ResponseEntity.ok("request successful! the class has already create!");
+    }
+  }
+
+
+  //student join the class.
+  //you will input cs_id, cs_qrcode.
+  @PostMapping(value = "/student/course/joinclass/")
+  public ResponseEntity<String> StudentJoinTheClass(@RequestBody Course course) throws SQLException{
+
+    AuthenticationUtil auth = new AuthenticationUtil();
+    int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+    if(dao.hasThisQRcode(course.getCs_qrcode()) == 0){
+      //if the cs_qrcode not exist.
+      return ResponseEntity.badRequest().body("request failed! this class QRcode not exist!");
+    }else{
+      dao.StudentJoinClass(std_id, course.getCs_id());
+      return ResponseEntity.ok("request successful! the class now add to your class list!");
     }
 
-    dao.TeacherNewCourse(course);
-    return ResponseEntity.ok("新增課程成功!!");
   }
+
+
+  //teacher open to join this course.
+  //you will input cs_id, cs_qrcode.
+  @PutMapping(value = "/teacher/course/openToJoin/")
+    public ResponseEntity<String> TeacherOpenToJoinThisClass(@RequestBody Course course) throws SQLException{
+        AuthenticationUtil auth = new AuthenticationUtil();
+        String teacher_id = auth.getCurrentUserName();
+
+        if(dao.hasSameClassId(course.getCs_id()) == 1){
+          //if the classId exist.
+          if(userintheclass.queryTeacherInTheClass(teacher_id, course.getCs_id()) == 1){
+            //if teacher in the class.
+            dao.updateCsQRcode(course.getCs_id(), course.getCs_qrcode());
+            return ResponseEntity.ok("request successful! the class now can let student to join this class!");
+          }else{
+            return ResponseEntity.badRequest().body("request failed! teacher not in this class!");
+          }
+          
+        }else{
+          //the class not exist.
+          return ResponseEntity.badRequest().body("request failed! this classId not exist!");
+        }
+    }
+
 
   //teacher watch student list in this class.
   //you will get std_id, std_name, std_department returns.
@@ -83,7 +136,12 @@ public class CourseController {
    }
   }
 
- 
+ //老師新增課程（輸入課程名稱、課程ID）POST (done)
+ //老師開放加入課程（cs_id, cs_qrcode）PUT (done)
+ //學生加入課程（cs_qrcode）POST (done)
+ //老師關閉加入課程（cs_qrcode）PUT
+
+
 }
 
 
