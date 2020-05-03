@@ -51,6 +51,12 @@ public class RollcallDAODB implements RollcallDAO {
     return tl_type_name;
   }
 
+  public int findRcIdWithQRcode2(String qrcode){
+    String sql = "select rc_id from rollcall where qrcode = ?";
+    int rc_id = this.jdbcTemplate.queryForObject(sql,Integer.class,qrcode);
+    return rc_id; 
+  }
+
   public int hasThisQRcode(String qrcode){
     String sql = "select count(qrcode) as count from rollcall where qrcode = ?";
     int count = this.jdbcTemplate.queryForObject(sql,Integer.class,qrcode);

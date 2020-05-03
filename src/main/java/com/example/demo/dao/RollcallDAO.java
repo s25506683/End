@@ -16,6 +16,8 @@ public interface RollcallDAO {
 
  public String findTlTypeName(int tl_type_id);
 
+ public int findRcIdWithQRcode2(String qrcode);
+
  public int hasThisQRcode(String qrcode);
 
  public int hasThisRollcallId(int rc_id);
