@@ -102,6 +102,20 @@ public class RollcallController {
     }
  }
 
+ //teacher get one rollcall summary.
+ //you will get present, long_distance, takeleave, otherwise.
+ @GetMapping(value = {"/teacher/rollcall/oneRollcall/Summary/{rc_id}/"})
+ public ResponseEntity<List<Rollcall>> retrieveOneRollcallSummaryFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
+
+    if(dao.hasThisRollcallId(rc_id) == 0){
+      //if this rollcall Id not found.
+      return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+    }else{
+      return new ResponseEntity<List<Rollcall>>(dao.findOneRollcallSummaryRecord(rc_id), HttpStatus.OK);
+    }
+ }
+
+
    //teacher get one rollcall's record(all student record).
    //you will get std_id, std_name, std_department, record_time, tl_type_name, tl_type_id returns.
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/{rc_id}"})

@@ -29,6 +29,8 @@ public class Rollcall {
 
     private int present;
     private int absent;
+    private int long_distance;
+    private int takeleave;
     private int otherwise;
 
 
@@ -197,6 +199,22 @@ public class Rollcall {
 
     public void setAbsent(int absent) {
         this.absent = absent;
+    }
+    
+    public int getLong_distance() {
+        return this.long_distance;
+    }
+
+    public void setLong_distance(int long_distance) {
+        this.long_distance = long_distance;
+    }
+
+    public int getTakeleave() {
+        return this.takeleave;
+    }
+
+    public void setTakeleave(int takeleave) {
+        this.takeleave = takeleave;
     }
 
     public int getOtherwise() {

@@ -95,6 +95,11 @@ public class RollcallDAODB implements RollcallDAO {
        rc_id, std_id);
   }
 
+  public List<Rollcall> findOneRollcallSummaryRecord(int rc_id){
+    return this.jdbcTemplate.query( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0) as otherwise from rc_record where rc_id = ?"
+    , new Object[]{rc_id}, new RollcallMapper7());
+  }
+
   public List<Rollcall> findOneRollcallRecord(final int rc_id) {
     return this.jdbcTemplate.query( "select rcre.std_id, s.std_name, s.std_department, rcre.record_time, tltype.tl_type_name, rcre.tl_type_id from rc_record rcre inner join student s on s.std_id = rcre.std_id inner join takeleave_type tltype on tltype.tl_type_id = rcre.tl_type_id where rcre.rc_id = ? order by rcre.std_id"
     , new Object[]{rc_id}, new RollcallMapper());
@@ -190,6 +195,17 @@ public class RollcallDAODB implements RollcallDAO {
         return rollcall6;
     }
   }
+
+  private static final class RollcallMapper7 implements RowMapper<Rollcall> {
+    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Rollcall rollcall7 = new Rollcall();
+         rollcall7.setPresent(rs.getInt("present"));
+         rollcall7.setLong_distance(rs.getInt("long_distance"));
+         rollcall7.setTakeleave(rs.getInt("takeleave"));
+         rollcall7.setOtherwise(rs.getInt("otherwise"));
+         return rollcall7;
+     }
+   }
 
 
   public String findQRcodeInRollcallName(int rc_id){

@@ -30,6 +30,8 @@ public interface RollcallDAO {
 
  public int addRollcallRecord(int rc_id, int std_id);
 
+ public List<Rollcall> findOneRollcallSummaryRecord(int rc_id);
+
  public List<Rollcall> findAllRollcallRecord(String cs_id);
 
  public List<Rollcall> findOneRollcallRecord(int rc_id);
