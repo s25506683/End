@@ -27,29 +27,14 @@ public class HomePage1_sDAODB implements HomePage1_sDAO {
  
  String sql = new String();
 
-/* public int queryCourseCount(int std_id){
-    String sql = "select count(c.cs_id) as count from class c inner join class_student cs on c.cs_id = cs.cs_id where cs.std_id = ? order by c.cs_id";
-    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id);
+
+
+public int queryUserRole(int user_id){
+    String sql = "select count(teacher_id) as count from teacher where teacher_id = ?";
+    int count = this.jdbcTemplate.queryForObject(sql,Integer.class,user_id);
     return count;
-}*/
-
-//  public int insert(HomePage1_s homepage1_s) {
-//     return jdbcTemplate.update(
-//       "insert into homepage1_s (q_id, q_std_id, q_content, cs_id) values(?, ?, ?, ?)",
-//       homepage1_s.getQ_id(), homepage1_s.getQ_std_id(), homepage1_s.getQ_content(), homepage1_s.getCs_id());
-//  }
-
-
-public List<HomePage1_s> queryUserRole(int user_id){
-    return this.jdbcTemplate.query("select count(teacher_id) as USER_ROLE from teacher where teacher_id = ?",
-    new Object[]{user_id}, new HomePage1_sMapper3()); 
 }
 
-
-// public List<HomePage1_s> CheckUserRole(int user_id){
-//     return this.jdbcTemplate.query("select std_id from student where std_id = ?",
-//     new Object[]{user_id}, new mapper());    
-// }
 
 
  public List<HomePage1_s> findStudentCourse(int std_id) {
@@ -104,13 +89,7 @@ public List<HomePage1_s> queryUserRole(int user_id){
     }
 }
 
-private static final class HomePage1_sMapper3 implements RowMapper<HomePage1_s> {
-    public HomePage1_s mapRow(ResultSet rs, int rowNum) throws SQLException {
-       HomePage1_s homepage1_s3 = new HomePage1_s();
-       homepage1_s3.setUser_role(rs.getInt("USER_ROLE"));
-        return homepage1_s3;
-    }
-}
+
 //  public int update(HomePage1_s homepage1_s) {
 //     return jdbcTemplate.update(
 //       "update question set q_std_id=?, q_content=?, cs_id=? where q_std_id =?",
