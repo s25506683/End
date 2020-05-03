@@ -11,6 +11,16 @@ public class Takeleave {
     private String tl_teacher_reply;
     private String tl_createtime;
     private String record_time;
+    private String rc_starttime;
+
+    public String getRc_starttime() {
+        return this.rc_starttime;
+    }
+
+    public void setRc_starttime(String rc_starttime) {
+        this.rc_starttime = rc_starttime;
+    }
+
     private String std_name;
     private String rc_inputsource;
     private String cs_id;
