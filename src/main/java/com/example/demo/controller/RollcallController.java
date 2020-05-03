@@ -103,7 +103,7 @@ public class RollcallController {
  }
 
  //teacher get one rollcall summary.
- //you will get present, long_distance, takeleave, otherwise.
+ //you will get present, long_distance, takeleave, otherwise(takeleave).
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/Summary/{rc_id}/"})
  public ResponseEntity<List<Rollcall>> retrieveOneRollcallSummaryFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
 
