@@ -33,8 +33,6 @@ public interface RollcallDAO {
  public List<Rollcall> findAllRollcallRecord(String cs_id);
 
  public List<Rollcall> findOneRollcallRecord(int rc_id);
- 
- public List<Rollcall> findClassStudentList(String cs_id);
 
  public String findQRcodeInRollcallName(int rc_id);
 

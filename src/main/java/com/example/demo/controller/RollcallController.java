@@ -145,19 +145,6 @@ public class RollcallController {
        }
     }
 
-    //teacher watch student list in this class.
-    //you will get std_id, std_name, std_department returns.
- @GetMapping(value = {"/teacher/rollcall/studentList/{cs_id}"})                        
-    public ResponseEntity<List<Rollcall>> retrieveWhatStuentInTheClass(@PathVariable("cs_id") final String cs_id) throws SQLException{
-      AuthenticationUtil auth = new AuthenticationUtil();
-      String teacher_id = auth.getCurrentUserName();
-      if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
-         //if teacher not in this class.
-        return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
-      }else{
-        return new ResponseEntity<List<Rollcall>>(dao.findClassStudentList(cs_id), HttpStatus.OK);
-      }
-    }
 
    //student get own rollcall's record (one class).
    //you will get rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name returns.
