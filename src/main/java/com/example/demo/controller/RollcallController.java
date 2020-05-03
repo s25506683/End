@@ -230,28 +230,32 @@ public class RollcallController {
    
     //student QRcode rollcall.
     //you will input rc_id, qrcode.
- @PutMapping(value = "/student/rollcall/QRcodeRollcall")
-    public ResponseEntity<String> processUpdateRollcallStudentWithQRcode(@RequestBody Rollcall rollcall) throws SQLException,
+ @PutMapping(value = "/student/rollcall/QRcodeRollcall/{qrcode}/")
+    public ResponseEntity<String> processUpdateRollcallStudentWithQRcode(@PathVariable("qrcode") final String qrcode) throws SQLException,
         IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
 
-      String qrcode = dao.findQRcodeInRollcallName(rollcall.getRc_id());
-
-      if(dao.rollcallIsEnd(rollcall.getRc_id()) == 1){
-        //if the rollcall was closed.
-        writtenmessage = "student "+ std_id + " QRcode rollcall failed, because the rollcall was closed.(input's rc_id = " + rollcall.getRc_id() + " , qrcode = " + rollcall.getQrcode() + ")";
-        logfile.writeLog(writtenmessage, dao.findCs_id(rollcall.getRc_id()), partition);
-        return ResponseEntity.badRequest().body("request failed. This rollcall was closed by teacher!");
-      }else if(rollcall.getQrcode().equals(qrcode)){
-        //if input qrcode equals rollcall's qrcode.
-        dao.updateRollcallRecord(std_id, rollcall.getRc_id());
-        writtenmessage = "student "+ std_id + " QRcode rollcall update to present in rc_id = " + rollcall.getRc_id() + ".";
-        logfile.writeLog(writtenmessage, dao.findCs_id(rollcall.getRc_id()), partition);
-        return ResponseEntity.ok("request successful! the QRcode rollcall record has already added!");
+      if(dao.hasThisQRcode(qrcode) == 0){
+        //if QRcode not exist.
+        return ResponseEntity.badRequest().body("request failed. invalid QRcode!");
       }else{
-        //if the QRcode value does not belongs to this rc_id.
-        return ResponseEntity.badRequest().body("request failed. QRcode was round in this rollcall!");
+        //use QRcode to find rc_id.
+        int rc_id = dao.findRcIdWithQRcode2(qrcode);
+        
+        if(dao.rollcallIsEnd(rc_id) == 1){
+          //if the rollcall was closed by teacher.
+          writtenmessage = "student "+ std_id + " QRcode rollcall failed, because the rollcall was closed.(input's rc_id = " + rc_id + " , qrcode = " + qrcode + ")";
+          logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
+          return ResponseEntity.badRequest().body("request failed. This rollcall was closed by teacher!");
+        }else{
+          //if input qrcode equals rollcall's qrcode.
+          dao.updateRollcallRecord(std_id, rc_id);
+          writtenmessage = "student "+ std_id + " QRcode rollcall update to present in rc_id = " + rc_id + ".";
+          logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
+          return ResponseEntity.ok("request successful! the QRcode rollcall record has already added!");
+        }
+
       }
        
     }
