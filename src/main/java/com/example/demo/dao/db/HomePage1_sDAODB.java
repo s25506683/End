@@ -39,6 +39,19 @@ public class HomePage1_sDAODB implements HomePage1_sDAO {
 //       homepage1_s.getQ_id(), homepage1_s.getQ_std_id(), homepage1_s.getQ_content(), homepage1_s.getCs_id());
 //  }
 
+
+public List<HomePage1_s> queryUserRole(int user_id){
+    return this.jdbcTemplate.query("select count(teacher_id) as USER_ROLE from teacher where teacher_id = ?",
+    new Object[]{user_id}, new HomePage1_sMapper3()); 
+}
+
+
+// public List<HomePage1_s> CheckUserRole(int user_id){
+//     return this.jdbcTemplate.query("select std_id from student where std_id = ?",
+//     new Object[]{user_id}, new mapper());    
+// }
+
+
  public List<HomePage1_s> findStudentCourse(int std_id) {
      System.out.println(AuthenticationUtil.class.getName());
      sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name,cs.std_id,st.std_name from class c inner join class_student cs on c.cs_id = cs.cs_id inner join student st on cs.std_id = st.std_id inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id where cs.std_id = ? order by c.cs_id";
@@ -88,6 +101,14 @@ public class HomePage1_sDAODB implements HomePage1_sDAO {
         homepage1_s2.setCs_photo(rs.getString("cs_photo"));
         homepage1_s2.setTeacher_name(rs.getString("teacher_name"));
         return homepage1_s2;
+    }
+}
+
+private static final class HomePage1_sMapper3 implements RowMapper<HomePage1_s> {
+    public HomePage1_s mapRow(ResultSet rs, int rowNum) throws SQLException {
+       HomePage1_s homepage1_s3 = new HomePage1_s();
+       homepage1_s3.setUser_role(rs.getInt("USER_ROLE"));
+        return homepage1_s3;
     }
 }
 //  public int update(HomePage1_s homepage1_s) {

@@ -40,3 +40,11 @@
 2020/05/01 20:43:08	teacher "16283" create new homework in class "10811000DMG741D7411023900".
 2020/05/01 20:44:08	teacher "16283" create new homework in class "10811000DMG741D7411023900".
 2020/05/01 22:05:16	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/03 13:36:23	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/03 13:47:42	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/03 13:48:17	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/03 13:48:34	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/03 13:49:53	teacher "16283" create new homework in class "10811000DMG741D7411023900".
+2020/05/03 13:51:00	teacher "16283" deleted homework with homework "gogog".
+2020/05/03 13:53:28	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
+2020/05/03 16:33:06	student "406401599" writing acceptance in homework "15".

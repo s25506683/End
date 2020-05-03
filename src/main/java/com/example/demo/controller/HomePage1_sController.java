@@ -6,6 +6,7 @@ import java.util.List;
 //import javax.xml.ws.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,20 @@ public class HomePage1_sController {
 //        dao.insert(homepage1_s);
 //     }
     //@POST
+
+
+ @GetMapping(value = {"/CheckUserRole"})
+    public List<HomePage1_s> checkTheUserRole() throws SQLException{
+
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      int user_id = Integer.parseInt(auth.getCurrentUserName());
+
+      return dao.queryUserRole(user_id);
+      
+    }
+ 
+
     
  @GetMapping(value = {"/student/HomePage1_s/one/"})
     public List<HomePage1_s> retrieveStudentCourse() throws SQLException {
