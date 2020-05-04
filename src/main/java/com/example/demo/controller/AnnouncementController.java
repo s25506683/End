@@ -180,10 +180,6 @@ public class AnnouncementController {
         }
 
         return ResponseEntity.ok("send announcement for student");
-
-        
-        
-
         
     }
 

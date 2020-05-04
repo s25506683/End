@@ -25,7 +25,11 @@ public class CourseDAODB implements CourseDAO {
 //jdbcTemplate 
 
 
-
+  public String findClassName(String cs_id){
+    String sql = "select cs_name from class where cs_id = ?";
+    String cs_name = this.jdbcTemplate.queryForObject(sql,String.class,cs_id);
+    return cs_name;
+  }
 
   public int TeacherCreateCourse(Course course) {
     return jdbcTemplate.update(
@@ -76,6 +80,12 @@ public class CourseDAODB implements CourseDAO {
     return jdbcTemplate.update(
         "update class set cs_qrcode = ? where cs_id = ?",
         cs_qrcode, cs_id);
+  }
+
+  public int closeJoinClass(String cs_id){
+    return jdbcTemplate.update(
+        "update class set cs_qrcode = null where cs_id = ?",
+        cs_id);
   }
 
 
