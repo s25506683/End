@@ -14,7 +14,7 @@ public interface HomePage1_sDAO {
 
  public List<HomePage1_s> findTeacherCourse(int std_id);
 
- public List<HomePage1_s> queryUserRoleByJson(int user_id);
+ public HomePage1_s queryUserRoleByJson(int user_id);
  
  public int queryUserRole(int user_id);
 

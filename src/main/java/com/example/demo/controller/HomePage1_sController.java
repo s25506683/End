@@ -63,7 +63,7 @@ public class HomePage1_sController {
   //check login user's role(get JSON return).
   //'1' is teacher, '0' is student（JSON return）.
  @GetMapping(value = {"/CheckUserRoleInJSONReturn/"})
- public List<HomePage1_s> checkTheUserRoleByJSON() throws SQLException{
+ public HomePage1_s checkTheUserRoleByJSON() throws SQLException{
 
    AuthenticationUtil auth = new AuthenticationUtil();
    int user_id = Integer.parseInt(auth.getCurrentUserName());
@@ -73,8 +73,6 @@ public class HomePage1_sController {
  }
 
  
-
-    
  @GetMapping(value = {"/student/HomePage1_s/one/"})
     public List<HomePage1_s> retrieveStudentCourse() throws SQLException {
       AuthenticationUtil auth = new AuthenticationUtil();
