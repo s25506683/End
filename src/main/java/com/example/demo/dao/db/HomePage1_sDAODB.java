@@ -53,6 +53,11 @@ public int queryUserRole(int user_id){
      return this.jdbcTemplate.query( sql, new HomePage1_sMapper2());
  }
 
+ public List<HomePage1_s> queryUserRoleByJson(int user_id){
+    sql = "select count(std_id) as user_role from student where std_id = ?";
+    return this.jdbcTemplate.query( sql, new Object[]{user_id}, new HomePage1_sMapper3());
+ }
+
  private static final class HomePage1_sMapper_findStudentCourse implements RowMapper<HomePage1_s> {
      public HomePage1_s mapRow(ResultSet rs, int rowNum) throws SQLException {
         HomePage1_s homepage1_s = new HomePage1_s();
@@ -86,6 +91,14 @@ public int queryUserRole(int user_id){
         homepage1_s2.setCs_photo(rs.getString("cs_photo"));
         homepage1_s2.setTeacher_name(rs.getString("teacher_name"));
         return homepage1_s2;
+    }
+}
+
+private static final class HomePage1_sMapper3 implements RowMapper<HomePage1_s> {
+    public HomePage1_s mapRow(ResultSet rs, int rowNum) throws SQLException {
+       HomePage1_s homepage1_s3 = new HomePage1_s();
+        homepage1_s3.setUser_role(rs.getInt("user_role"));
+        return homepage1_s3;
     }
 }
 
