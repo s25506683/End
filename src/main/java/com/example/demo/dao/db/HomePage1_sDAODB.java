@@ -53,9 +53,9 @@ public int queryUserRole(int user_id){
      return this.jdbcTemplate.query( sql, new HomePage1_sMapper2());
  }
 
- public List<HomePage1_s> queryUserRoleByJson(int user_id){
-    sql = "select count(std_id) as user_role from student where std_id = ?";
-    return this.jdbcTemplate.query( sql, new Object[]{user_id}, new HomePage1_sMapper3());
+ public HomePage1_s queryUserRoleByJson(int user_id){
+    return this.jdbcTemplate.queryForObject("select count(std_id) as user_role from student where std_id = ?",
+    new Object[] { user_id }, new HomePage1_sMapper3());
  }
 
  private static final class HomePage1_sMapper_findStudentCourse implements RowMapper<HomePage1_s> {
