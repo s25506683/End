@@ -69,7 +69,7 @@ public class TakeleaveController {
     }
 
    //student get all takeleave record in this class.
-   //you will get rc_starttime, record_time, tl_createtime, tl_type_id, tl_content, tl_state returns.
+   //you will get rc_starttime, record_time, tl_createtime, tl_type_id, tl_content, tl_state tl_type_name returns.
   @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}"}) //get學生的全部請假紀錄
   public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecord(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
@@ -116,23 +116,26 @@ public class TakeleaveController {
       //教師不允許請假後無法再次申請
       //學生請假過後 不可再修改請假內容
   @PostMapping(value = {"/student/takeleave"})
-    public ResponseEntity<String> processFormCreate(@RequestBody final Takeleave takeleave) throws SQLException{
+    public ResponseEntity<String> processFormCreate(@RequestBody final Takeleave takeleave) throws SQLException,
+        IOException {
 
       AuthenticationUtil auth = new AuthenticationUtil();
       takeleave.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
       //takeleave.setRc_id(takeleave.getRc_id());
 
-      if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
-        //教師已審核完成，不可再次申請
-        return ResponseEntity.badRequest().body("教師已審核過該筆請假，請勿再次申請");     
+      // if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
+      //   //教師已審核完成，不可再次申請
+      //   return ResponseEntity.badRequest().body("教師已審核過該筆請假，請勿再次申請");     
 
-      }else if(dao.queryStudentInTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) == 0){
+      // }else
+      
+      if(dao.queryStudentInTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) == 0){
 
-        //System.out.println(takeleave.getRc_id() + "\n" + takeleave.getStd_id());
+       
         dao.Applyforleave(takeleave);
         takeleave.getRc_id();
         writtenmessage = "student \"" + takeleave.getStd_id() + "\" apply takeleave in rollcall \"" + takeleave.getRc_id() + "\".";
-        logfile.writeLog(writtenmessage);
+        logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
         return ResponseEntity.ok("申請成功");
        
 
@@ -149,38 +152,50 @@ public class TakeleaveController {
      public ResponseEntity<String> processFormUpdate(@RequestBody final Takeleave takeleave) throws SQLException {
 
 
-              takeleave.setTl_type_id(dao.findTltypeID(takeleave.getRc_id(),takeleave.getStd_id()));
-             
+        takeleave.setTl_type_id(dao.findTltypeID(takeleave.getRc_id(),takeleave.getStd_id()));
 
-              if(takeleave.getTl_state() == 2){ //教師不准許請假
 
-                dao.UnAllowleave(takeleave);
-                return ResponseEntity.badRequest().body("教師不准假");
+        if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
+          //學生的state已為1 or 2 無法再次更動
+          return ResponseEntity.badRequest().body("已成功審核學生，無法再次修改");    
 
-              }else if(takeleave.getTl_state() == 1){ //教師准許請假
+        }else if(takeleave.getTl_state() == 2){ //教師不准許請假
+          //
+            dao.UnAllowleave(takeleave);
+            return ResponseEntity.badRequest().body("教師不准假");
 
-                dao.Allowleave(takeleave);
-                dao.updateTltypeID(takeleave);
-                return ResponseEntity.ok("請假審核成功");
+        }else if(takeleave.getTl_state() == 1){ //教師准許請假
 
-              }else{
+            dao.Allowleave(takeleave);
+            dao.updateTltypeID(takeleave);
+            return ResponseEntity.ok("請假審核成功");
 
-                return ResponseEntity.badRequest().body("此學生尚未申請請假");
-
-              }
+        }else{
+            return ResponseEntity.badRequest().body("此學生尚未申請請假");
+        }
+              
 
             }
 
   @PutMapping(value = "/student/takeleave/UpdateContent")
       public ResponseEntity<String> processFormUpdate2(@RequestBody final Takeleave takeleave) throws SQLException {
 
-        // if(takeleave.getTl_content() == ""){
-        //   return ResponseEntity.badRequest().body("請假內容不得為空");
-        // }else if(){
+        AuthenticationUtil auth = new AuthenticationUtil();
+        int std_id = Integer.parseInt(auth.getCurrentUserName());
 
-        // }
-        dao.updateContent(takeleave);
-        return ResponseEntity.ok("已修改請假內容");
+        if(takeleave.getTl_content() == ""){
+
+          return ResponseEntity.badRequest().body("請假內容不得為空");
+
+        }else if(dao.findStateInTheTakeleave(takeleave.getRc_id(), std_id) != 0){
+
+          return ResponseEntity.badRequest().body("教師已審核過該筆請假，無法更改內容");     
+
+        }else{
+          dao.updateContent(takeleave);
+          return ResponseEntity.ok("已修改請假內容");
+        }        
+       
 
 
       }//內容不得為空
