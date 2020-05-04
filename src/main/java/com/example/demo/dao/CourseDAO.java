@@ -6,6 +6,8 @@ import com.example.demo.entity.Course;
 
 public interface CourseDAO {
 
+    public String findClassName(String cs_id);
+
     public int TeacherCreateCourse(Course course);
 
     public int TeacherAddToClass(int teacher_id, String cs_id);
@@ -19,6 +21,8 @@ public interface CourseDAO {
     public List<Course> findClassStudentList(String cs_id);
 
     public int updateCsQRcode(String cs_id, String cs_qrcode);
+
+    public int closeJoinClass(String cs_id);
 
 }
 
