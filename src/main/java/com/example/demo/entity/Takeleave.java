@@ -12,6 +12,15 @@ public class Takeleave {
     private String tl_createtime;
     private String record_time;
     private String rc_starttime;
+    private String tl_type_name;
+
+    public String getTl_type_name() {
+        return this.tl_type_name;
+    }
+
+    public void setTl_type_name(String tl_type_name) {
+        this.tl_type_name = tl_type_name;
+    }
 
     public String getRc_starttime() {
         return this.rc_starttime;
