@@ -12,6 +12,7 @@ import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
 import com.example.demo.util.UserInTheClass;
 
+import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,37 +48,59 @@ public class TakeleaveController {
   String writtenmessage = new String();
   String partition = "Takeleave";
 
-
+  //teacher get all student's takeleave record (by student).
+  //you will get record_time, tl_createtime, std_id, std_name, tl_type_name, tl_type_id, tl_content returns.
   @GetMapping(value = {"/teacher/takeleave/AllStudent/{cs_id}"}) //教師看到所有學生的請假申請
     public ResponseEntity<List<Takeleave>> retrieveAllTakeleave(@PathVariable("cs_id") final String cs_id) throws SQLException,
       IOException {
 
-      // AuthenticationUtil auth = new AuthenticationUtil();
-      // String teacher_id = auth.getCurrentUserName();
-      // writtenmessage = "teacher \"" + teacher_id + "\" watching student takeleave record in class \"";
-      // logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
       
-      return new ResponseEntity<List<Takeleave>>(dao.findTakeleaveInTheClass(cs_id), HttpStatus.OK);
+      if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
+         //if teacher not in this class.
+         return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
+      }else{
+
+        return new ResponseEntity<List<Takeleave>>(dao.findTakeleaveInTheClass(cs_id), HttpStatus.OK);
+      }
+     
 
     }
 
-  
+   //student get all takeleave record in this class.
+   //you will get record_time, tl_createtime, tl_type_id, tl_content, tl_state returns.
   @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}"}) //get學生的全部請假紀錄
   public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecord(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
     AuthenticationUtil auth = new AuthenticationUtil();
     String std_id = auth.getCurrentUserName(); 
-    return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id), HttpStatus.OK);
-
+    if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+      //if student not in this class.
+      return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
+    }else{
+      
+      return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id), HttpStatus.OK);
+      
     }
 
+  }
+
+  //student get absence record for himself.
+  //you will get rc_id, rc_starttime, rc_inputsource
   @GetMapping(value = {"/student/takeleave/StudentAbsence/{cs_id}"}) //學生查看自己的缺課紀錄
   public ResponseEntity<List<Takeleave>> retrieveStudentAbsence(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
     AuthenticationUtil auth = new AuthenticationUtil();
-    String std_id = auth.getCurrentUserName(); 
+    String std_id = auth.getCurrentUserName();
+    if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+      //if student not in this class.
+      return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
+    }else{
     return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleave(std_id,cs_id), HttpStatus.OK);
-  
+    
+    }
+    
   }
 
 
@@ -116,7 +139,7 @@ public class TakeleaveController {
       }
     }
 
-
+ //state == 1 or 2 時不能再次修改
   @PutMapping(value = "/teacher/takeleave")
      public ResponseEntity<String> processFormUpdate(@RequestBody final Takeleave takeleave) throws SQLException {
 

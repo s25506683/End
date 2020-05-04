@@ -68,7 +68,7 @@ public int Applyforleave(final Takeleave takeleave) {
 }
 
 public List<Takeleave> findTakeleaveInTheClass(final String cs_id){
-    return this.jdbcTemplate.query("select rcrc.record_time, tl.tl_createtime, s.std_id ,s.std_name, tl.tl_type_id, tl.tl_content from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join student s on s.std_id = tl.std_id inner join rollcall rc on rc.rc_id = tl.rc_id where rc.cs_id = ? group by tl.tl_id",
+    return this.jdbcTemplate.query("select rcrc.record_time, tl.tl_createtime, s.std_id ,s.std_name, tt.tl_type_name, tl.tl_type_id, tl.tl_content from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join student s on s.std_id = tl.std_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where rc.cs_id = ? group by tl.tl_id",
         new Object[]{cs_id}, new TakeleaveMapper());
 }
 
@@ -78,7 +78,7 @@ public List<Takeleave> findStudentTakeleaveRecord(final String std_id, final Str
 }
 
 public List<Takeleave> findStudentTakeleave(final String std_id, final String cs_id){
-    return this.jdbcTemplate.query("select rc_starttime, rc.rc_inputsource from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ?",
+    return this.jdbcTemplate.query("select rc.rc_id, rc.rc_starttime, rc.rc_inputsource from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ?",
         new Object[]{std_id, cs_id}, new TakeleaveMapper2());
 }
 
@@ -90,6 +90,7 @@ private static final class TakeleaveMapper implements RowMapper<Takeleave> {
      takeleave.setTl_createtime(rs.getString("tl_createtime"));
      takeleave.setStd_id(rs.getInt("std_id"));
      takeleave.setStd_name(rs.getString("std_name"));
+     takeleave.setTl_type_name(rs.getString("tl_type_name"));
      takeleave.setTl_type_id(rs.getInt("tl_type_id"));
      takeleave.setTl_content(rs.getString("tl_content"));
         return takeleave;
@@ -113,6 +114,7 @@ private static final class TakeleaveMapper2 implements RowMapper<Takeleave> {
 
     public Takeleave mapRow(ResultSet rs, int rowNum) throws SQLException {
      Takeleave takeleave = new Takeleave();
+     takeleave.setRc_id(rs.getInt("rc_id"));
      takeleave.setRc_starttime(rs.getString("rc_starttime"));
      takeleave.setRc_inputsource(rs.getString("rc_inputsource"));
         return takeleave;
