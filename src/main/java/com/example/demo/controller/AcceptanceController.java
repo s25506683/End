@@ -188,7 +188,7 @@ public class AcceptanceController {
          return ResponseEntity.ok("已修改成績");
          
       }else{
-         return ResponseEntity.badRequest().body("此學生尚未驗收");
+         return ResponseEntity.badRequest().body("此學生尚未排隊");
       } 
 
     }

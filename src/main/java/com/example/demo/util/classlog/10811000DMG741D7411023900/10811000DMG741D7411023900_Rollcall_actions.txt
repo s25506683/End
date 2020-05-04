@@ -21,3 +21,6 @@
 2020/05/03 13:25:34	student 406401599 QRcode rollcall update to present in rc_id = 1.
 2020/05/03 13:26:10	student 406401599 QRcode rollcall failed, because the rollcall was closed.(input's rc_id = 1 , qrcode = 456789123)
 2020/05/03 13:26:19	student 406401599 QRcode rollcall update to present in rc_id = 1.
+2020/05/04 17:25:51	student 406401599 watching personal rollcall record in the class.
+2020/05/04 17:28:52	teacher 16283 adding rollcall at 2020-05-04 17:28:52 in the class.
+2020/05/04 17:29:30	teacher 16283 renew the QRcode to  in rc_id = 25.
