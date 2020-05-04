@@ -49,7 +49,7 @@ public class TakeleaveController {
   String partition = "Takeleave";
 
   //teacher get all student's takeleave record (by student).
-  //you will get record_time, tl_createtime, std_id, std_name, tl_type_name, tl_type_id, tl_content returns.
+  //you will get rc_starttime, record_time, tl_createtime, std_id, std_name, tl_type_name, tl_type_id, tl_content, tl_state returns.
   @GetMapping(value = {"/teacher/takeleave/AllStudent/{cs_id}"}) //教師看到所有學生的請假申請
     public ResponseEntity<List<Takeleave>> retrieveAllTakeleave(@PathVariable("cs_id") final String cs_id) throws SQLException,
       IOException {
@@ -69,7 +69,7 @@ public class TakeleaveController {
     }
 
    //student get all takeleave record in this class.
-   //you will get record_time, tl_createtime, tl_type_id, tl_content, tl_state returns.
+   //you will get rc_starttime, record_time, tl_createtime, tl_type_id, tl_content, tl_state returns.
   @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}"}) //get學生的全部請假紀錄
   public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecord(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
@@ -86,7 +86,7 @@ public class TakeleaveController {
 
   }
 
-  //student get absence record for himself.
+  //student get absence record for himself(when state == 0).
   //you will get rc_id, rc_starttime, rc_inputsource
   @GetMapping(value = {"/student/takeleave/StudentAbsence/{cs_id}"}) //學生查看自己的缺課紀錄
   public ResponseEntity<List<Takeleave>> retrieveStudentAbsence(@PathVariable("cs_id") final String cs_id) throws SQLException{
@@ -100,7 +100,7 @@ public class TakeleaveController {
     return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleave(std_id,cs_id), HttpStatus.OK);
     
     }
-    
+
   }
 
 
@@ -122,11 +122,14 @@ public class TakeleaveController {
       takeleave.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
       //takeleave.setRc_id(takeleave.getRc_id());
 
-      if(dao.queryStudentInTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) == 0){
+      if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
+        //教師已審核完成，不可再次申請
+        return ResponseEntity.badRequest().body("教師已審核過該筆請假，請勿再次申請");     
+
+      }else if(dao.queryStudentInTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) == 0){
 
         //System.out.println(takeleave.getRc_id() + "\n" + takeleave.getStd_id());
         dao.Applyforleave(takeleave);
-       
         takeleave.getRc_id();
         writtenmessage = "student \"" + takeleave.getStd_id() + "\" apply takeleave in rollcall \"" + takeleave.getRc_id() + "\".";
         logfile.writeLog(writtenmessage);
@@ -135,8 +138,10 @@ public class TakeleaveController {
 
       }else{
         return ResponseEntity.badRequest().body("你已申請過請假，請耐心等待老師的回覆");
-         //學生申請請假
+         //已申請中，但教師尚未批改
       }
+
+     
     }
 
  //state == 1 or 2 時不能再次修改
