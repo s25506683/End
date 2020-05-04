@@ -45,9 +45,9 @@ public String findCsID(int hw_id){
   return CsId;
 }
 
-public int queryStudentInTheAcceptance(final int accept_std_id, final int accept_hw_id){
-  final String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
-  final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,accept_hw_id);
+public int queryStudentInTheAcceptance(int accept_std_id, int accept_hw_id){
+  String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
+  int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,accept_hw_id);
   return count; //看這筆驗收中有沒有這個學生
 }
 
