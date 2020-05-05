@@ -110,6 +110,11 @@ public class RollcallDAODB implements RollcallDAO {
      , new Object[]{cs_id}, new RollcallMapper2());
   }
 
+  public List<Rollcall> findAllGPSRollcallRecord(String cs_id){
+    return this.jdbcTemplate.query( "select rc_id, rc_starttime, rc_inputsource, rc_end from rollcall where cs_id = ? and rc_inputsource = 'GPS點名'"
+     , new Object[]{cs_id}, new RollcallMapper8());
+  }
+
   public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
      return this.jdbcTemplate.query("select rcre.std_id, rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_id, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
       , new Object[]{std_id, cs_id}, new RollcallMapper4());
@@ -209,6 +214,19 @@ public class RollcallDAODB implements RollcallDAO {
      }
    }
 
+   private static final class RollcallMapper8 implements RowMapper<Rollcall> {
+    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Rollcall rollcall8 = new Rollcall();
+         rollcall8.setRc_id(rs.getInt("rc_id"));
+         rollcall8.setRc_starttime(rs.getString("rc_starttime"));
+         rollcall8.setRc_inputsource(rs.getString("rc_inputsource"));
+         rollcall8.setRc_end(rs.getInt("rc_end"));
+         return rollcall8;
+     }
+   }
+
+   
+
 
   public String findQRcodeInRollcallName(int rc_id){
     String sql = "select qrcode from rollcall where rc_id = ?";
@@ -244,6 +262,12 @@ public class RollcallDAODB implements RollcallDAO {
   return jdbcTemplate.update(
     "update rc_record set tl_type_id = ? where rc_id = ? and std_id = ?",
     tl_type_id, rc_id, std_id);
+ }
+
+ public int closedRollcall(int rc_id){
+  return jdbcTemplate.update(
+    "update rollcall set rc_end = 1, qrcode = null where rc_id = ?",
+    rc_id);
  }
 
 public int deleteRollcall(int rc_id) {

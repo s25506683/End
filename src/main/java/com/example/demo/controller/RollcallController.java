@@ -129,9 +129,9 @@ public class RollcallController {
     }
  }
     
-    //student get all rollcall in this class.
-    //you will get rc_starttime(String), present(int), absent(int), otherwise(int), rc_scoring(int), rc_inputsource(String) returns.
- @GetMapping(value = {"/student/rollcall/allRollcall/{cs_id}"})
+    //student get all GPS rollcall in this class.
+    //you will get rc_id, rc_starttime(String), rc_inputsource(String), rc_end(int) returns.
+ @GetMapping(value = {"/student/rollcall/allGPSRollcall/{cs_id}"})
     public ResponseEntity<List<Rollcall>> retrieveAllRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
@@ -140,7 +140,7 @@ public class RollcallController {
           //if student not in this class.
          return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
        }else{
-         return new ResponseEntity<List<Rollcall>>(dao.findAllRollcallRecord(cs_id), HttpStatus.OK);
+         return new ResponseEntity<List<Rollcall>>(dao.findAllGPSRollcallRecord(cs_id), HttpStatus.OK);
        }
     }
 
@@ -319,7 +319,7 @@ public class RollcallController {
       AuthenticationUtil auth = new AuthenticationUtil();
       int teacher_id = Integer.parseInt(auth.getCurrentUserName());
       if(dao.hasThisRcRecord(rollcall.getStd_id(), rollcall.getRc_id()) == 0){
-        //if this student rollcall record not found.
+        //if this teacher rollcall record not found.
         return ResponseEntity.badRequest().body("request failed. This rollcall record not found!");
       }else{
         dao.updateRollcall(rollcall.getRc_id(), rollcall.getStd_id(), rollcall.getTl_type_id());
@@ -330,6 +330,27 @@ public class RollcallController {
         return ResponseEntity.ok("request successful! the student rollcall record update to " + tl_type_name + "!");
       }
     }
+
+
+    //teacher closed this rollcall.
+    //you have to input rc_id.
+    @PutMapping(value = "/teacher/rollcall/closedRollcall/")
+    public ResponseEntity<String> teacherClosedRollcall(@RequestBody Rollcall rollcall) throws SQLException,
+        IOException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+      if(dao.hasThisRollcallId(rollcall.getRc_id()) == 0){
+        //if this rollcall ID not found.
+        return ResponseEntity.badRequest().body("request failed. This rollcall ID not found!");
+      }else{
+        dao.closedRollcall(rollcall.getRc_id());
+        writtenmessage = "teacher "+ teacher_id + " closed rollcall \"" + rollcall.getRc_id() + "\" .";
+        logfile.writeLog(writtenmessage, dao.findCs_id(rollcall.getRc_id()), partition);
+        return ResponseEntity.ok("request successful! the teacher closed rollcall \"" + rollcall.getRc_id() + "\" !");
+      }
+    }
+
+
 
    //teacher delete rollcall and rollcall record in the class.
    //you have to input rc_id, cs_id in json.
@@ -362,6 +383,8 @@ public class RollcallController {
  //老師端更新QRcode(done)
  //學生在課堂點名中看到自己的所有點名紀錄(done)
  //student QRcode rollcall. 的input rc_name 改成 rc_id.(done)
+
+ //老師關閉點名
 }
 
 
