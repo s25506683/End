@@ -49,7 +49,7 @@ public class TakeleaveController {
   String partition = "Takeleave";
 
   //teacher get all student's takeleave record (by student).
-  //you will get rc_starttime, record_time, tl_createtime, std_id, std_name, tl_type_name, tl_type_id, tl_content, tl_state returns.
+  //you will get rc+id, rc_starttime, record_time, tl_createtime, std_id, std_name, tl_type_name, tl_type_id, tl_content, tl_state returns.
   @GetMapping(value = {"/teacher/takeleave/AllStudent/{cs_id}"}) //教師看到所有學生的請假申請
     public ResponseEntity<List<Takeleave>> retrieveAllTakeleave(@PathVariable("cs_id") final String cs_id) throws SQLException,
       IOException {
@@ -147,6 +147,8 @@ public class TakeleaveController {
     }
 
  //state == 1 or 2 時不能再次修改
+ //teacher update student state in this takeleave
+ //you have input rc_id, std_id, tl_state.
   @PutMapping(value = "/teacher/takeleave")
      public ResponseEntity<String> processFormUpdate(@RequestBody final Takeleave takeleave) throws SQLException,
          IOException {
