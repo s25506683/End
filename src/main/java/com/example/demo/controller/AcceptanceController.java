@@ -48,6 +48,9 @@ public class AcceptanceController {
    String writtenmessage = new String();
    String partition = "Acceptance";
 
+
+   //student post there acceptance to db.
+   //you will input std_id, accept_hw_id.
    @PostMapping(value = "/student/acceptance")
    public ResponseEntity<String> processFormCreate(@RequestBody final Acceptance acceptance)
          throws SQLException, IOException {
@@ -74,6 +77,8 @@ public class AcceptanceController {
    } 
     //@POST
 
+//teacher post there homework to db.
+//you wii 
 @PostMapping(value = "/teacher/acceptance/homework")
    public ResponseEntity<String> processFormCreate2(@RequestBody final Acceptance acceptance) throws SQLException,
          IOException {
@@ -96,7 +101,8 @@ public class AcceptanceController {
    }
 
 
-
+//student get homework about concent in this class.
+//You will get hw_name, hw_createtime, accept_sore.
  @GetMapping(value = {"/student/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
