@@ -34,6 +34,8 @@ public interface RollcallDAO {
 
  public List<Rollcall> findAllRollcallRecord(String cs_id);
 
+ public List<Rollcall> findAllGPSRollcallRecord(String cs_id);
+
  public List<Rollcall> findOneRollcallRecord(int rc_id);
 
  public String findQRcodeInRollcallName(int rc_id);
@@ -53,6 +55,8 @@ public interface RollcallDAO {
  public int updateQRcode(int rc_id, String qrcode);
 
  public int updateRollcall(int rc_id, int std_id, int tl_type_id);
+
+ public int closedRollcall(int rc_id);
 
  public int deleteRollcall(int rc_id);
 
