@@ -5,3 +5,7 @@
 2020/05/05 16:49:25	student "406401616" apply takeleave in rollcall "24".
 2020/05/05 16:50:21	student "406401599" apply takeleave in rollcall "24".
 2020/05/05 16:50:54	teacher "22345" allowleave takeleave in rollcall "24".
+2020/05/05 19:12:55	student "406401599" apply takeleave in rollcall "24".
+2020/05/05 21:10:46	student "406401599" apply takeleave in rollcall "24".
+2020/05/05 21:20:12	student "406401616" apply takeleave in rollcall "24".
+2020/05/05 21:27:27	student "406401599" apply takeleave in rollcall "24".
