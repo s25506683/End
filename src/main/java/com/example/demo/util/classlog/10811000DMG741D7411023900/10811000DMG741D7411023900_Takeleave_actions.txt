@@ -1,0 +1,2 @@
+2020/05/05 01:16:10	teacher "22345" unallowleave takeleave in rollcall "1".
+2020/05/05 01:17:37	teacher "22345" allowleave takeleave in rollcall "1".
