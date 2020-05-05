@@ -111,7 +111,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
-     return this.jdbcTemplate.query("select rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
+     return this.jdbcTemplate.query("select rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_id, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
       , new Object[]{std_id, cs_id}, new RollcallMapper4());
   }
 
@@ -170,6 +170,7 @@ public class RollcallDAODB implements RollcallDAO {
         rollcall4.setRc_starttime(rs.getString("rc_starttime"));
         rollcall4.setRecord_time(rs.getString("record_time"));
         rollcall4.setRc_inputsource(rs.getString("rc_inputsource"));
+        rollcall4.setTl_type_id(rs.getInt("tl_type_id"));
         rollcall4.setTl_type_name(rs.getString("tl_type_name"));
         return rollcall4;
     }
