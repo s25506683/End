@@ -111,7 +111,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
-     return this.jdbcTemplate.query("select rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_id, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
+     return this.jdbcTemplate.query("select rcre.std_id, rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_id, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
       , new Object[]{std_id, cs_id}, new RollcallMapper4());
   }
 
@@ -165,6 +165,7 @@ public class RollcallDAODB implements RollcallDAO {
   private static final class RollcallMapper4 implements RowMapper<Rollcall> {
    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
       final Rollcall rollcall4 = new Rollcall();
+        rollcall4.setStd_id(rs.getInt("std_id"));
         rollcall4.setRc_id(rs.getInt("rc_id"));
         rollcall4.setRecord_id(rs.getInt("record_id"));
         rollcall4.setRc_starttime(rs.getString("rc_starttime"));

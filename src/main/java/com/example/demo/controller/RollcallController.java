@@ -183,7 +183,7 @@ public class RollcallController {
  }
 
    //teacher get student's own rollcall's record (one class, all rollcall record).
-   //you will get rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name, tl_type_id returns.
+   //you will get std_id, rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name, tl_type_id returns.
  @GetMapping(value = {"/teacher/rollcall/personalRecord/{cs_id}/{std_id}"})
  public ResponseEntity<List<Rollcall>> retrieveStudentPersonalRecord(@PathVariable("cs_id") final String cs_id, @PathVariable("std_id") final int std_id) throws SQLException,
      IOException {
