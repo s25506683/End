@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.AcceptanceDAO;
 import com.example.demo.entity.Acceptance;
+import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
@@ -95,8 +96,10 @@ public int insertHomework(final Acceptance acceptance){
 
 
  public List<Acceptance> findCourseHomework(final String hw_cs_id) {
-    return this.jdbcTemplate.query( "select h.hw_name, h.hw_createtime, a.accept_score from homework h inner join acceptance a on a.accept_hw_id = h.hw_id where hw_cs_id = ?"
-       ,new Object[]{hw_cs_id}, new HomeWorkMapper());
+    AuthenticationUtil auth = new AuthenticationUtil();
+    String std_id = auth.getCurrentUserName();
+    return this.jdbcTemplate.query( "select h.hw_name, h.hw_createtime, a.accept_score from homework h inner join acceptance a on a.accept_hw_id = h.hw_id where hw_cs_id = ? and a.accept_std_id = ?"
+       ,new Object[]{hw_cs_id,std_id}, new HomeWorkMapper());
   }
 
  public List<Acceptance> findHomeworkDetail(final String cs_id, final String hw_name) {  

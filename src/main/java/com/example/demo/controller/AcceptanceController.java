@@ -107,9 +107,8 @@ public class AcceptanceController {
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
-      String std_id = auth.getCurrentUserName(); 
+      String std_id = auth.getCurrentUserName();
      
-      
       if(dao.queryStudentInTheClass(hw_cs_id,std_id) == 0){
          //如果學生不屬於這個課堂
          return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);

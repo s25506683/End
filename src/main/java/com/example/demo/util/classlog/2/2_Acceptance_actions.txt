@@ -32,3 +32,12 @@
 2020/05/03 16:45:55	teacher "16283" update score in homework "2".
 2020/05/03 19:14:27	teacher "16283" update score in homework "2".
 2020/05/05 21:49:02	student "406401616" watching homework in class "2".
+2020/05/05 22:16:42	student "406401616" watching homework in class "2".
+2020/05/05 22:24:36	student "406401616" watching homework in class "2".
+2020/05/05 22:31:10	student "406401616" watching homework in class "2".
+2020/05/05 22:31:24	student "406401616" watching homework in class "2".
+2020/05/05 22:32:10	student "406401616" watching homework in class "2".
+2020/05/05 22:33:23	student "406401616" watching homework in class "2".
+2020/05/05 22:33:26	student "406401616" watching homework in class "2".
+2020/05/05 22:34:07	student "406401616" watching homework in class "2".
+2020/05/05 22:36:21	student "406401616" watching homework in class "2".
