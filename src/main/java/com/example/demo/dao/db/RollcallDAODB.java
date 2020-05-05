@@ -95,8 +95,8 @@ public class RollcallDAODB implements RollcallDAO {
        rc_id, std_id);
   }
 
-  public List<Rollcall> findOneRollcallSummaryRecord(int rc_id){
-    return this.jdbcTemplate.query( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0) as otherwise from rc_record where rc_id = ?"
+  public Rollcall findOneRollcallSummaryRecord(int rc_id){
+    return this.jdbcTemplate.queryForObject( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0) as otherwise from rc_record where rc_id = ?"
     , new Object[]{rc_id}, new RollcallMapper7());
   }
 
@@ -116,7 +116,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findRollcallByPerson(String cs_id){
-    return this.jdbcTemplate.query("select rcre.std_id, st.std_name, st.std_department, sum(case when rcre.tl_type_id = 1 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise from rc_record as rcre inner join rollcall as rc on rc.rc_id = rcre.rc_id inner join student as st on st.std_id = rcre.std_id where rc.cs_id = ? group by rcre.std_id order by rcre.std_id"
+    return this.jdbcTemplate.query("select rcre.std_id, st.std_name, st.std_department, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise from rc_record as rcre inner join rollcall as rc on rc.rc_id = rcre.rc_id inner join student as st on st.std_id = rcre.std_id where rc.cs_id = ? group by rcre.std_id order by rcre.std_id"
       , new Object[]{cs_id}, new RollcallMapper5());
   }
 

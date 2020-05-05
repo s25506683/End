@@ -105,13 +105,13 @@ public class RollcallController {
  //teacher get one rollcall summary.
  //you will get present, long_distance, takeleave, otherwise(takeleave).
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/Summary/{rc_id}/"})
- public ResponseEntity<List<Rollcall>> retrieveOneRollcallSummaryFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
+ public ResponseEntity<Rollcall> retrieveOneRollcallSummaryFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
 
     if(dao.hasThisRollcallId(rc_id) == 0){
       //if this rollcall Id not found.
-      return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<Rollcall>(HttpStatus.BAD_REQUEST);
     }else{
-      return new ResponseEntity<List<Rollcall>>(dao.findOneRollcallSummaryRecord(rc_id), HttpStatus.OK);
+      return new ResponseEntity<Rollcall>(dao.findOneRollcallSummaryRecord(rc_id), HttpStatus.OK);
     }
  }
 
