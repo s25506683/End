@@ -91,7 +91,7 @@ public List<Takeleave> findStudentTakeleaveRecord(final String std_id, final Str
 }
 
 public List<Takeleave> findStudentTakeleave(final String std_id, final String cs_id){
-    return this.jdbcTemplate.query("select rc.rc_id, rc.rc_starttime, rc.rc_inputsource, rcre.tl_type_id from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave tl on tl.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ? and rcre.tl_type_id = 0",
+    return this.jdbcTemplate.query("select rc.rc_id, rc.rc_starttime, rc.rc_inputsource, rcre.tl_type_id from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ? and rcre.tl_type_id = 0",
         new Object[]{std_id, cs_id}, new TakeleaveMapper2());
 }
 
