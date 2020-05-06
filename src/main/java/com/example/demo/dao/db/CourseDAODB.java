@@ -61,6 +61,12 @@ public class CourseDAODB implements CourseDAO {
     return count;
   }
 
+  public String findThisCsId(String cs_qrcode){
+    String sql = "select cs_id as count from class where cs_qrcode = ?";
+    String cs_id = this.jdbcTemplate.queryForObject(sql,String.class,cs_qrcode);
+    return cs_id;
+  }
+
   public List<Course> findClassStudentList(final String cs_id){
     return this.jdbcTemplate.query("select s.std_id, s.std_name, s.std_department from student s inner join class_student cs on cs.std_id = s.std_id where cs.cs_id = ?"
     , new Object[]{cs_id}, new RollcallMapper());

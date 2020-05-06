@@ -49,7 +49,7 @@ public class RollcallController {
 
 
    //add rollcall and rollcall record(teacher).
-   //you will input cs_id, rc_inputsource(QRcode點名、手動點名、GPS點名), qrcode, gps_point(String like "25.015369,121.427966") --- which is longitude and latitude.
+   //you will input cs_id(int), rc_inputsource(QRcode點名、手動點名、GPS點名)(String), qrcode(String), gps_point(String like "25.015369,121.427966") --- which is longitude and latitude(String).
   @PostMapping(value = "/teacher/rollcall/addrollcall")
      public ResponseEntity<String> processFormCreate(@RequestBody Rollcall rollcall) throws SQLException, IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -90,7 +90,7 @@ public class RollcallController {
      }
 
    //teacher find rc_id using qrcode.
-   //you will get rc_id return.
+   //you will get rc_id(int) return.
  @GetMapping(value = {"/teacher/rollcall/findRCID/{qrcode}/"})
  public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@PathVariable("qrcode") final String qrcode) throws SQLException {
 
@@ -103,7 +103,7 @@ public class RollcallController {
  }
 
  //teacher get one rollcall summary.
- //you will get present, long_distance, takeleave, otherwise(takeleave).
+ //you will get present(int), long_distance(int), takeleave(int), otherwise(takeleave)(int).
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/Summary/{rc_id}/"})
  public ResponseEntity<Rollcall> retrieveOneRollcallSummaryFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
 
@@ -117,7 +117,7 @@ public class RollcallController {
 
 
    //teacher get one rollcall's record(all student record).
-   //you will get std_id, std_name, std_department, record_time, tl_type_name, tl_type_id returns.
+   //you will get std_id(int), std_name(String), std_department(String), record_time(String), tl_type_name(String), tl_type_id(int)returns.
  @GetMapping(value = {"/teacher/rollcall/oneRollcall/{rc_id}"})
  public ResponseEntity<List<Rollcall>> retrieveOneRollcallFromTeacher(@PathVariable("rc_id") final int rc_id) throws SQLException {
 
@@ -130,7 +130,7 @@ public class RollcallController {
  }
     
     //student get all GPS rollcall in this class.
-    //you will get rc_id, rc_starttime(String), rc_inputsource(String), rc_end(int) returns.
+    //you will get rc_id,(int) rc_starttime(String), rc_inputsource(String), rc_end(int) returns.
  @GetMapping(value = {"/student/rollcall/allGPSRollcall/{cs_id}"})
     public ResponseEntity<List<Rollcall>> retrieveAllRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -161,7 +161,7 @@ public class RollcallController {
 
 
    //student get own rollcall's record (one class).
-   //you will get rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name returns.
+   //you will get rc_id(int), record_id(int), rc_starttime(String), record_time(String), rc_inputsource(String), tl_type_name(String) returns.
  @GetMapping(value = {"/student/rollcall/personalRecord/{cs_id}"})
  public ResponseEntity<List<Rollcall>> retrievepersonalRecord(@PathVariable("cs_id") final String cs_id) throws SQLException,
      IOException {
@@ -183,7 +183,7 @@ public class RollcallController {
  }
 
    //teacher get student's own rollcall's record (one class, all rollcall record).
-   //you will get std_id, rc_id, record_id, rc_starttime, record_time, rc_inputsource, tl_type_name, tl_type_id returns.
+   //you will get std_id(int), rc_id(int), record_id(int), rc_starttime(String), record_time(String), rc_inputsource(String), tl_type_name(String), tl_type_id(int) returns.
  @GetMapping(value = {"/teacher/rollcall/personalRecord/{cs_id}/{std_id}"})
  public ResponseEntity<List<Rollcall>> retrieveStudentPersonalRecord(@PathVariable("cs_id") final String cs_id, @PathVariable("std_id") final int std_id) throws SQLException,
      IOException {
@@ -208,7 +208,7 @@ public class RollcallController {
  }
 
    //teacher get all student's rollcall record (by student).
-   //you will get std_id, std_name, std_department, present, absent, otherwise returns.
+   //you will get std_id(int), std_name(String), std_department(String), present(int), absent(int), otherwise(int) returns.
    @GetMapping(value = {"/teacher/rollcall/RecordbyPerson/{cs_id}"})
    public ResponseEntity<List<Rollcall>> retrieveRollcallRecordByStudent(@PathVariable("cs_id") final String cs_id) throws SQLException,
        IOException {
@@ -230,7 +230,7 @@ public class RollcallController {
    }
    
     //student QRcode rollcall.
-    //you will input rc_id, qrcode.
+    //you will input rc_id(int), qrcode(String).
  @PutMapping(value = "/student/rollcall/QRcodeRollcall/{qrcode}/")
     public ResponseEntity<String> processUpdateRollcallStudentWithQRcode(@PathVariable("qrcode") final String qrcode) throws SQLException,
         IOException {
@@ -263,7 +263,7 @@ public class RollcallController {
 
 
     //student GPS rollcall.
-    //you will input rc_id, gps_point(String like "25.015369,121.427966").
+    //you will input rc_id(int), gps_point(String like "25.015369,121.427966").
  @PutMapping(value = "/student/rollcall/GPSRollcall")
  public ResponseEntity<String> processUpdateRollcallStudentWithGPS(@RequestBody Rollcall rollcall) throws SQLException, IOException {
    AuthenticationUtil auth = new AuthenticationUtil();
@@ -292,7 +292,7 @@ public class RollcallController {
 
 
     //teacher renew a QRcode.
-    //you have to input rc_id, qrcode.
+    //you have to input rc_id(int), qrcode(String).
     @PutMapping(value = "/teacher/rollcall/updateQRcode")
     public ResponseEntity<String> teacherUpdateQRcode(@RequestBody Rollcall rollcall) throws SQLException, IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -312,7 +312,7 @@ public class RollcallController {
 
 
     //teacher update student rollcall record.
-    //you have to input rc_id, std_id, tl_type_id.
+    //you have to input rc_id(int), std_id(int), tl_type_id(int).
     @PutMapping(value = "/teacher/rollcall/updateRollcall")
     public ResponseEntity<String> teacherUpdateRollcall(@RequestBody Rollcall rollcall) throws SQLException,
         IOException {
@@ -333,7 +333,7 @@ public class RollcallController {
 
 
     //teacher closed this rollcall.
-    //you have to input rc_id.
+    //you have to input rc_id(int).
     @PutMapping(value = "/teacher/rollcall/closedRollcall/")
     public ResponseEntity<String> teacherClosedRollcall(@RequestBody Rollcall rollcall) throws SQLException,
         IOException {
