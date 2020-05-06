@@ -96,10 +96,8 @@ public int insertHomework(final Acceptance acceptance){
 
 
  public List<Acceptance> findCourseHomework(final String hw_cs_id) {
-    AuthenticationUtil auth = new AuthenticationUtil();
-    String std_id = auth.getCurrentUserName();
-    return this.jdbcTemplate.query( "select h.hw_name, h.hw_createtime, a.accept_score from homework h inner join acceptance a on a.accept_hw_id = h.hw_id where hw_cs_id = ? and a.accept_std_id = ?"
-       ,new Object[]{hw_cs_id,std_id}, new HomeWorkMapper());
+    return this.jdbcTemplate.query("select h.hw_name, h.hw_createtime from homework h where hw_cs_id = ?"
+       ,new Object[]{hw_cs_id}, new HomeWorkMapper());
   }
 
  public List<Acceptance> findHomeworkDetail(final String cs_id, final String hw_name) {  
@@ -110,7 +108,7 @@ public int insertHomework(final Acceptance acceptance){
 
  public List<Acceptance> findCourseHomeworkformTeacher(final String hw_cs_id){
   return this.jdbcTemplate.query( "select hw_name, hw_createtime from homework where hw_cs_id = ?"
-  ,new Object[]{hw_cs_id}, new HomeWorkMapper());
+  ,new Object[]{hw_cs_id}, new HomeWorkMapper2());
  }
 
  public List<Acceptance> findHomeworkDetailformTeacher(final String cs_id, final String hw_name) {  
@@ -140,19 +138,19 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
     final Acceptance acceptance = new Acceptance();
     acceptance.setHw_name(rs.getString("hw_name"));
     acceptance.setHw_createtime (rs.getString("hw_createtime"));
-    acceptance.setAccept_score(rs.getInt("accept_score"));
       return acceptance;
   }
-
-// private static final class HomeWorkMapper2 implements RowMapper<Acceptance>{
-
-//   public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-//     final Acceptance acceptance = new Acceptance();
-//     acceptance.setHw_name(rs.getString("hw_name"));
-//       return acceptance;
-//     }
+}
 
 
+private static final class HomeWorkMapper2 implements RowMapper<Acceptance>{
+
+  public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+    final Acceptance acceptance = new Acceptance();
+    acceptance.setHw_name(rs.getString("hw_name"));
+    acceptance.setHw_createtime (rs.getString("hw_createtime"));
+      return acceptance;
+  }
 }
 
 

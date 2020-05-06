@@ -66,3 +66,20 @@
 2020/05/04 17:27:19	teacher "16283" watching homework in class "10811000DMG741D7411023900".
 2020/05/04 17:27:21	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
 2020/05/04 17:27:23	teacher "16283" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:50:01	teacher "16283" create new homework in class "10811000DMG741D7411023900".
+2020/05/06 19:51:48	teacher "16283" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:52:39	teacher "16283" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:53:12	student "406401616" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:53:24	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:54:01	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:54:23	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 19:56:02	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:03:56	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:03:59	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:05:46	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:05:56	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:06:36	student "406401599" writing acceptance in homework "23".
+2020/05/06 20:06:44	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:13:23	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:50:26	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/06 20:51:33	student "406401599" watching homework in class "10811000DMG741D7411023900".

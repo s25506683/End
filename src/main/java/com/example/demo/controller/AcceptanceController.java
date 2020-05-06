@@ -121,6 +121,8 @@ public class AcceptanceController {
     } //第一頁驗收中學生可以看到作業的相關內容
 
    
+   //teacher get homework about concent in this class.
+   //You will get hw_name, hw_createtime.
     @GetMapping(value = {"/teacher/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptanceTeacher(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
@@ -139,8 +141,8 @@ public class AcceptanceController {
 
     } //第一頁驗收中教師可以看到作業的相關內容
 
-   
-
+ //student get acceptance list about concent in this class.
+ //You will get accept_id, accept_std_id, accept_hw_id, accept_time, accept_score, accept_done, hw_name, hw_content
  @GetMapping(value = {"/student/acceptance/hw/{cs_id}/{hw_name}"})
     public ResponseEntity<List<Acceptance>> retrieveAcceptance(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException,
           IOException {
@@ -157,7 +159,9 @@ public class AcceptanceController {
      
     }
 
-
+    
+ //teacher get acceptance list about concent in this class.
+ //You will get accept_id, accept_std_id, accept_hw_id, accept_time, accept_score, accept_done, hw_name, hw_content
     @GetMapping(value = {"/teacher/acceptance/hw/{cs_id}/{hw_name}"})
     public ResponseEntity<List<Acceptance>> retrieveAcceptanceTeacher(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException,
           IOException {
