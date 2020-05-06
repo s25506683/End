@@ -5,3 +5,4 @@
 2020/05/04 18:41:27	teacher 16283 is open QRcode(Join the class) in class "程式設計概論2" with classID "CSD1234".
 2020/05/04 18:41:34	student 406401599 join the class class "程式設計概論2" with classID "CSD1234".
 2020/05/04 18:41:39	teacher 16283 is closed QRcode(Join the class) in class "程式設計概論2" with classID "CSD1234".
+2020/05/06 18:25:57	student 406401599 join the class class "程式設計概論2" with classID "CSD1234".

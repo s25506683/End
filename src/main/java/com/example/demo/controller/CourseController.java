@@ -68,7 +68,7 @@ public class CourseController {
 
 
   //student join the class.
-  //you will input cs_id, cs_qrcode.
+  //you will input cs_qrcode(Sting).
   @PostMapping(value = "/student/course/joinclass/")
   public ResponseEntity<String> StudentJoinTheClass(@RequestBody Course course) throws SQLException, IOException {
 
@@ -79,6 +79,7 @@ public class CourseController {
       //if the cs_qrcode not exist.
       return ResponseEntity.badRequest().body("request failed! this class QRcode not exist!");
     }else{
+      course.setCs_id(dao.findThisCsId(course.getCs_qrcode()));
       dao.StudentJoinClass(std_id, course.getCs_id());
       writtenmessage = "student " + std_id + " join the class class \"" + dao.findClassName(course.getCs_id()) + "\" with classID \"" + course.getCs_id() + "\".";
       logfile.writeLog(writtenmessage, course.getCs_id(), partition);
