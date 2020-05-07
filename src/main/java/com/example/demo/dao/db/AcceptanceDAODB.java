@@ -46,6 +46,7 @@ public String findCsID(int hw_id){
   return CsId;
 }
 
+
 public int queryStudentInTheAcceptance(int accept_std_id, int accept_hw_id){
   String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
   int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,accept_hw_id);
@@ -93,7 +94,12 @@ public int insertHomework(final Acceptance acceptance){
     acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_cs_id(), timestamp);
 }
 
-
+// public List<Acceptance> findStudentID(String hw_name){
+//   AuthenticationUtil auth = new AuthenticationUtil();
+//   int std_id = Integer.parseInt(auth.getCurrentUserName());
+//   return this.jdbcTemplate.query("select a.accept_std_id from acceptance a inner join homework hw on hw.hw_id = a.accept_hw_id where a.accept_std_id = ? and hw.hw_name = ?",
+//   new Object[]{std_id, hw_name}, new HomeWorkMapper3());
+// }
 
  public List<Acceptance> findCourseHomework(final String hw_cs_id) {
     return this.jdbcTemplate.query("select h.hw_name, h.hw_createtime from homework h where hw_cs_id = ?"
@@ -138,6 +144,16 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
     final Acceptance acceptance = new Acceptance();
     acceptance.setHw_name(rs.getString("hw_name"));
     acceptance.setHw_createtime (rs.getString("hw_createtime"));
+      return acceptance;
+  }
+}
+
+
+private static final class HomeWorkMapper3 implements RowMapper<Acceptance>{
+
+  public Acceptance mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+    final Acceptance acceptance = new Acceptance();
+    acceptance.setStd_id(rs.getInt("std_id"));
       return acceptance;
   }
 }
