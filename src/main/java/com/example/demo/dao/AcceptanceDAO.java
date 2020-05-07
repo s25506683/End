@@ -12,6 +12,8 @@ public interface AcceptanceDAO {
 
  public String findCsID(int hw_id);
 
+
+
  public int queryStudentInTheAcceptance(int Std_id , int accept_hw_id); 
 
  public int queryHomeworkInTheClass(String hw_name ,String hw_cs_id);
@@ -23,6 +25,8 @@ public interface AcceptanceDAO {
  public int insertAcceptance(Acceptance acceptance);
 
  public int insertHomework(Acceptance acceptance);
+
+//  public List<Acceptance> findStudentID(String hw_name);
 
  public List<Acceptance> findCourseHomework(String hw_cs_id); //驗收中學生可以看到作業的相關內容
 

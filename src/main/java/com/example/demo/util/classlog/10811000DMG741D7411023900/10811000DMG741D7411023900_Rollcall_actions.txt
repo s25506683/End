@@ -26,3 +26,7 @@
 2020/05/04 17:29:30	teacher 16283 renew the QRcode to  in rc_id = 25.
 2020/05/06 21:32:36	teacher 16283 adding rollcall at 2020-05-06 21:32:36 in the class.
 2020/05/06 21:40:20	teacher 16283 adding rollcall at 2020-05-06 21:40:20 in the class.
+2020/05/07 15:36:40	student 406401599 watching personal rollcall record in the class.
+2020/05/07 17:08:08	teacher 16283 adding rollcall at 2020-05-07 17:08:07 in the class.
+2020/05/07 17:14:29	teacher 16283 watching rollcall by person in the class.
+2020/05/07 17:14:51	teacher 16283 watching rollcall by person in the class.
