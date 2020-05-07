@@ -55,7 +55,7 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
   .and().rememberMe().tokenValiditySeconds(600).and().cors()
   // .anyRequest().denyAll()    //除了上述條件以外全部擋住
   .and().csrf().disable()  //關掉跨網站的請求(避免回傳錯誤403
-  .formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/homepaget").failureUrl("http://localhost:3000").permitAll()
+  .formLogin().loginPage("/login").defaultSuccessUrl("http://localhost:3000/loading").failureUrl("http://localhost:3000").permitAll()
   .and()
   .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("http://localhost:3000");
   // .and()
