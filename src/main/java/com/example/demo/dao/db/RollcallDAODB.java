@@ -106,7 +106,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findAllRollcallRecord(final String cs_id) {
-     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id > 3 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id"
+     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id > 3 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id order by rc.rc_starttime desc"
      , new Object[]{cs_id}, new RollcallMapper2());
   }
 
@@ -116,7 +116,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
-     return this.jdbcTemplate.query("select rcre.std_id, rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_id, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ?"
+     return this.jdbcTemplate.query("select rcre.std_id, rc.rc_id, rcre.record_id, rc.rc_starttime, rcre.record_time, rc.rc_inputsource, tlty.tl_type_id, tlty.tl_type_name from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rcre.std_id = ? and rc.cs_id = ? order by rc.rc_starttime desc"
       , new Object[]{std_id, cs_id}, new RollcallMapper4());
   }
 
