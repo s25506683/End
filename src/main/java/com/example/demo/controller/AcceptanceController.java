@@ -179,6 +179,16 @@ public class AcceptanceController {
     }
    
 
+    @GetMapping(value = {"/student/acceptance/std_id"})
+    public ResponseEntity<Acceptance> findStudentInTheAccept() throws SQLException{
+      AuthenticationUtil auth = new AuthenticationUtil();
+      int std_id = Integer.parseInt(auth.getCurrentUserName());
+      Acceptance acceptance = new Acceptance();
+      acceptance.setStd_id(std_id);
+      return new ResponseEntity<Acceptance>(acceptance,HttpStatus.OK);
+
+   }
+
     
  @PutMapping(value = "/teacher/updateScore")
     public ResponseEntity<String> processFormUpdate(@RequestBody final Acceptance acceptance) throws SQLException,
