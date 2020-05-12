@@ -77,13 +77,6 @@ public class AnnouncementController {
         }
     }
 
-    
- //@GetMapping(value = {"/customer/{id}"})
- //   public Customer retrieveOneCustomer(@PathVariable("id") Long id) throws SQLException{
- //      return dao.findOne(id);
- //   }
-    
-
 
     //teacher get all announcement in the class.
     //you will get at_id, at_title, at_content, at_posttime returns.
@@ -125,6 +118,7 @@ public class AnnouncementController {
             IOException {
         AuthenticationUtil auth = new AuthenticationUtil();
         String teacher_id = auth.getCurrentUserName();
+        int teacher_idMail = Integer.parseInt(auth.getCurrentUserName());
 
         if(dao.hasAtIdExists(announcement.getAt_id()) == 0){
             //if at_id not found.
@@ -137,6 +131,10 @@ public class AnnouncementController {
             return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
         }else{
             dao.updateAnnouncement(announcement);
+            String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
+             for(int i = 0; i < studentMailList.length; i++){
+                mailservice.sendAnnouncementforStudent(studentMailList[i], teacher_idMail, announcement);
+             }
             writtenmessage = "teacher "+ teacher_id + " edit announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
             return ResponseEntity.ok("announcement update successful!");

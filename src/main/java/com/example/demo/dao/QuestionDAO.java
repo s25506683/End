@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
+
+    public String findQuestionAsktime(String std_id, String cs_id);
  
     public int queryCs_id(String cs_id);
 
