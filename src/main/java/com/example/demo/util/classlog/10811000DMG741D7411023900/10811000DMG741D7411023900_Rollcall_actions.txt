@@ -30,3 +30,6 @@
 2020/05/07 17:08:08	teacher 16283 adding rollcall at 2020-05-07 17:08:07 in the class.
 2020/05/07 17:14:29	teacher 16283 watching rollcall by person in the class.
 2020/05/07 17:14:51	teacher 16283 watching rollcall by person in the class.
+2020/05/12 19:55:47	teacher 16283 download rollcall time "2020-04-16 00:09:32" Excel file.
+2020/05/12 20:00:56	teacher 16283 download rollcall time "2020-04-16 00:09:32" Excel file.
+2020/05/12 20:04:30	teacher 16283 download rollcall time "2020-04-16 00:09:32" Excel file.
