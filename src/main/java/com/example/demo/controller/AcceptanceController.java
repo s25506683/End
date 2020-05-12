@@ -179,6 +179,8 @@ public class AcceptanceController {
     }
    
 
+ //get Who is in this acceptance.
+ //You will get login std_id.
     @GetMapping(value = {"/student/acceptance/std_id"})
     public ResponseEntity<Acceptance> findStudentInTheAccept() throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -190,6 +192,8 @@ public class AcceptanceController {
    }
 
     
+ //teacher update student score in this homework.
+ //You have input std_id, accept_hw_id, accept_score.
  @PutMapping(value = "/teacher/updateScore")
     public ResponseEntity<String> processFormUpdate(@RequestBody final Acceptance acceptance) throws SQLException,
           IOException {
@@ -212,6 +216,8 @@ public class AcceptanceController {
 
     }
 
+ //teacher update homework concent in this homework.
+ //You have input hw_name, hw_content, hw_cs_id.
  @PutMapping(value = "/teacher/updateContent")
     public ResponseEntity<String> processFormUpdate2(@RequestBody final Acceptance acceptance) throws SQLException,
           IOException {
@@ -231,7 +237,9 @@ public class AcceptanceController {
        return ResponseEntity.ok("修改成功");
       
     }
-
+   
+ //student delete there acceptance.   
+ //input std_id, hw_name.
  @DeleteMapping(value = "/student/acceptance/deleteAcceptance")
     public ResponseEntity<String> deleteAcceptance(@RequestBody final Acceptance acceptance) throws SQLException,
           IOException {
@@ -254,6 +262,8 @@ public class AcceptanceController {
 
     }  
 
+ //teacher delete there homework.
+ //input hw_name, hw_cs_id.
  @DeleteMapping(value = "/teacher/acceptance/deleteHomework")
     public ResponseEntity<String> deleteHomework(@RequestBody final Acceptance acceptance) throws SQLException,
           IOException {
