@@ -27,6 +27,24 @@ public class ExcelDownloadDAODB implements ExcelDownloadDAO {
 
 
 
+    public int RcIdExist(int rc_id){
+        String sql = "select count(cs_id) as count from rollcall where rc_id = ?";
+        int count = this.jdbcTemplate.queryForObject(sql,Integer.class,rc_id);
+        return count;
+    }
+
+    public String queryRcStartTime(int rc_id){
+        String sql = "select rc_starttime from rollcall where rc_id = ?";
+        String rc_starttime = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
+        return rc_starttime;
+    }
+
+    public String findCsId(int rc_id){
+        String sql = "select cs_id from rollcall where rc_id = ?";
+        String cs_id = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);
+        return cs_id;
+    }
+
     public String findRcClassInfo(int rc_id){
         String sql = "select concat(rc.cs_id, ',', cs.cs_name, ',', rc.rc_starttime, ',', rc.rc_inputsource) from rollcall as rc inner join class as cs on cs.cs_id = rc.cs_id where rc_id = ?";
         String classinfo = this.jdbcTemplate.queryForObject(sql,String.class,rc_id);

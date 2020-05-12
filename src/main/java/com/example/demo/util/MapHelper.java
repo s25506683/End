@@ -78,10 +78,10 @@ public class MapHelper {
         
         String[] secondArray = maphelperdao.GetDatabase(rc_id).split(",");
         //String[] secondArray = DatabasePoint.split(",");
-        double firstLatitude = Double.valueOf(firstArray[0].trim());
-        double firstLongitude = Double.valueOf(firstArray[1].trim());
-        double secondLatitude = Double.valueOf(secondArray[0].trim());
-        double secondLongitude = Double.valueOf(secondArray[1].trim());
+        double firstLatitude = Double.valueOf(firstArray[1].trim());
+        double firstLongitude = Double.valueOf(firstArray[0].trim());
+        double secondLatitude = Double.valueOf(secondArray[1].trim());
+        double secondLongitude = Double.valueOf(secondArray[0].trim());
         return getDistance(firstLatitude, firstLongitude, secondLatitude, secondLongitude);
     }
 
