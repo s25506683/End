@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,29 +31,60 @@ import com.example.demo.dao.QuestionDAO;
 import com.example.demo.entity.Question;
 import com.example.demo.util.UserInTheClass;
 import com.example.demo.util.AuthenticationUtil;
+import com.example.demo.util.CurrentTimeStamp;
 import com.example.demo.util.Logfile;
 //import com.example.demo.util.CurrentTimeStamp;
 
 @RestController
 public class QuestionController {
-  @Autowired
-  QuestionDAO dao;
+   @Autowired
+   QuestionDAO dao;
 
-  @Autowired
-  UserInTheClass userintheclass;
+   @Autowired
+   UserInTheClass userintheclass;
 
-  @Autowired
+   @Autowired
    Logfile logfile;
-   
+
    String writtenmessage = new String();
    String partition = "Question";
 
-  //student post there question to db.
-  //you will input q_content, cs_id.
- @PostMapping(value = "/student/question")
-    public ResponseEntity<String> proccessStudentQoestion(@RequestBody final Question question) throws SQLException,
-          IOException {
-       if(question.getQ_content() == ""){
+   // student post there question to db.
+   // you will input q_content, cs_id.
+   @PostMapping(value = "/student/question")
+   public ResponseEntity<String> proccessStudentQoestion(@RequestBody final Question question)
+         throws SQLException, IOException, ParseException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String std_id = auth.getCurrentUserName();
+      question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
+
+      //抓取現在的時間
+      Date timenow = new Date(); 
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      //抓取上一次發問的時間
+      String oldAsktime = question.getQ_asktime();
+      //將上次發問的時間轉換成毫秒
+      long timeInMillis = sdf.parse(oldAsktime).getTime();
+
+      CurrentTimeStamp ts = new CurrentTimeStamp();
+      String timestamp = ts.getCurrentTimeStamp();
+      System.out.println("\n\n\n");
+      System.out.println(question.getQ_asktime()); 
+      System.out.println(timestamp);
+      System.out.println(timeInMillis);
+      System.out.println(timenow.getTime());
+      System.out.println("\n\n\n");
+
+      long number = timenow.getTime() - timeInMillis;
+      System.out.println("\n\n\n");
+      System.out.print(number);
+      System.out.println("\n\n\n");
+
+       if(number < 300000){
+         //if the time of the last question is too close now
+         return ResponseEntity.badRequest().body("request failed. Questions cannot be repeated within 5 minutes");
+       }else if(question.getQ_content() == ""){
           //if question content is null.
           return ResponseEntity.badRequest().body("request failed. input content is null!");
        }else if(dao.queryCs_id(question.getCs_id()) == 0){
@@ -58,8 +92,6 @@ public class QuestionController {
           return ResponseEntity.badRequest().body("request failed. input ClassId not found!");
        }else{
           dao.studentinsert(question);
-          AuthenticationUtil auth = new AuthenticationUtil();
-          String std_id = auth.getCurrentUserName();
           question.getCs_id();
           writtenmessage = "student "+ std_id + " writing question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
           logfile.writeLog(writtenmessage, question.getCs_id(), partition);

@@ -27,6 +27,12 @@ public class QuestionDAODB implements QuestionDAO {
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
 
+public String findQuestionAsktime(String std_id, String cs_id){
+  String sql = "select q_asktime from question where q_std_id = ?and cs_id = ? ORDER BY q_asktime desc LIMIT 1";
+  final String Asktime = this.jdbcTemplate.queryForObject(sql, String.class, std_id, cs_id);
+  return Asktime;
+}
+
 public int queryCs_id(String cs_id) {
   String sql = "select count(cs_id) as count from class where cs_id = ?";
   int count = this.jdbcTemplate.queryForObject(sql,Integer.class,cs_id);
