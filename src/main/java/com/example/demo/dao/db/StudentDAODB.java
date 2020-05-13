@@ -51,6 +51,12 @@ public class StudentDAODB implements StudentDAO {
 		return count;
 	}
 
+	public String getStudentName(int std_id){
+		String sql = "select std_name from student where std_id = ?";
+		String std_name = this.jdbcTemplate.queryForObject(sql,String.class,std_id);
+		return std_name;
+	}
+
 	public String getPassword(int std_id){
 		String sql = "select std_password from student where std_id = ?";
 		String std_password = this.jdbcTemplate.queryForObject(sql,String.class,std_id);

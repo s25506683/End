@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.demo.util.ResetPwdMailTemplate;
+
 
 
 @Service
@@ -18,6 +20,11 @@ public class MailService {
 
     @Autowired
     AnnouncementDAO dao;
+
+    @Autowired
+    ResetPwdMailTemplate resetpwdmailtemplate;
+
+
     private JavaMailSender mailSender;
  
     @Autowired
@@ -25,13 +32,16 @@ public class MailService {
         this.mailSender = mailSender;
     }
  
-    public void prepareAndSend(String recipient, String message, int std_id) {
+    public void prepareAndSend(String recipient, String new_password, String std_name) {
        MimeMessagePreparator messagePreparator = mimeMessage -> {
              MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
              messageHelper.setFrom("qrgomanager@gmail.com");
              messageHelper.setTo(recipient);
-             messageHelper.setSubject("您的QRgo系統學號為" + std_id + "的密碼已經變更");
-             messageHelper.setText("您的新密碼為：" + message + "\n請儘速登入系統更改密碼！");
+             messageHelper.setSubject("您的RollsCall系統密碼已經變更");
+             resetpwdmailtemplate.setUserName(std_name);
+             resetpwdmailtemplate.setNewPassword(new_password);
+             messageHelper.setText(resetpwdmailtemplate.getNewMailTemplate(), true);
+             //messageHelper.setText(resetpwdmailtemplate.getMailTemplate());
          };
          try {
              mailSender.send(messagePreparator);
@@ -62,7 +72,7 @@ public class MailService {
      }
 
 
-     public void sendAnnouncementforStudent(String recipient, int teacher_id, @RequestBody final Announcement announcement) {
+     public void sendAnnouncementToStudent(String recipient, int teacher_id, @RequestBody final Announcement announcement) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
               MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
               messageHelper.setFrom("qrgomanager@gmail.com");

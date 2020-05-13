@@ -9,6 +9,8 @@ public interface StudentDAO {
 
 	public int queryUser(int std_id);
 
+	public String getStudentName(int std_id);
+
 	public String getPassword(int std_id);
 
 	//public int passwordHasRound(int std_id, String old_std_password);
