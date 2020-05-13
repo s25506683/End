@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.demo.util.ResetPwdMailTemplate;
+import com.example.demo.util.MailTemplate.ResetPwdMailTemplate;
 
 
 
