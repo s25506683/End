@@ -67,7 +67,7 @@ public class AnnouncementController {
 
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
              for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementforStudent(studentMailList[i], teacher_idMail, announcement);
+                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
              }
 
 
@@ -174,7 +174,7 @@ public class AnnouncementController {
         String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
 
         for(int i = 0; i < studentMailList.length; i++){
-            mailservice.sendAnnouncementforStudent(studentMailList[i], teacher_id, announcement);
+            mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_id, announcement);
         }
 
         return ResponseEntity.ok("send announcement for student");

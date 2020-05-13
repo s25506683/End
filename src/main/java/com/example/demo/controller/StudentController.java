@@ -178,7 +178,7 @@ public class StudentController {
 			dao.updateStudentPassword(student.getStd_id(), id);
 			String user_email = student.getStd_mail();
 			String newpassword = id;
-			mailservice.prepareAndSend(user_email, newpassword, student.getStd_id());
+			mailservice.prepareAndSend(user_email, newpassword, dao.getStudentName(student.getStd_id()));
 			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
 			System.out.println(user_email+"\n"+newpassword+"\n"+student.getStd_id());
 			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
