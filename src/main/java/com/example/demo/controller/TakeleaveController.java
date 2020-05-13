@@ -196,14 +196,10 @@ public class TakeleaveController {
             dao.Allowleave(takeleave);
             dao.updateTltypeID(takeleave);
             return ResponseEntity.ok("請假審核成功");
-
-            
         }else{
             return ResponseEntity.badRequest().body("此學生尚未申請請假");
         }
-              
-
-            }
+  }
 
   //student update takeleave content
   //you wii input rc_id, tl_content
