@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.TeacherDAO;
 import com.example.demo.entity.Teacher;
+import com.example.demo.util.AuthenticationUtil;
 
 @Repository
 public class TeacherDAODB implements TeacherDAO {
@@ -25,13 +26,22 @@ public class TeacherDAODB implements TeacherDAO {
 
 //jdbcTemplate 
 
+	public int AddstudentManually(String std_id, String cs_id){
+	return jdbcTemplate.update(
+      "insert into class_student (std_id, cs_id) values(?, ?)",
+      std_id, cs_id);
+	}
+
+	public int DeletestudentManually(Teacher teacher){
+		return jdbcTemplate.update("delete from class_student where std_id = ? and cs_id = ?",
+		teacher.getStd_id(), teacher.getCs_id());
+	}
+
 	public int resetPasswordVerify(int teacher_id, String teacher_mail, String teacher_phone){
 		String sql = "select count(teacher_id) as count from teacher where teacher_id = ? and teacher_mail = ? and teacher_phone = ?";
 		int count = this.jdbcTemplate.queryForObject(sql,Integer.class,teacher_id, teacher_mail, teacher_phone);
 		return count;
 	}
-
-
 
 	public int queryUser(int teacher_id) {
 		String sql = "select count(teacher_id) as count from teacher where teacher_id = ?";
@@ -81,6 +91,12 @@ public class TeacherDAODB implements TeacherDAO {
 		return this.jdbcTemplate.query(
 				"select teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image from teacher",
 				new TeacherMapper());
+	}
+
+	public int findStudentInformation(String std_id){
+		String sql = "select std_id, std_name, std_gender, std_department from student where std_id = ?";
+		final int information = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id);
+		return information;
 	}
 
 	private static final class TeacherMapper implements RowMapper<Teacher> {

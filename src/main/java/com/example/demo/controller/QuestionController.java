@@ -67,14 +67,14 @@ public class QuestionController {
       //將上次發問的時間轉換成毫秒
       long timeInMillis = sdf.parse(oldAsktime).getTime();
 
-      CurrentTimeStamp ts = new CurrentTimeStamp();
-      String timestamp = ts.getCurrentTimeStamp();
-      System.out.println("\n\n\n");
-      System.out.println(question.getQ_asktime()); 
-      System.out.println(timestamp);
-      System.out.println(timeInMillis);
-      System.out.println(timenow.getTime());
-      System.out.println("\n\n\n");
+      // CurrentTimeStamp ts = new CurrentTimeStamp();
+      // String timestamp = ts.getCurrentTimeStamp();
+      // System.out.println("\n\n\n");
+      // System.out.println(question.getQ_asktime()); 
+      // System.out.println(timestamp);
+      // System.out.println(timeInMillis);
+      // System.out.println(timenow.getTime());
+      // System.out.println("\n\n\n");
 
       long number = timenow.getTime() - timeInMillis;
       System.out.println("\n\n\n");
