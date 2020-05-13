@@ -133,7 +133,7 @@ public class AnnouncementController {
             dao.updateAnnouncement(announcement);
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
              for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementforStudent(studentMailList[i], teacher_idMail, announcement);
+                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
              }
             writtenmessage = "teacher "+ teacher_id + " edit announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);

@@ -11,6 +11,25 @@ public class Teacher {
 	private String teacher_mail;
 	private String teacher_image;
 	private String old_teacher_password;
+	private String cs_id;
+	private String std_id;
+
+	public String getStd_id() {
+		return this.std_id;
+	}
+
+	public void setStd_id(String std_id) {
+		this.std_id = std_id;
+	}
+
+	
+	public String getCs_id() {
+		return this.cs_id;
+	}
+
+	public void setCs_id(String cs_id) {
+		this.cs_id = cs_id;
+	}
 
 	public String getOld_teacher_password() {
 		return this.old_teacher_password;
