@@ -8,6 +8,8 @@ public class Announcement {
     private String at_content;
     private String at_posttime;
 
+    private String cs_name;
+
 
     public int getAt_id() {
         return this.at_id;
@@ -47,6 +49,14 @@ public class Announcement {
 
     public void setAt_posttime(String at_posttime) {
         this.at_posttime = at_posttime;
+    }
+
+    public String getCs_name() {
+        return this.cs_name;
+    }
+
+    public void setCs_name(String cs_name) {
+        this.cs_name = cs_name;
     }
 
 

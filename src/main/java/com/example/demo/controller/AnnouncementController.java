@@ -52,7 +52,7 @@ public class AnnouncementController {
             IOException {
         AuthenticationUtil auth = new AuthenticationUtil();
         String teacher_id = auth.getCurrentUserName();
-        int teacher_idMail = Integer.parseInt(auth.getCurrentUserName());
+        String teacher_mail = dao.findTeacherEmail(Integer.parseInt(teacher_id));
 
         if(dao.queryClassHasExists(announcement.getCs_id()) == 0){
             //if this class not exist.
@@ -65,14 +65,15 @@ public class AnnouncementController {
             announcement.setAt_posttime(ts.getCurrentTimeStamp());
             dao.postAnnouncement(announcement);
 
-            String at_title = announcement.getAt_title();
-            String at_content = announcement.getAt_content();
-            String cs_name = dao.findClassName(announcement.getCs_id());
+            announcement.setCs_name(dao.findClassName(announcement.getCs_id()));
 
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
-             for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, at_title, at_content, cs_name, announcement);
-             }
+
+            mailservice.sendAnnouncementToStudent(studentMailList, teacher_mail, announcement);
+
+            //  for(int i = 0; i < studentMailList.length; i++){
+            //     mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
+            //  }
              
             writtenmessage = "teacher "+ teacher_id + " adding announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
@@ -140,7 +141,7 @@ public class AnnouncementController {
             dao.updateAnnouncement(announcement);
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
              for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, at_title, at_content, cs_name, announcement);
+                //mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, at_title, at_content, cs_name, announcement);
              }
             writtenmessage = "teacher "+ teacher_id + " edit announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
