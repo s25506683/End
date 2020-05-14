@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.util.MailTemplate.ResetPwdMailTemplate;
-import com.example.demo.util.MailTemplate.ResetPwdMailTemplateAnnouncement;
+import com.example.demo.util.MailTemplate.NewAnnouncementTemplate;
 
 
 
@@ -26,7 +26,7 @@ public class MailService {
     ResetPwdMailTemplate resetpwdmailtemplate;
 
     @Autowired
-    ResetPwdMailTemplateAnnouncement resetpwdmailtemplateAnnouncement;
+    NewAnnouncementTemplate newannouncementtemplate;
 
 
     private final JavaMailSender mailSender;
@@ -80,10 +80,10 @@ public class MailService {
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(recipient);
             messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已新增新的公告");
-            resetpwdmailtemplateAnnouncement.setAtTitle(at_title);
-            resetpwdmailtemplateAnnouncement.setAtContent(at_content);
-            resetpwdmailtemplateAnnouncement.setCsName(cs_name);
-            messageHelper.setText(resetpwdmailtemplateAnnouncement.getNewMailTemplate(), true);
+            newannouncementtemplate.setAtTitle(at_title);
+            newannouncementtemplate.setAtContent(at_content);
+            newannouncementtemplate.setCsName(cs_name);
+            messageHelper.setText(newannouncementtemplate.getNewMailTemplate(), true);
 
         };
         try {
