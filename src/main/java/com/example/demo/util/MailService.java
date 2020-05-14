@@ -103,13 +103,11 @@ public class MailService {
      public void UpdateAnnouncementToStudent(String[] recipient, String teacher_mail, @RequestBody Announcement announcement) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            //String[] Bcc = {"s25506683@gmail.com", "lisa293341@gmail.com"};
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(teacher_mail);
-            messageHelper.setBcc(recipient);
+            messageHelper.setBcc("s25506683@gmail.com");
             messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已修改新的公告");
             editannouncementtemplate.setCsName(announcement.getCs_name());
-            //editannouncementtemplate.setCsName("111");
             messageHelper.setText(editannouncementtemplate.getNewMailTemplate(), true);
 
         };
