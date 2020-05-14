@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class ResetPwdMailTemplateAnnouncement {
+public class NewAnnouncementTemplate {
 
     private String newMailTemplate = new String();
 

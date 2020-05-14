@@ -173,25 +173,6 @@ public class AnnouncementController {
     }
 
 
-@PostMapping(value = "/teacher/announcement/sendEmailforStudent")
-    public ResponseEntity<String> sendEmailforStudent(@RequestBody final Announcement announcement) throws SQLException{
-        AuthenticationUtil auth = new AuthenticationUtil();
-        int teacher_id = Integer.parseInt(auth.getCurrentUserName());
-
-        String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
-
-        String at_title = announcement.getAt_title();
-        String at_content = announcement.getAt_content();
-        String cs_name = dao.findClassName(announcement.getCs_id());
-
-        for(int i = 0; i < studentMailList.length; i++){
-            mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_id, at_title, at_content, cs_name, announcement);
-        }
-
-        return ResponseEntity.ok("send announcement for student");
-        
-    }
-
 
 
 
