@@ -230,25 +230,35 @@ public class RollcallController {
    }
    
     //student QRcode rollcall.
-    //you will input rc_id(int), qrcode(String).
- @PutMapping(value = "/student/rollcall/QRcodeRollcall/{qrcode}/")
-    public ResponseEntity<String> processUpdateRollcallStudentWithQRcode(@PathVariable("qrcode") final String qrcode) throws SQLException,
+    //you will input qrcode(String), gps_point(String like "25.015369,121.427966").
+ @PutMapping(value = "/student/rollcall/QRcodeRollcall/{qrcode}/{gps_point}")
+    public ResponseEntity<String> processUpdateRollcallStudentWithQRcode(@PathVariable("qrcode") final String qrcode, @PathVariable("gps_point") final String gps_point) throws SQLException,
         IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
+
 
       if(dao.hasThisQRcode(qrcode) == 0){
         //if QRcode not exist.
         return ResponseEntity.badRequest().body("request failed. invalid QRcode!");
       }else{
+
         //use QRcode to find rc_id.
         int rc_id = dao.findRcIdWithQRcode2(qrcode);
+        double distance = 0;
+        distance = maphelper.GetPointDistance(gps_point, rc_id);
         
         if(dao.rollcallIsEnd(rc_id) == 1){
           //if the rollcall was closed by teacher.
           writtenmessage = "student "+ std_id + " QRcode rollcall failed, because the rollcall was closed.(input's rc_id = " + rc_id + " , qrcode = " + qrcode + ")";
           logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
           return ResponseEntity.badRequest().body("request failed. This rollcall was closed by teacher!");
+        }else if(distance < 0.5){
+          //if input gps point distance less than 0.5 kilometer with rollcall's destination.
+          dao.updateRollcallRecord(std_id, rc_id);
+          writtenmessage = "student "+ std_id + " GPS rollcall update to present in rc_id = " + rc_id + ".";
+          logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
+          return ResponseEntity.ok("request successful! the GPS rollcall record has already added!\ndistance: " + distance + ".");
         }else{
           //if input qrcode equals rollcall's qrcode.
           dao.updateRollcallRecord(std_id, rc_id);
