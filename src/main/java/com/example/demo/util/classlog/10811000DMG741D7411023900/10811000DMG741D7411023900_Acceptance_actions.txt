@@ -94,3 +94,13 @@
 2020/05/12 20:08:51	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
 2020/05/12 20:09:05	teacher "16283" watching acceptancelist in class "10811000DMG741D7411023900".
 2020/05/14 18:45:16	teacher "16283" update content in homework "微積分第一次作業".
+2020/05/14 22:07:26	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:14:40	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:14:43	teacher "16283" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:14:47	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:15:02	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:16:59	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:18:23	student "406401599" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:18:28	teacher "16283" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:18:30	teacher "16283" watching homework in class "10811000DMG741D7411023900".
+2020/05/14 22:19:18	teacher "16283" watching homework in class "10811000DMG741D7411023900".
