@@ -65,12 +65,15 @@ public class AnnouncementController {
             announcement.setAt_posttime(ts.getCurrentTimeStamp());
             dao.postAnnouncement(announcement);
 
+            String at_title = announcement.getAt_title();
+            String at_content = announcement.getAt_content();
+            String cs_name = dao.findClassName(announcement.getCs_id());
+
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
              for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
+                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, at_title, at_content, cs_name, announcement);
              }
-
-
+             
             writtenmessage = "teacher "+ teacher_id + " adding announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
             return ResponseEntity.ok("request successful! the announcement has already added!");
@@ -120,6 +123,10 @@ public class AnnouncementController {
         String teacher_id = auth.getCurrentUserName();
         int teacher_idMail = Integer.parseInt(auth.getCurrentUserName());
 
+        String at_title = announcement.getAt_title();
+        String at_content = announcement.getAt_content();
+        String cs_name = dao.findClassName(announcement.getCs_id());
+
         if(dao.hasAtIdExists(announcement.getAt_id()) == 0){
             //if at_id not found.
             return ResponseEntity.badRequest().body("request failed. at_id not found!");
@@ -133,7 +140,7 @@ public class AnnouncementController {
             dao.updateAnnouncement(announcement);
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
              for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
+                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, at_title, at_content, cs_name, announcement);
              }
             writtenmessage = "teacher "+ teacher_id + " edit announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
@@ -173,8 +180,12 @@ public class AnnouncementController {
 
         String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
 
+        String at_title = announcement.getAt_title();
+        String at_content = announcement.getAt_content();
+        String cs_name = dao.findClassName(announcement.getCs_id());
+
         for(int i = 0; i < studentMailList.length; i++){
-            mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_id, announcement);
+            mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_id, at_title, at_content, cs_name, announcement);
         }
 
         return ResponseEntity.ok("send announcement for student");

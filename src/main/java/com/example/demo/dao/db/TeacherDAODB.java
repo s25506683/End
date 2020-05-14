@@ -93,10 +93,9 @@ public class TeacherDAODB implements TeacherDAO {
 				new TeacherMapper());
 	}
 
-	public int findStudentInformation(String std_id){
-		String sql = "select std_id, std_name, std_gender, std_department from student where std_id = ?";
-		final int information = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id);
-		return information;
+	public List<Teacher> findStudentInformation(String std_id){
+		return this.jdbcTemplate.query("select std_id, std_name, std_gender, std_department from student where std_id = ?"
+		, new Object[]{std_id}, new TeacherMapper2());
 	}
 
 	private static final class TeacherMapper implements RowMapper<Teacher> {
@@ -111,6 +110,19 @@ public class TeacherDAODB implements TeacherDAO {
 			teacher.setTeacher_phone(rs.getString("teacher_phone"));
 			teacher.setTeacher_mail(rs.getString("teacher_mail"));
 			teacher.setTeacher_image(rs.getString("teacher_image"));
+			return teacher;
+		}
+	}
+
+
+	private static final class TeacherMapper2 implements RowMapper<Teacher> {
+
+		public Teacher mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+			final Teacher teacher = new Teacher();
+			teacher.setStd_id(rs.getString("std_id"));
+			teacher.setStd_name(rs.getString("std_name"));
+			teacher.setStd_gender(rs.getString("std_gender"));
+			teacher.setStd_department(rs.getString("std_department"));
 			return teacher;
 		}
 	}
