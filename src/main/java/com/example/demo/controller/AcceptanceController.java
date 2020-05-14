@@ -122,14 +122,13 @@ public class AcceptanceController {
 
    
    //teacher get homework about concent in this class.
-   //You will get hw_name, hw_createtime, hw_content.
+   //You will get hw_name, hw_createtime, hw_content, hw_id.
     @GetMapping(value = {"/teacher/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptanceTeacher(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName(); 
      
-      
       if(dao.queryTeacherInTheClass(hw_cs_id,teacher_id) == 0){
          //如果學生不屬於這個課堂
          return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
