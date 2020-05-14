@@ -118,7 +118,7 @@ public int insertHomework(final Acceptance acceptance){
 
 
  public List<Acceptance> findCourseHomeworkformTeacher(final String hw_cs_id){
-  return this.jdbcTemplate.query( "select hw_name, hw_createtime, hw_content from homework where hw_cs_id = ?"
+  return this.jdbcTemplate.query( "select hw_name, hw_createtime, hw_content, hw_id from homework where hw_cs_id = ?"
   ,new Object[]{hw_cs_id}, new HomeWorkMapper2());
  }
 
@@ -172,6 +172,7 @@ private static final class HomeWorkMapper2 implements RowMapper<Acceptance>{
     acceptance.setHw_name(rs.getString("hw_name"));
     acceptance.setHw_createtime (rs.getString("hw_createtime"));
     acceptance.setHw_content(rs.getString("hw_content"));
+    acceptance.setHw_id(rs.getInt("hw_id"));
       return acceptance;
   }
 }
