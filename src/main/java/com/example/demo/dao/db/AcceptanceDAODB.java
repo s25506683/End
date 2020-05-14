@@ -46,6 +46,11 @@ public String findCsID(int hw_id){
   return CsId;
 }
 
+public int queryHomeworkID(int hw_id){
+  String sql = "select count(hw_id) as count from homework where hw_id = ?";
+  int count = this.jdbcTemplate.queryForObject(sql,Integer.class,hw_id);
+  return count;
+}
 
 public int queryStudentInTheAcceptance(int accept_std_id, int accept_hw_id){
   String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and accept_hw_id = ? ";
@@ -180,8 +185,8 @@ private static final class HomeWorkMapper2 implements RowMapper<Acceptance>{
 
  public int updateContent(final Acceptance acceptance){
     return jdbcTemplate.update(
-      "update homework set hw_name=?, hw_content=?, hw_cs_id=? where hw_name=? and hw_cs_id=?",
-      acceptance.getHw_name(),acceptance.getHw_content(),acceptance.getHw_cs_id(),acceptance.getHw_name(),acceptance.getHw_cs_id());
+      "update homework set hw_name= ?, hw_content= ? where hw_id = ?",
+      acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_id());
     
  }
 

@@ -22,6 +22,8 @@ public interface AnnouncementDAO {
 
     public String[] findStudentEmail(String cs_id);
 
+    public String findTeacherEmail(int teacher_id);
+
     public String findClassName(String cs_id);
 
 }

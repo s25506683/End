@@ -105,6 +105,15 @@ public class TeacherController {
 		return dao.findAll();
 	}
 
+
+	//teacher
+
+	@GetMapping(value = {"/teacher/findStudentInformation/{std_id}"})
+	public ResponseEntity<List<Teacher>> retrieveTeacherfindstudent(@PathVariable("std_id") String std_id) throws SQLException{
+		return new ResponseEntity<List<Teacher>>(dao.findStudentInformation(std_id), HttpStatus.OK);
+
+	}
+
 	//teacher change own password after login.
 	//you have to input old_teacher_password, teacher_password.
 	@PutMapping(value = "/teacher/resetPassword")

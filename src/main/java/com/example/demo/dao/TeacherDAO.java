@@ -24,7 +24,7 @@ public interface TeacherDAO {
 
 	public int resetPasswordVerify(int teacher_id, String teacher_mail, String teacher_phone);
 
-	public int findStudentInformation(String std_id);
+	public List<Teacher> findStudentInformation(String std_id);
 
 	public int DeletestudentManually(Teacher teacher);
 

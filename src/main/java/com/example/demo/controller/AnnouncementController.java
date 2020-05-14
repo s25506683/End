@@ -52,7 +52,7 @@ public class AnnouncementController {
             IOException {
         AuthenticationUtil auth = new AuthenticationUtil();
         String teacher_id = auth.getCurrentUserName();
-        int teacher_idMail = Integer.parseInt(auth.getCurrentUserName());
+        String teacher_mail = dao.findTeacherEmail(Integer.parseInt(teacher_id));
 
         if(dao.queryClassHasExists(announcement.getCs_id()) == 0){
             //if this class not exist.
@@ -65,12 +65,16 @@ public class AnnouncementController {
             announcement.setAt_posttime(ts.getCurrentTimeStamp());
             dao.postAnnouncement(announcement);
 
+            announcement.setCs_name(dao.findClassName(announcement.getCs_id()));
+
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
-             for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
-             }
 
+            mailservice.sendAnnouncementToStudent(studentMailList, teacher_mail, announcement);
 
+            //  for(int i = 0; i < studentMailList.length; i++){
+            //     mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
+            //  }
+             
             writtenmessage = "teacher "+ teacher_id + " adding announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
             return ResponseEntity.ok("request successful! the announcement has already added!");
@@ -118,7 +122,8 @@ public class AnnouncementController {
             IOException {
         AuthenticationUtil auth = new AuthenticationUtil();
         String teacher_id = auth.getCurrentUserName();
-        int teacher_idMail = Integer.parseInt(auth.getCurrentUserName());
+        String teacher_mail = dao.findTeacherEmail(Integer.parseInt(teacher_id));
+    
 
         if(dao.hasAtIdExists(announcement.getAt_id()) == 0){
             //if at_id not found.
@@ -131,10 +136,17 @@ public class AnnouncementController {
             return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
         }else{
             dao.updateAnnouncement(announcement);
+
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
-             for(int i = 0; i < studentMailList.length; i++){
-                mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, announcement);
-             }
+
+            announcement.setCs_name(dao.findClassName(announcement.getCs_id()));
+            
+            mailservice.UpdateAnnouncementToStudent(studentMailList, teacher_mail, announcement);
+
+            //  for(int i = 0; i < studentMailList.length; i++){
+            //     mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_idMail, at_title, at_content, cs_name, announcement);
+            //  }
+            
             writtenmessage = "teacher "+ teacher_id + " edit announcement at in the class.";
             logfile.writeLog(writtenmessage, announcement.getCs_id(), partition);
             return ResponseEntity.ok("announcement update successful!");
@@ -165,21 +177,6 @@ public class AnnouncementController {
         }
     }
 
-
-@PostMapping(value = "/teacher/announcement/sendEmailforStudent")
-    public ResponseEntity<String> sendEmailforStudent(@RequestBody final Announcement announcement) throws SQLException{
-        AuthenticationUtil auth = new AuthenticationUtil();
-        int teacher_id = Integer.parseInt(auth.getCurrentUserName());
-
-        String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
-
-        for(int i = 0; i < studentMailList.length; i++){
-            mailservice.sendAnnouncementToStudent(studentMailList[i], teacher_id, announcement);
-        }
-
-        return ResponseEntity.ok("send announcement for student");
-        
-    }
 
 
 

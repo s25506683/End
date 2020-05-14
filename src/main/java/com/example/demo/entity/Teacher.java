@@ -13,6 +13,33 @@ public class Teacher {
 	private String old_teacher_password;
 	private String cs_id;
 	private String std_id;
+	private String std_name;
+	private String std_gender;
+	private String std_department;
+
+	public String getStd_name() {
+		return this.std_name;
+	}
+
+	public void setStd_name(String std_name) {
+		this.std_name = std_name;
+	}
+
+	public String getStd_gender() {
+		return this.std_gender;
+	}
+
+	public void setStd_gender(String std_gender) {
+		this.std_gender = std_gender;
+	}
+
+	public String getStd_department() {
+		return this.std_department;
+	}
+
+	public void setStd_department(String std_department) {
+		this.std_department = std_department;
+	}
 
 	public String getStd_id() {
 		return this.std_id;

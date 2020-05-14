@@ -18,6 +18,8 @@ public interface AcceptanceDAO {
 
  public int queryHomeworkInTheClass(String hw_name ,String hw_cs_id);
 
+ public int queryHomeworkID(int hw_id);
+
  public int queryTeacherInTheClass(String cs_id, String teacher_id);
 
  public int queryStudentInTheClass(String cs_id, String std_id);

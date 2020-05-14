@@ -16,11 +16,19 @@ public class Acceptance {
  private String hw_cs_id;
  private String hw_name;
  private String hw_createtime;
-
  private String hw_content;
  private String cs_id;
  private int teacher_id;
  private int std_id;
+ private int hw_id;
+
+ public int getHw_id() {
+     return this.hw_id;
+ }
+
+ public void setHw_id(int hw_id) {
+     this.hw_id = hw_id;
+ }
 
  public int getStd_id() {
      return this.std_id;
