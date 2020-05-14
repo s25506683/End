@@ -64,7 +64,7 @@ public class TeacherController {
 		//if has userAccount inDB
 		if(dao.queryUser(teacher.getTeacher_id()) == 0){
 			//if input's std_id out of range(or less than) 9
-			if(Integer.toString(teacher.getTeacher_id()).length() == 9){
+			if(Integer.toString(teacher.getTeacher_id()).length() == 5){
 				//if input email's format is alright
 				if(teacher.getTeacher_mail().contains("@")){
 					dao.insert(teacher);
