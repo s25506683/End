@@ -78,7 +78,7 @@ public class AcceptanceController {
     //@POST
 
 //teacher post there homework to db.
-//you wii 
+//you wii input hw_name, hw_content, hw_cs_id.
 @PostMapping(value = "/teacher/acceptance/homework")
    public ResponseEntity<String> processFormCreate2(@RequestBody final Acceptance acceptance) throws SQLException,
          IOException {
@@ -102,7 +102,7 @@ public class AcceptanceController {
 
 
 //student get homework about concent in this class.
-//You will get hw_name, hw_createtime, accept_sore.
+//You will get hw_name, hw_createtime, hw_content.
  @GetMapping(value = {"/student/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptance(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
@@ -122,7 +122,7 @@ public class AcceptanceController {
 
    
    //teacher get homework about concent in this class.
-   //You will get hw_name, hw_createtime.
+   //You will get hw_name, hw_createtime, hw_content.
     @GetMapping(value = {"/teacher/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptanceTeacher(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
