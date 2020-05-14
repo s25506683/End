@@ -57,34 +57,25 @@ public class QuestionController {
 
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
-      question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
 
-      //抓取現在的時間
-      Date timenow = new Date(); 
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      //抓取上一次發問的時間
-      String oldAsktime = question.getQ_asktime();
-      //將上次發問的時間轉換成毫秒
-      long timeInMillis = sdf.parse(oldAsktime).getTime();
+      if(dao.hasThisStudentInQuestion(std_id, question.getCs_id()) == 1){
 
-      // CurrentTimeStamp ts = new CurrentTimeStamp();
-      // String timestamp = ts.getCurrentTimeStamp();
-      // System.out.println("\n\n\n");
-      // System.out.println(question.getQ_asktime()); 
-      // System.out.println(timestamp);
-      // System.out.println(timeInMillis);
-      // System.out.println(timenow.getTime());
-      // System.out.println("\n\n\n");
+         question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
+         //抓取現在的時間
+         Date timenow = new Date(); 
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         //抓取上一次發問的時間
+         String oldAsktime = question.getQ_asktime();
+         //將上次發問的時間轉換成毫秒
+         long timeInMillis = sdf.parse(oldAsktime).getTime();
+         long number = timenow.getTime() - timeInMillis;
+         if(number < 300000){
+            //if the time of the last question is too close now
+            return ResponseEntity.badRequest().body("request failed. Questions cannot be repeated within 5 minutes");
+          }
+      }
 
-      long number = timenow.getTime() - timeInMillis;
-      System.out.println("\n\n\n");
-      System.out.print(number);
-      System.out.println("\n\n\n");
-
-       if(number < 300000){
-         //if the time of the last question is too close now
-         return ResponseEntity.badRequest().body("request failed. Questions cannot be repeated within 5 minutes");
-       }else if(question.getQ_content() == ""){
+       if(question.getQ_content() == ""){
           //if question content is null.
           return ResponseEntity.badRequest().body("request failed. input content is null!");
        }else if(dao.queryCs_id(question.getCs_id()) == 0){
