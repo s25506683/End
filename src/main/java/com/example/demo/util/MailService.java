@@ -29,16 +29,16 @@ public class MailService {
     NewAnnouncementTemplate newannouncementtemplate;
 
 
-    private final JavaMailSender mailSender;
+    private JavaMailSender mailSender;
 
     @Autowired
-    public MailService(final JavaMailSender mailSender) {
+    public MailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
-    public void prepareAndSend(final String recipient, final String new_password, final String std_name) {
-        final MimeMessagePreparator messagePreparator = mimeMessage -> {
-            final MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+    public void prepareAndSend(String recipient, String new_password, String std_name) {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(recipient);
             messageHelper.setSubject("您的RollsCall系統密碼已經變更");
@@ -50,15 +50,15 @@ public class MailService {
         try {
             mailSender.send(messagePreparator);
             // System.out.println("sent");
-        } catch (final MailException e) {
+        } catch (MailException e) {
             // System.out.println(e);
             // runtime exception; compiler will not force you to handle it
         }
     }
 
-    public void prepareAndSendwithTeacher(final String recipient, final String message, final int teacher_id) {
-        final MimeMessagePreparator messagePreparator = mimeMessage -> {
-            final MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+    public void prepareAndSendwithTeacher(String recipient, String message, int teacher_id) {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(recipient);
             messageHelper.setSubject("您的QRgo系統帳號為" + teacher_id + "的密碼已經變更");
@@ -67,29 +67,30 @@ public class MailService {
         try {
             mailSender.send(messagePreparator);
             // System.out.println("sent");
-        } catch (final MailException e) {
+        } catch (MailException e) {
             // System.out.println(e);
             // runtime exception; compiler will not force you to handle it
         }
     }
 
-    public void sendAnnouncementToStudent(final String recipient, final int teacher_id, final String at_title, final String at_content, final String cs_name,
-            @RequestBody final Announcement announcement) {
-        final MimeMessagePreparator messagePreparator = mimeMessage -> {
-            final MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+    public void sendAnnouncementToStudent(String[] recipient, String teacher_id, @RequestBody Announcement announcement) {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            //String[] Bcc = {"s25506683@gmail.com", "lisa293341@gmail.com"};
             messageHelper.setFrom("qrgomanager@gmail.com");
-            messageHelper.setTo(recipient);
+            messageHelper.setTo(teacher_id);
+            messageHelper.setBcc(recipient);
             messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已新增新的公告");
-            newannouncementtemplate.setAtTitle(at_title);
-            newannouncementtemplate.setAtContent(at_content);
-            newannouncementtemplate.setCsName(cs_name);
+            newannouncementtemplate.setAtTitle(announcement.getAt_title());
+            newannouncementtemplate.setAtContent(announcement.getAt_content());
+            newannouncementtemplate.setCsName(announcement.getCs_name());
             messageHelper.setText(newannouncementtemplate.getNewMailTemplate(), true);
 
         };
         try {
             mailSender.send(messagePreparator);
             // System.out.println("sent");
-        } catch (final MailException e) {
+        } catch (MailException e) {
               //System.out.println(e);
               // runtime exception; compiler will not force you to handle it
           }

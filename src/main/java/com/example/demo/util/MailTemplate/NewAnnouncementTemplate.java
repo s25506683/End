@@ -1,7 +1,5 @@
 package com.example.demo.util.MailTemplate;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
@@ -259,9 +257,6 @@ public class NewAnnouncementTemplate {
         return this.newMailTemplate;
     }
 
-    // public void setNewMailTemplate(String newMailTemplate) {
-    //     this.newMailTemplate = newMailTemplate;
-    // }
 
 
 
