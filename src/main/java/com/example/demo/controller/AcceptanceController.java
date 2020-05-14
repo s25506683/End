@@ -202,39 +202,46 @@ public class AcceptanceController {
       acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
 
       if(Integer.toString(acceptance.getAccept_score()).equals("")){
+         //if score not exist.
          return ResponseEntity.badRequest().body("請輸入分數，分數不得為空值");
       }else if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 1){
-
          dao.updateScore(acceptance);
          writtenmessage = "teacher \"" + teacher_id + "\" update score in homework \"" + acceptance.getAccept_hw_id() +"\".";
          logfile.writeLog(writtenmessage, acceptance.getCs_id(), partition);
          return ResponseEntity.ok("已修改成績");
-         
       }else{
          return ResponseEntity.badRequest().body("此學生尚未排隊");
       } 
 
     }
 
- //teacher update homework concent in this homework.
- //You have input hw_name, hw_content, hw_cs_id.
+ //teacher update homework in this homework.
+ //You have input hw_name, hw_content, hw_id.
  @PutMapping(value = "/teacher/updateContent")
     public ResponseEntity<String> processFormUpdate2(@RequestBody final Acceptance acceptance) throws SQLException,
           IOException {
        
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
+      acceptance.setCs_id(dao.findCsID(acceptance.getHw_id()));
       
 
       if(acceptance.getHw_content() == "" || acceptance.getHw_name() == ""){
+          //if hw_concent or hw_name is null.
          return ResponseEntity.badRequest().body("作業內容或名稱不得為空");
-      }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 0){
+      }else if(dao.queryHomeworkID(acceptance.getHw_id()) == 0){
+          //if hw_id not found.
          return ResponseEntity.badRequest().body("無此作業，請先新增作業");
+      }else if(userintheclass.queryTeacherInTheClass(teacher_id, acceptance.getCs_id()) == 0){
+         //if teacher not in this class.
+         return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
+      }else{
+         dao.updateContent(acceptance);
+         writtenmessage = "teacher \"" + teacher_id + "\" update content in homework \"" + acceptance.getHw_name() + "\".";
+         logfile.writeLog(writtenmessage, acceptance.getCs_id(), partition);
+         return ResponseEntity.ok("修改成功");
       }
-       dao.updateContent(acceptance);
-       writtenmessage = "teacher \"" + teacher_id + "\" update content in homework \"" + acceptance.getHw_name() + "\".";
-       logfile.writeLog(writtenmessage, acceptance.getHw_cs_id(), partition);
-       return ResponseEntity.ok("修改成功");
+       
       
     }
    
