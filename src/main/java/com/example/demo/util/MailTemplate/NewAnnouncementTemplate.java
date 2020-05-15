@@ -252,10 +252,6 @@ public class NewAnnouncementTemplate {
     public void setCsName(String cs_name){
         newMailTemplate = newMailTemplate.replace("[cs_name]", cs_name);
     }
-    
-    public void setNextLine(){
-        newMailTemplate = newMailTemplate.replace(" ", "<br>");
-    }
 
     public String getNewMailTemplate() {
         return this.newMailTemplate;
