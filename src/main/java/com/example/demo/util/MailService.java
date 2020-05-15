@@ -87,7 +87,8 @@ public class MailService {
             messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已新增新的公告");
             newannouncementtemplate.setAtTitle(announcement.getAt_title());
             //set at_content's space to next line.
-            announcement.setAt_content(announcement.getAt_content().replace(" ", "<br>"));
+            announcement.setAt_content(announcement.getAt_content().replace("\n", "<br>"));
+            System.out.println(announcement.getAt_content());
             newannouncementtemplate.setAtContent(announcement.getAt_content());
             newannouncementtemplate.setCsName(announcement.getCs_name());
             messageHelper.setText(newannouncementtemplate.getNewMailTemplate(), true);
