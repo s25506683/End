@@ -253,12 +253,9 @@ public class RollcallController {
           writtenmessage = "student "+ std_id + " QRcode rollcall failed, because the rollcall was closed.(input's rc_id = " + rc_id + " , qrcode = " + qrcode + ")";
           logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
           return ResponseEntity.badRequest().body("request failed. This rollcall was closed by teacher!");
-        }else if(distance < 0.5){
-          //if input gps point distance less than 0.5 kilometer with rollcall's destination.
-          dao.updateRollcallRecord(std_id, rc_id);
-          writtenmessage = "student "+ std_id + " GPS rollcall update to present in rc_id = " + rc_id + ".";
-          logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
-          return ResponseEntity.ok("request successful! the GPS rollcall record has already added!\ndistance: " + distance + ".");
+        }else if(distance >= 0.5){
+          //if the gps point distance more than 0.5 (include 0.5km) kilometer with rollcall's destination.
+          return ResponseEntity.badRequest().body("request failed. GPS point distance too far!\ndistance: " + distance + ".");
         }else{
           //if input qrcode equals rollcall's qrcode.
           dao.updateRollcallRecord(std_id, rc_id);
