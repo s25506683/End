@@ -154,7 +154,7 @@ public class AnnouncementController {
     }
 
     //teacher delete announcement.
-    //you have to input rc_id, cs_id.
+    //you have to input at_id, cs_id.
  @DeleteMapping(value = "/teacher/announcement/delete/")
     public ResponseEntity<String> deleteCustomer(@RequestBody Announcement announcement) throws IOException {
         AuthenticationUtil auth = new AuthenticationUtil();

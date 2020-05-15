@@ -266,7 +266,7 @@ public class RollcallDAODB implements RollcallDAO {
 
  public int closedRollcall(int rc_id){
   return jdbcTemplate.update(
-    "update rollcall set rc_end = 1, qrcode = null where rc_id = ?",
+    "update rollcall set rc_end = 1 where rc_id = ?",
     rc_id);
  }
 
