@@ -88,6 +88,7 @@ public class MailService {
             newannouncementtemplate.setAtTitle(announcement.getAt_title());
             newannouncementtemplate.setAtContent(announcement.getAt_content());
             newannouncementtemplate.setCsName(announcement.getCs_name());
+            newannouncementtemplate.setNextLine();
             messageHelper.setText(newannouncementtemplate.getNewMailTemplate(), true);
 
         };

@@ -239,7 +239,7 @@ public class NewAnnouncementTemplate {
 
 
 
-
+ 
 
     public void setAtTitle(String at_title){
         newMailTemplate = mailTemplate.replace("[at_title]", at_title);
@@ -251,6 +251,10 @@ public class NewAnnouncementTemplate {
 
     public void setCsName(String cs_name){
         newMailTemplate = newMailTemplate.replace("[cs_name]", cs_name);
+    }
+    
+    public void setNextLine(){
+        newMailTemplate = newMailTemplate.replace(" ", "<br>");
     }
 
     public String getNewMailTemplate() {
