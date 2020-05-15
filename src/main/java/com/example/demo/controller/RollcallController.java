@@ -245,17 +245,18 @@ public class RollcallController {
 
         //use QRcode to find rc_id.
         int rc_id = dao.findRcIdWithQRcode2(qrcode);
-        double distance = 0;
-        distance = maphelper.GetPointDistance(gps_point, rc_id);
-        
         if(dao.rollcallIsEnd(rc_id) == 1){
           //if the rollcall was closed by teacher.
           writtenmessage = "student "+ std_id + " QRcode rollcall failed, because the rollcall was closed.(input's rc_id = " + rc_id + " , qrcode = " + qrcode + ")";
           logfile.writeLog(writtenmessage, dao.findCs_id(rc_id), partition);
           return ResponseEntity.badRequest().body("request failed. This rollcall was closed by teacher!");
-        }else if(distance >= 0.5){
+        }
+
+        double distance = 0;
+        distance = maphelper.GetPointDistance(gps_point, rc_id);
+        if(distance >= 0.5){
           //if the gps point distance more than 0.5 (include 0.5km) kilometer with rollcall's destination.
-          return ResponseEntity.badRequest().body("request failed. GPS point distance too far!\ndistance: " + distance + ".");
+          return ResponseEntity.badRequest().body("request failed. GPS point distance too far!");
         }else{
           //if input qrcode equals rollcall's qrcode.
           dao.updateRollcallRecord(std_id, rc_id);
