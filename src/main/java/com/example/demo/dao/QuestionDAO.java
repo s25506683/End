@@ -6,6 +6,10 @@ import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
 
+    public String findClassName(String cs_id);
+
+    public String findUserMail(int std_id);
+
     public int hasThisStudentInQuestion(String std_id, String cs_id);
 
     public String findQuestionAsktime(String std_id, String cs_id);

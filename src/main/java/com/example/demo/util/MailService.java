@@ -2,6 +2,8 @@ package com.example.demo.util;
 
 import com.example.demo.dao.AnnouncementDAO;
 import com.example.demo.entity.Announcement;
+import com.example.demo.dao.QuestionDAO;
+import com.example.demo.entity.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -14,11 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.demo.util.MailTemplate.ResetPwdMailTemplate;
 import com.example.demo.util.MailTemplate.EditAnnouncementTemplate;
 import com.example.demo.util.MailTemplate.NewAnnouncementTemplate;
+import com.example.demo.util.MailTemplate.ReplyQuestionMailTemplate;
 
 
 
 @Service
 public class MailService {
+
+    @Autowired
+    QuestionDAO q_dao;
 
     @Autowired
     AnnouncementDAO dao;
@@ -31,6 +37,9 @@ public class MailService {
 
     @Autowired
     EditAnnouncementTemplate editannouncementtemplate;
+
+    @Autowired
+    ReplyQuestionMailTemplate replyquestionmailtemplate;
 
 
     private JavaMailSender mailSender;
@@ -121,6 +130,45 @@ public class MailService {
               // runtime exception; compiler will not force you to handle it
           }
      }
+
+
+     public void ReplyQuestionMailToStudent(String std_mail, @RequestBody Question question) {
+        MimeMessagePreparator messagePreparator = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+
+    
+
+            messageHelper.setFrom("qrgomanager@gmail.com");
+            messageHelper.setTo(std_mail);
+
+            System.out.println("\n\n\n\n\n");
+            System.out.println("4444444464");
+            System.out.println(std_mail);
+            System.out.println(q_dao.findClassName(question.getCs_id()));
+            System.out.println("\n\n\n\n\n");
+
+            // messageHelper.setTo("henry60406@gmail.com");
+            messageHelper.setSubject("您的課堂"+ q_dao.findClassName(question.getCs_id()) + "教師已回覆您的提問");
+            // messageHelper.setSubject("您的課堂教師已回覆您的提問");
+
+            System.out.println("\n\n\n\n\n");
+            System.out.println(q_dao.findClassName(question.getCs_id()));
+            System.out.println("5555555");
+            System.out.println("\n\n\n\n\n");
+            
+            replyquestionmailtemplate.setCsName(question.getCs_name());
+            messageHelper.setText(replyquestionmailtemplate.getNewMailTemplate(), true);
+            // messageHelper.setText("555555555555555");
+        };
+        try {
+            mailSender.send(messagePreparator);
+            // System.out.println("sent");
+        } catch (MailException e) {
+            // System.out.println(e);
+            // runtime exception; compiler will not force you to handle it
+        }
+    }
+
 
 
 }
