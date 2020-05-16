@@ -38,3 +38,24 @@
 2020/05/12 22:26:47	student 406401599 writing question 老師好 in class 10811000DMG741D7411023900 .
 2020/05/15 00:08:54	student 406401599 writing question 老師好 in class 10811000DMG741D7411023900 .
 2020/05/15 00:10:11	student 406401616 writing question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/16 14:54:28	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "null", student "406401109".
+2020/05/16 14:55:04	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "null", student "406401616".
+2020/05/16 15:11:07	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "null", student "406401616".
+2020/05/16 15:12:13	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "null", student "406401616".
+2020/05/16 15:14:22	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:07", student "406401616".
+2020/05/16 15:21:22	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:07", student "406401616".
+2020/05/16 15:23:38	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:07", student "406401616".
+2020/05/16 15:25:32	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:07", student "406401616".
+2020/05/16 15:27:17	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:07", student "406401616".
+2020/05/16 15:28:41	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:07", student "406401616".
+2020/05/16 15:29:38	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:18", student "406401616".
+2020/05/16 15:30:28	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:18", student "406401616".
+2020/05/16 15:32:21	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:18", student "406401616".
+2020/05/16 15:33:54	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:41:45	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:43:20	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:43:52	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:44:39	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:46:09	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:46:33	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/16 15:47:33	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
