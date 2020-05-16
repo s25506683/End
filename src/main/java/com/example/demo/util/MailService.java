@@ -1,8 +1,6 @@
 package com.example.demo.util;
 
-import com.example.demo.dao.AnnouncementDAO;
 import com.example.demo.entity.Announcement;
-import com.example.demo.dao.QuestionDAO;
 import com.example.demo.entity.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +20,6 @@ import com.example.demo.util.MailTemplate.ReplyQuestionMailTemplate;
 
 @Service
 public class MailService {
-
-    @Autowired
-    QuestionDAO q_dao;
-
-    @Autowired
-    AnnouncementDAO dao;
 
     @Autowired
     ResetPwdMailTemplate resetpwdmailtemplate;
@@ -93,7 +85,7 @@ public class MailService {
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(teacher_id);
             messageHelper.setBcc(recipient);
-            messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已新增新的公告");
+            messageHelper.setSubject("您的課堂 " + announcement.getCs_name() + " 已新增新的公告");
             newannouncementtemplate.setAtTitle(announcement.getAt_title());
             newannouncementtemplate.setAtContent(announcement.getAt_content());
             newannouncementtemplate.setCsName(announcement.getCs_name());
@@ -117,7 +109,7 @@ public class MailService {
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(teacher_mail);
             messageHelper.setBcc("s25506683@gmail.com");
-            messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已修改新的公告");
+            messageHelper.setSubject("您的課堂 " + announcement.getCs_name() + " 已修改新的公告");
             editannouncementtemplate.setCsName(announcement.getCs_name());
             messageHelper.setText(editannouncementtemplate.getNewMailTemplate(), true);
 
@@ -135,30 +127,11 @@ public class MailService {
      public void ReplyQuestionMailToStudent(String std_mail, @RequestBody Question question) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-
-    
-
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(std_mail);
-
-            System.out.println("\n\n\n\n\n");
-            System.out.println("4444444464");
-            System.out.println(std_mail);
-            System.out.println(q_dao.findClassName(question.getCs_id()));
-            System.out.println("\n\n\n\n\n");
-
-            // messageHelper.setTo("henry60406@gmail.com");
-            messageHelper.setSubject("您的課堂"+ q_dao.findClassName(question.getCs_id()) + "教師已回覆您的提問");
-            // messageHelper.setSubject("您的課堂教師已回覆您的提問");
-
-            System.out.println("\n\n\n\n\n");
-            System.out.println(q_dao.findClassName(question.getCs_id()));
-            System.out.println("5555555");
-            System.out.println("\n\n\n\n\n");
-            
+            messageHelper.setSubject("您的課堂"+ question.getCs_name() + "教師已回覆您的提問");
             replyquestionmailtemplate.setCsName(question.getCs_name());
             messageHelper.setText(replyquestionmailtemplate.getNewMailTemplate(), true);
-            // messageHelper.setText("555555555555555");
         };
         try {
             mailSender.send(messagePreparator);

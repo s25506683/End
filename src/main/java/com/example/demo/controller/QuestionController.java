@@ -169,10 +169,10 @@ public class QuestionController {
       }else{
          dao.updateTeacherReply(question);
          String std_mail = dao.findUserMail(question.getQ_std_id());
-         System.out.println("\n\n\n\n\n\n\n");
-         System.out.println(std_mail);
-         System.out.println("\n\n\n\n\n\n\n");
 
+         question.setCs_name(dao.findClassName(question.getCs_id()));
+
+         //replace q_reply "\n" to "<br>", which is next line in html.
          question.setQ_reply(question.getQ_reply().replace("\n", "<br>"));
          mailservice.ReplyQuestionMailToStudent(std_mail, question);
 
