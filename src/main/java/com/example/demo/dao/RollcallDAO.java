@@ -34,7 +34,7 @@ public interface RollcallDAO {
 
  public List<Rollcall> findAllRollcallRecord(String cs_id);
 
- public List<Rollcall> findAllGPSRollcallRecord(String cs_id);
+ public Rollcall findNewlyGPSRollcallRecord(String cs_id);
 
  public List<Rollcall> findOneRollcallRecord(int rc_id);
 
