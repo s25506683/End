@@ -129,18 +129,18 @@ public class RollcallController {
     }
  }
     
-    //student get all GPS rollcall in this class.
+    //student get newly GPS rollcall in this class.
     //you will get rc_id,(int) rc_starttime(String), rc_inputsource(String), rc_end(int) returns.
- @GetMapping(value = {"/student/rollcall/allGPSRollcall/{cs_id}"})
-    public ResponseEntity<List<Rollcall>> retrieveAllRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException{
+ @GetMapping(value = {"/student/rollcall/newlyGPSRollcall/{cs_id}"})
+    public ResponseEntity<Rollcall> retrieveAllRollcallFromStudent(@PathVariable("cs_id") final String cs_id) throws SQLException{
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
 
        if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
           //if student not in this class.
-         return new ResponseEntity<List<Rollcall>>(HttpStatus.BAD_REQUEST);
+         return new ResponseEntity<Rollcall>(HttpStatus.BAD_REQUEST);
        }else{
-         return new ResponseEntity<List<Rollcall>>(dao.findAllGPSRollcallRecord(cs_id), HttpStatus.OK);
+         return new ResponseEntity<Rollcall>(dao.findNewlyGPSRollcallRecord(cs_id), HttpStatus.OK);
        }
     }
 
@@ -290,10 +290,10 @@ public class RollcallController {
      dao.updateRollcallRecord(std_id, rollcall.getRc_id());
      writtenmessage = "student "+ std_id + " GPS rollcall update to present in rc_id = " + rollcall.getRc_id() + ".";
      logfile.writeLog(writtenmessage, dao.findCs_id(rollcall.getRc_id()), partition);
-     return ResponseEntity.ok("request successful! the GPS rollcall record has already added!\ndistance: " + distance + ".");
+     return ResponseEntity.ok("request successful! the GPS rollcall record has already added!");
    }else{
      //if the gps point distance more than 0.5 (include 0.5km) kilometer with rollcall's destination.
-     return ResponseEntity.badRequest().body("request failed. GPS point distance too far!\ndistance: " + distance + ".");
+     return ResponseEntity.badRequest().body("request failed. GPS point distance too far!");
    }
     
  }

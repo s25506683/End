@@ -110,9 +110,9 @@ public class RollcallDAODB implements RollcallDAO {
      , new Object[]{cs_id}, new RollcallMapper2());
   }
 
-  public List<Rollcall> findAllGPSRollcallRecord(String cs_id){
-    return this.jdbcTemplate.query( "select rc_id, rc_starttime, rc_inputsource, rc_end from rollcall where cs_id = ? and rc_inputsource = 'GPS點名'"
-     , new Object[]{cs_id}, new RollcallMapper8());
+  public Rollcall findNewlyGPSRollcallRecord(String cs_id){
+    return this.jdbcTemplate.queryForObject( "select rc_id, rc_starttime, rc_inputsource, rc_end from rollcall where cs_id = ? and rc_inputsource = 'GPS點名' order by rc_starttime desc limit 1"
+     , new Object[]{ cs_id }, new RollcallMapper8());
   }
 
   public List<Rollcall> findStudentOwnRollcallInClass(int std_id, String cs_id){
