@@ -1,7 +1,7 @@
 package com.example.demo.util;
 
+import com.example.demo.dao.AnnouncementDAO;
 import com.example.demo.entity.Announcement;
-import com.example.demo.entity.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.example.demo.util.MailTemplate.ResetPwdMailTemplate;
 import com.example.demo.util.MailTemplate.EditAnnouncementTemplate;
 import com.example.demo.util.MailTemplate.NewAnnouncementTemplate;
-import com.example.demo.util.MailTemplate.ReplyQuestionMailTemplate;
 
 
 
 @Service
 public class MailService {
+
+    @Autowired
+    AnnouncementDAO dao;
 
     @Autowired
     ResetPwdMailTemplate resetpwdmailtemplate;
@@ -29,9 +31,6 @@ public class MailService {
 
     @Autowired
     EditAnnouncementTemplate editannouncementtemplate;
-
-    @Autowired
-    ReplyQuestionMailTemplate replyquestionmailtemplate;
 
 
     private JavaMailSender mailSender;
@@ -85,12 +84,13 @@ public class MailService {
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(teacher_id);
             messageHelper.setBcc(recipient);
-            messageHelper.setSubject("您的課堂 " + announcement.getCs_name() + " 已新增新的公告");
+            messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已新增新的公告");
             newannouncementtemplate.setAtTitle(announcement.getAt_title());
-            newannouncementtemplate.setAtContent(announcement.getAt_content());
-            newannouncementtemplate.setCsName(announcement.getCs_name());
             //set at_content's space to next line.
             announcement.setAt_content(announcement.getAt_content().replace("\n", "<br>"));
+            System.out.println(announcement.getAt_content());
+            newannouncementtemplate.setAtContent(announcement.getAt_content());
+            newannouncementtemplate.setCsName(announcement.getCs_name());
             messageHelper.setText(newannouncementtemplate.getNewMailTemplate(), true);
 
         };
@@ -108,10 +108,8 @@ public class MailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(teacher_mail);
-          
             messageHelper.setBcc(recipient);
             messageHelper.setSubject("您的課堂 " + dao.findClassName(announcement.getCs_id()) + " 已修改新的公告");
-          
             editannouncementtemplate.setCsName(announcement.getCs_name());
             messageHelper.setText(editannouncementtemplate.getNewMailTemplate(), true);
 
@@ -124,26 +122,6 @@ public class MailService {
               // runtime exception; compiler will not force you to handle it
           }
      }
-
-
-     public void ReplyQuestionMailToStudent(String std_mail, @RequestBody Question question) {
-        MimeMessagePreparator messagePreparator = mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom("qrgomanager@gmail.com");
-            messageHelper.setTo(std_mail);
-            messageHelper.setSubject("您的課堂"+ question.getCs_name() + "教師已回覆您的提問");
-            replyquestionmailtemplate.setCsName(question.getCs_name());
-            messageHelper.setText(replyquestionmailtemplate.getNewMailTemplate(), true);
-        };
-        try {
-            mailSender.send(messagePreparator);
-            // System.out.println("sent");
-        } catch (MailException e) {
-            // System.out.println(e);
-            // runtime exception; compiler will not force you to handle it
-        }
-    }
-
 
 
 }
