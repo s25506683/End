@@ -50,7 +50,9 @@ public class SecurityConfig3 extends WebSecurityConfigurerAdapter {
 
   http.httpBasic().and().authorizeRequests()     //例外處理
   .antMatchers("/css/**", "/index", "/logintest").permitAll()
+  //.antMatchers("/teacher/downloadExcel/Rollcall/**").permitAll()
   .antMatchers("/teacher/**").hasRole("ADMIN")
+  
 //   .antMatchers("/student/**").hasRole("USER")
   .and().rememberMe().tokenValiditySeconds(600).and().cors()
   // .anyRequest().denyAll()    //除了上述條件以外全部擋住
