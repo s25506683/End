@@ -171,12 +171,19 @@ public class QuestionController {
     }
 
    //student delete there question.
-   //input std_id, q_asktime.
+   //input q_std_id, q_asktime.
  @DeleteMapping(value = "/student/deletequestioncontent/")
     public ResponseEntity<String> StudentdeleteQuestion(@RequestBody final Question question) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+      
+      System.out.println("\n\n\n\n\n\n\n");
+      System.out.println(std_id);
+      System.out.println(question.getQ_std_id());
+      System.out.println("\n\n\n\n\n\n\n");
+
       if(question.getQ_std_id() != std_id){
          //if the student don't have sufficient permissions to delete question.
          writtenmessage = "student \"" + question.getQ_std_id() + "\" does not have permission to delete question with student \"" + std_id + "\", question's asktime \"" + question.getQ_asktime() + "\"!";
