@@ -15,12 +15,16 @@ public class Question {
     private String q_replytime;
     //private Time q_time;
     private String q_solved;
+    private String std_mail;
 
+    public String getStd_mail() {
+        return this.std_mail;
+    }
 
-    
+    public void setStd_mail(String std_mail) {
+        this.std_mail = std_mail;
+    }
 
-    
-    
     public int getQ_id() {
         return this.q_id;
     }

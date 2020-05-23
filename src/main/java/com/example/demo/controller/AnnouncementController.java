@@ -69,6 +69,7 @@ public class AnnouncementController {
 
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
 
+            announcement.setCs_name(dao.findClassName(announcement.getCs_id()));
             mailservice.sendAnnouncementToStudent(studentMailList, teacher_mail, announcement);
 
             //  for(int i = 0; i < studentMailList.length; i++){
@@ -140,7 +141,7 @@ public class AnnouncementController {
             String[] studentMailList = dao.findStudentEmail(announcement.getCs_id());
 
             announcement.setCs_name(dao.findClassName(announcement.getCs_id()));
-            
+            dao.findClassName(announcement.getCs_id());
             mailservice.UpdateAnnouncementToStudent(studentMailList, teacher_mail, announcement);
 
             //  for(int i = 0; i < studentMailList.length; i++){

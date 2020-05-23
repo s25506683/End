@@ -27,6 +27,18 @@ public class QuestionDAODB implements QuestionDAO {
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
 
+public String findClassName(String cs_id){
+  String sql = "select cs_name from class where cs_id = ?";
+  String Csname = this.jdbcTemplate.queryForObject(sql, String.class, cs_id);
+  return Csname;
+}
+
+public String findUserMail(int std_id){
+  String sql = "select std_mail from student where std_id = ?";
+  String mail = this.jdbcTemplate.queryForObject(sql, String.class, std_id);
+  return mail;
+}
+
 public int hasThisStudentInQuestion(String std_id, String cs_id){
   String sql = "select count(q_std_id) from question where q_std_id = ? and cs_id = ?";
   int count = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id, cs_id);
