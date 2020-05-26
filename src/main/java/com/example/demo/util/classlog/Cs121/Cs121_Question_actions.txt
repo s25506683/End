@@ -14,3 +14,6 @@
 2020/05/26 21:20:26	student 406401616 writing public question 老師好 in class Cs121 .
 2020/05/26 22:16:59	teacher that you watching question in class "Cs121".
 2020/05/26 22:48:05	student "406401616" watching question in class "Cs121".
+2020/05/26 22:49:07	teacher that you watching question in class "Cs121".
+2020/05/26 22:49:18	teacher that you watching question in class "Cs121".
+2020/05/26 22:50:43	student "406401616" watching question in class "Cs121".

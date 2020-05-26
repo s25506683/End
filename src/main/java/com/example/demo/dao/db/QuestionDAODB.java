@@ -103,8 +103,8 @@ public int hasQuestion(int std_id, String q_asktime){
  }
 
  public List<Question> findAllQuestionsThisStudentAsked(String std_id, String cs_id){
-     return this.jdbcTemplate.query("select q_content, q_asktime from question where q_std_id = ?"
-     , new Object[]{cs_id}, new QuestionMapper2());
+     return this.jdbcTemplate.query("select q_content, q_asktime from question where q_std_id = ? and cs_id = ?"
+     , new Object[]{std_id, cs_id}, new QuestionMapper2());
 }
 
  public String findCsId(int std_id, String q_asktime){

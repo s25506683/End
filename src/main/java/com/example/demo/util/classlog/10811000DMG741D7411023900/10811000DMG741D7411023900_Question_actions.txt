@@ -71,3 +71,7 @@
 2020/05/26 22:15:41	teacher that you watching question in class "10811000DMG741D7411023900".
 2020/05/26 22:22:58	student 406401628 writing personal question 今天天氣如何 in class 10811000DMG741D7411023900 .
 2020/05/26 22:23:23	student 406401599 writing public question 老師今天會下雨嘛!! in class 10811000DMG741D7411023900 .
+2020/05/26 22:51:01	student "406401616" watching question in class "10811000DMG741D7411023900".
+2020/05/26 22:54:47	student "406401616" watching question in class "10811000DMG741D7411023900".
+2020/05/26 23:05:33	student "406401616" watching question in class "10811000DMG741D7411023900".
+2020/05/26 23:06:04	student "406401616" watching question in class "10811000DMG741D7411023900".

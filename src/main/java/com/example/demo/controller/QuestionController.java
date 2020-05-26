@@ -148,6 +148,9 @@ public class QuestionController {
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
 
+      System.out.println("\n\n\n\n\n\n");
+      System.out.println(cs_id);
+      System.out.println("\n\n\n\n\n\n");
       if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
          //if student does not belong to this class.
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
