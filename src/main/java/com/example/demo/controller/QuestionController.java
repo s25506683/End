@@ -34,7 +34,6 @@ import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 import com.example.demo.util.Logfile;
 //import com.example.demo.util.CurrentTimeStamp;
-import com.example.demo.util.MailService;
 
 @RestController
 public class QuestionController {
@@ -43,9 +42,6 @@ public class QuestionController {
 
    @Autowired
    UserInTheClass userintheclass;
-
-   @Autowired
-	MailService mailservice;
 
    @Autowired
    Logfile logfile;
@@ -168,14 +164,6 @@ public class QuestionController {
          return ResponseEntity.badRequest().body("request failed. input student not in this class!");
       }else{
          dao.updateTeacherReply(question);
-         String std_mail = dao.findUserMail(question.getQ_std_id());
-
-         question.setCs_name(dao.findClassName(question.getCs_id()));
-
-         //replace q_reply "\n" to "<br>", which is next line in html.
-         question.setQ_reply(question.getQ_reply().replace("\n", "<br>"));
-         mailservice.ReplyQuestionMailToStudent(std_mail, question);
-
          writtenmessage = "teacher \"" + teacher_id + "\" reply question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\", student \"" + question.getQ_std_id() + "\".";
          logfile.writeLog(writtenmessage, question.getCs_id(), partition);
          return ResponseEntity.ok("request successful! your reply update completed!");
