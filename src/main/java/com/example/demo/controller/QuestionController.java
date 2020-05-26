@@ -49,17 +49,18 @@ public class QuestionController {
    String writtenmessage = new String();
    String partition = "Question";
 
+
+
    // student post there question to db.
-   // you will input q_content, cs_id.
+   // you will input q_content, cs_id, q_type.
    @PostMapping(value = "/student/question")
-   public ResponseEntity<String> proccessStudentQoestion(@RequestBody final Question question)
+   public ResponseEntity<String> proccessStudentQuestion(@RequestBody final Question question)
          throws SQLException, IOException, ParseException {
 
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
 
-      if(dao.hasThisStudentInQuestion(std_id, question.getCs_id()) == 1){
-
+      if(dao.hasThisStudentInQuestion(std_id, question.getCs_id()) >= 1){
          question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
          //抓取現在的時間
          Date timenow = new Date(); 
@@ -70,23 +71,35 @@ public class QuestionController {
          long timeInMillis = sdf.parse(oldAsktime).getTime();
          long number = timenow.getTime() - timeInMillis;
          if(number < 300000){
-            //if the time of the last question is too close now
+            //if the time of the last question is too close now.
             return ResponseEntity.badRequest().body("request failed. Questions cannot be repeated within 5 minutes");
           }
       }
-
        if(question.getQ_content() == ""){
           //if question content is null.
           return ResponseEntity.badRequest().body("request failed. input content is null!");
        }else if(dao.queryCs_id(question.getCs_id()) == 0){
           //if cs_id does not found.
           return ResponseEntity.badRequest().body("request failed. input ClassId not found!");
+       }else if(userintheclass.queryStudentInTheClass(std_id, question.getCs_id()) == 0){
+          //if student does not in this class.
+          return ResponseEntity.badRequest().body("request failed. student does not in this class");
        }else{
-          dao.studentinsert(question);
-          question.getCs_id();
-          writtenmessage = "student "+ std_id + " writing question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
-          logfile.writeLog(writtenmessage, question.getCs_id(), partition);
-          return ResponseEntity.ok("request successful!");
+            if(question.isQ_type() == true){
+               //if student select personal question in this class.
+               dao.studentinsert(question);
+               question.getCs_id();
+               writtenmessage = "student "+ std_id + " writing personal question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
+               logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+               return ResponseEntity.ok("personal request successful!");
+            }else{
+                //if student select public question in this class.
+               dao.studentinsert(question);
+               question.getCs_id();
+               writtenmessage = "student "+ std_id + " writing public question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
+               logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+               return ResponseEntity.ok("public request successful!");
+            }
        }
     }
 
@@ -110,7 +123,7 @@ public class QuestionController {
          logfile.writeLog(writtenmessage, cs_id, partition);
          return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
        }
-       
+
     }
 
    //teacher get all question in this class.
@@ -153,7 +166,7 @@ public class QuestionController {
  @PutMapping(value = "/teacher/question")
     public ResponseEntity<String> processFormUpdate(@RequestBody final Question question) throws SQLException,
           IOException {
-      AuthenticationUtil auth = new AuthenticationUtil();
+      AuthenticationUtil auth = new AuthenticationUtil();   
       String teacher_id = auth.getCurrentUserName();
 
       if(userintheclass.queryTeacherInTheClass(teacher_id, question.getCs_id()) == 0){

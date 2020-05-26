@@ -27,6 +27,12 @@ public class QuestionDAODB implements QuestionDAO {
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
 
+public int findQuestionType(String std_id, String cs_id){
+  String sql = "select q_type from question where q_std_id = ? and cs_id = ?";
+  int Type = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id, cs_id);
+  return Type;
+}
+
 public String findClassName(String cs_id){
   String sql = "select cs_name from class where cs_id = ?";
   String Csname = this.jdbcTemplate.queryForObject(sql, String.class, cs_id);
@@ -37,6 +43,12 @@ public String findUserMail(int std_id){
   String sql = "select std_mail from student where std_id = ?";
   String mail = this.jdbcTemplate.queryForObject(sql, String.class, std_id);
   return mail;
+}
+
+public int hasThisStudentInPersonQuestion(String std_id, String cs_id){
+  String sql = "select count(std_id) from personal_question where std_id = ? and cs_id = ?";
+  int count = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id, cs_id);
+  return count;
 }
 
 public int hasThisStudentInQuestion(String std_id, String cs_id){
@@ -69,14 +81,15 @@ public int hasQuestion(int std_id, String q_asktime){
   return count;
 }
 
+
  public int studentinsert(final Question question) {
    AuthenticationUtil auth = new AuthenticationUtil();
    String std_id = auth.getCurrentUserName();
    CurrentTimeStamp ts = new CurrentTimeStamp();
    String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "insert into question (q_std_id, q_content, q_asktime, cs_id) values(?, ?, ?, ?)",
-      std_id, question.getQ_content(), timestamp, question.getCs_id());
+      "insert into question (q_std_id, q_content, q_asktime, cs_id, q_type) values(?, ?, ?, ?, ?)",
+      std_id, question.getQ_content(), timestamp, question.getCs_id(), question.isQ_type());
  }
 
  /*public Question findOne(final String cs_id, final int std_id) {

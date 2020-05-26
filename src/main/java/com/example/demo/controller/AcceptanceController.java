@@ -72,7 +72,6 @@ public class AcceptanceController {
          }else{
             return ResponseEntity.badRequest().body("您已驗收過");
          }
-
             //新增驗收
    } 
     //@POST
@@ -83,7 +82,6 @@ public class AcceptanceController {
    public ResponseEntity<String> processFormCreate2(@RequestBody final Acceptance acceptance) throws SQLException,
          IOException {
 
-   
       if(acceptance.getHw_content() == "" || acceptance.getHw_name() == ""){
          return ResponseEntity.badRequest().body("作業名稱與內容不得為空");
       }else if(dao.queryHomeworkInTheClass(acceptance.getHw_name(), acceptance.getHw_cs_id()) == 1){
