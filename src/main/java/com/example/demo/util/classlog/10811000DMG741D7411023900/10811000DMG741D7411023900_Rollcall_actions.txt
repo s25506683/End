@@ -35,3 +35,5 @@
 2020/05/12 20:04:30	teacher 16283 download rollcall time "2020-04-16 00:09:32" Excel file.
 2020/05/14 23:15:49	teacher 16283 adding rollcall at 2020-05-14 23:15:49 in the class.
 2020/05/14 23:16:19	student 406401599 GPS rollcall update to present in rc_id = 87.
+2020/05/26 22:53:01	teacher 16283 download 微積分 rollcalls Excel file.
+2020/05/26 22:58:31	teacher 16283 download 微積分 rollcalls Excel file.

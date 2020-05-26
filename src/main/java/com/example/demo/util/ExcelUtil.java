@@ -29,7 +29,7 @@ public class ExcelUtil {
         sheet1 = workbook.createSheet("點名紀錄");
 
         // 設定開始欄位為第一欄
-        sheet1.setColumnWidth(0, 2000);
+        sheet1.setColumnWidth(0, 2500);
         sheet1.setColumnWidth(1, 3000);
         sheet1.setColumnWidth(2, 2000);
         sheet1.setColumnWidth(3, 3500);
@@ -91,7 +91,7 @@ public class ExcelUtil {
         for (int i = 0; i < head.length; i++) {
            //設定每個點名的column寬度.
            if(i>3){
-              sheet1.setColumnWidth(i, 4500);
+              sheet1.setColumnWidth(i, 5000);
            }
            titlerow.createCell(i).setCellValue(head[i]);
         }
