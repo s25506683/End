@@ -55,7 +55,7 @@ public int queryUserRole(int user_id){
 
  public HomePage1_s queryUserRoleByJson(int user_id){
     return this.jdbcTemplate.queryForObject("select count(teacher_id) as user_role from teacher where teacher_id = ?",
-    new Object[] { user_id }, new HomePage1_sMapper3());
+    new Object[] {user_id}, new HomePage1_sMapper3());
  }
 
  private static final class HomePage1_sMapper_findStudentCourse implements RowMapper<HomePage1_s> {

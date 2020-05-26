@@ -64,7 +64,6 @@ public class ExcelDownloadController {
             writtenmessage = "teacher "+ teacher_id + " download rollcall time \""+ dao.queryRcStartTime(rc_id) +"\" Excel file.";
             logfile.writeLog(writtenmessage, dao.findCsId(rc_id), partition);
 
-
             excelutil.write(dao.findOneRollcallRecord(rc_id), classinfo, function, response);
             return ResponseEntity.ok("request successful! Excel has already download!");
         }else{

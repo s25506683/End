@@ -6,9 +6,13 @@ import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
 
+    public int findQuestionType(String std_id, String cs_id);
+
     public String findClassName(String cs_id);
 
     public String findUserMail(int std_id);
+
+    public int hasThisStudentInPersonQuestion(String std_id, String cs_id);
 
     public int hasThisStudentInQuestion(String std_id, String cs_id);
 
