@@ -6,16 +6,18 @@ import com.example.demo.entity.ExcelDownload;
 
 public interface ExcelDownloadDAO {
 
-    public int RcIdExist(int rc_id);
+    public int CsIdExist(String cs_id);
 
     public String queryRcStartTime(int rc_id);
 
-    public String findCsId(int rc_id);
+    public String findCsName(String cs_id);
 
-    public List<ExcelDownload> findOneRollcallRecord(int rc_id);
+    public String findRcClassInfo(String rc_id);
 
-    public String findRcClassInfo(int rc_id);
+    public String findAllRollcallStartTime(String cs_id);
 
+    public List<ExcelDownload> findStudentList(String cs_id);
 
+    public List<ExcelDownload> findRollcallRecord(String classinfo, String rc_starttime);
 
 }
