@@ -48,28 +48,27 @@ public class ExcelDownloadController {
 
 
     //下載rollcall的record.
-    @RequestMapping(value = "/Rollcall/{rc_id}/")
-    public ResponseEntity<String> downloadRollcallActions(@PathVariable("rc_id") int rc_id)throws Exception {
-        //dao.findOneRollcallRecord(rc_id);
+    @RequestMapping(value = "/Rollcall/{cs_id}/")
+    public ResponseEntity<String> downloadRollcallActions(@PathVariable("cs_id") String cs_id)throws Exception {
         AuthenticationUtil auth = new AuthenticationUtil();
         String teacher_id = auth.getCurrentUserName();
 
-        if(dao.RcIdExist(rc_id) == 1){
-            //if rc_id has exist.
+        if(dao.CsIdExist(cs_id) == 1){
+            //if cs_id has exist.
             ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletResponse response = requestAttributes.getResponse();
-            String classinfo[] = dao.findRcClassInfo(rc_id).split(",");
-            String function = "Rollcall";
+            String classinfo[] = dao.findRcClassInfo(cs_id).split(",");
+            String function = "Rollcalls";
     
-            writtenmessage = "teacher "+ teacher_id + " download rollcall time \""+ dao.queryRcStartTime(rc_id) +"\" Excel file.";
-            logfile.writeLog(writtenmessage, dao.findCsId(rc_id), partition);
+            writtenmessage = "teacher "+ teacher_id + " download "+ dao.findCsName(cs_id) +" rollcalls Excel file.";
+            logfile.writeLog(writtenmessage, cs_id, partition);
 
 
-            excelutil.write(dao.findOneRollcallRecord(rc_id), classinfo, function, response);
+            excelutil.write(dao.findStudentList(cs_id), classinfo, function, response);
             return ResponseEntity.ok("request successful! Excel has already download!");
         }else{
-            //rc_id not found.
-            return ResponseEntity.badRequest().body("request failed. rc_id not found!");
+            //cs_id not found.
+            return ResponseEntity.badRequest().body("request failed. cs_id not found!");
         }
 
 
