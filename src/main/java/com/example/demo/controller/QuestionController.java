@@ -50,7 +50,6 @@ public class QuestionController {
    String partition = "Question";
 
 
-
    // student post there question to db.
    // you will input q_content, cs_id, q_type.
    @PostMapping(value = "/student/question")
@@ -105,7 +104,7 @@ public class QuestionController {
 
 
   //student get all question in this class.
-  //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
+  //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved, q_type.
  @GetMapping(value = {"/student/question/all/{cs_id}"})
     public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
@@ -127,7 +126,7 @@ public class QuestionController {
     }
 
    //teacher get all question in this class.
-   //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
+   //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved, q_type.
  @GetMapping(value = {"/teacher/question/all/{cs_id}"})
     public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
@@ -142,6 +141,26 @@ public class QuestionController {
        }
     }
 
+ @GetMapping(value = {"/student/question/CheckHisQuestion/{cs_id}"})
+    public ResponseEntity<List<Question>> findAllQuestionsThisStudentAsked(@PathVariable("cs_id") final String cs_id) throws SQLException,
+          IOException {
+   
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String std_id = auth.getCurrentUserName();
+
+      System.out.println("\n\n\n\n\n\n");
+      System.out.println(cs_id);
+      System.out.println("\n\n\n\n\n\n");
+      if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+         //if student does not belong to this class.
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+       }else{
+         writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage, cs_id, partition);
+         return new ResponseEntity<List<Question>>(dao.findAllQuestionsThisStudentAsked(std_id, cs_id), HttpStatus.OK);
+       }
+
+    }
 
    //update student's question in this class.
    //You have input q_asktime, q_content, q_std_id, cs_id.

@@ -27,6 +27,7 @@ public class QuestionDAODB implements QuestionDAO {
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
 
+
 public int findQuestionType(String std_id, String cs_id){
   String sql = "select q_type from question where q_std_id = ? and cs_id = ?";
   int Type = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id, cs_id);
@@ -97,8 +98,14 @@ public int hasQuestion(int std_id, String q_asktime){
   }*/
 
  public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_replytime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime", new Object[]{cs_id}, new QuestionMapper());
+     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_replytime, q.q_solved, q.q_type from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime"
+     , new Object[]{cs_id}, new QuestionMapper());
  }
+
+ public List<Question> findAllQuestionsThisStudentAsked(String std_id, String cs_id){
+     return this.jdbcTemplate.query("select q_content, q_asktime from question where q_std_id = ? and cs_id = ?"
+     , new Object[]{std_id, cs_id}, new QuestionMapper2());
+}
 
  public String findCsId(int std_id, String q_asktime){
   String sql = "select cs_id from question where q_std_id = ? and q_asktime = ?";
@@ -121,10 +128,19 @@ public int hasQuestion(int std_id, String q_asktime){
          question.setQ_replytime(rs.getString("q_replytime"));
          //question.setQ_time(rs.getTime("q_time"));
          question.setQ_solved(rs.getString("q_solved"));
+         question.setQ_type(rs.getBoolean("q_type"));
          return question;
      }
  }
 
+ private static final class QuestionMapper2 implements RowMapper<Question> {
+     public Question mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+         final Question question = new Question();
+         question.setQ_content(rs.getString("q_content"));
+         question.setQ_asktime(rs.getString("q_asktime"));
+         return question;
+     }
+ }
 
 
 public int updateStudentQuestionContent(final Question question) {
