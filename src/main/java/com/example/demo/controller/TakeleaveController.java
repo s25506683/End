@@ -103,9 +103,7 @@ public class TakeleaveController {
 
   }
 
-
   
-
   // @GetMapping(value = {"/student/takeleave/all"})
   //   public List<Takeleave> retrieveTakeleave() throws SQLException{
   //      return dao.findAll();
@@ -126,8 +124,6 @@ public class TakeleaveController {
           takeleave.setCs_id(dao.findCsID(takeleave.getRc_id()));
           //takeleave.setRc_id(takeleave.getRc_id());
     
-
-          
             // if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
             //   //教師已審核完成，不可再次申請
             //   return ResponseEntity.badRequest().body("教師已審核過該筆請假，請勿再次申請");     

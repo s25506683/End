@@ -59,3 +59,11 @@
 2020/05/16 15:46:09	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
 2020/05/16 15:46:33	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
 2020/05/16 15:47:33	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-07 19:11:32", student "406401616".
+2020/05/26 21:24:49	student 406401599 writing public question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:25:13	student 406401616 writing personal question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:25:50	student 406401616 writing personal question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:26:00	student 406401616 writing public question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:49:01	student 406401616 writing personal question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:49:22	student 406401616 writing public question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:49:55	student 406401616 writing personal question 老師好 in class 10811000DMG741D7411023900 .
+2020/05/26 21:51:32	student 406401616 writing personal question 老師好 in class 10811000DMG741D7411023900 .

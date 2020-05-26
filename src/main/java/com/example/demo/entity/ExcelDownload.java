@@ -13,10 +13,6 @@ public class ExcelDownload {
 
     private String tl_type_name;
 
-
-
-    
-
     public int getStd_id() {
         return this.std_id;
     }
