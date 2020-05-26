@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.object.SqlCall;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -90,6 +91,20 @@ public class StudentController {
 	public List<Student> retrieveStudent() throws SQLException {
 		return dao.findAll();
 	}
+
+	//get Who login in this class.
+	//You will get login std_id.
+	@GetMapping(value = {"/student/std_id"})
+	public ResponseEntity<Student> findStudentInTheAccept() throws SQLException{
+  	AuthenticationUtil auth = new AuthenticationUtil();
+   	int std_id = Integer.parseInt(auth.getCurrentUserName());
+   	Student student = new Student();
+   	student.setStd_id(std_id);
+   	return new ResponseEntity<Student>(student,HttpStatus.OK);
+
+}
+
+
 
 	//student change own password after login.
 	//you have to input old_std_password, std_password.

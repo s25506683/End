@@ -193,7 +193,7 @@ public class TeacherController {
 			dao.updateTeacherPassword(teacher.getTeacher_id(), id);
 			String user_email = teacher.getTeacher_mail();
 			String newpassword = id;
-			mailservice.prepareAndSendwithTeacher(user_email, newpassword, teacher.getTeacher_id());
+			mailservice.prepareAndSend(user_email, newpassword, Integer.toString(teacher.getTeacher_id()));
 			return ResponseEntity.ok("寄新密碼成功!!");
 		}
 
