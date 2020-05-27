@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +30,31 @@ public class ExcelUtil {
     public void write(List<ExcelDownload> studentList, String[] classinfo, String function, HttpServletResponse response) throws Exception {
 
         HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFFont font_absent = workbook.createFont();
+        HSSFFont font_farRollcall = workbook.createFont();
+        HSSFFont font_takeleave = workbook.createFont();
+        HSSFCellStyle style_absent = workbook.createCellStyle();
+        HSSFCellStyle style_farRollcall = workbook.createCellStyle();
+        HSSFCellStyle style_takeleave = workbook.createCellStyle();
+
+        //設定請假類別為 "缺席" 的字型(顏色為紅色).
+        font_absent.setColor(IndexedColors.RED.index);
+        //設定 "缺席" 的style.
+        style_absent.setFont(font_absent);
+
+        //設定請假類別為 "遠距簽到" 的字型(顏色為藍色).
+        font_farRollcall.setColor(IndexedColors.BLUE.index);
+        //設定 "遠距簽到" 的style.
+        style_farRollcall.setFont(font_farRollcall);
+
+        //設定請假類別為 "請假狀態" 的字型(顏色為橘色).
+        font_takeleave.setColor(IndexedColors.LIGHT_ORANGE.index);
+        //設定 "請假狀態" 的style.
+        style_takeleave.setFont(font_takeleave);
+
+
+
+
         HSSFSheet sheet1;
         sheet1 = workbook.createSheet("點名紀錄");
 
@@ -116,7 +144,7 @@ public class ExcelUtil {
 
         //將所有學生的學號輸入到陣列中，以便之後跟點名做比對.
         String[] allstudent = new String[100];
-        int allstudent_count = 0;
+        int allstudent_pointer = 0;
         for (ExcelDownload ed : studentList) {
 
             count++;
@@ -129,8 +157,8 @@ public class ExcelUtil {
             cellindex++;
          
             rowDate.createCell(cellindex).setCellValue(ed.getStd_id());
-            allstudent[allstudent_count] = Integer.toString(ed.getStd_id());
-            allstudent_count++;
+            allstudent[allstudent_pointer] = Integer.toString(ed.getStd_id());
+            allstudent_pointer++;
             cellindex++;
          
             rowDate.createCell(cellindex).setCellValue(ed.getStd_name());
@@ -143,34 +171,53 @@ public class ExcelUtil {
         }
         
 
-        int column_count = studentinfotitle.length;
+        int column_pointer = studentinfotitle.length;
         //利用迴圈取出每個點名的starttime.
         for(String starttime : allrollcallstarttime){
 
            //取得單一點名所有學生的點名紀錄.
            List<ExcelDownload> rollcallrecord = dao.findRollcallRecord(classinfo[0], starttime);
-           //將allstudent_count歸0.
-           allstudent_count = 0;
+           //將allstudent_pointer歸0.
+           allstudent_pointer = 0;
            //利用迴圈取出rollcallrecord的List中每一筆學生的點名紀錄.
            for(ExcelDownload personalrecord : rollcallrecord){
               //跑迴圈讓rollcallrecord跟allstudent去比對學號，以防資料錯誤.
-              for(; allstudent_count < allstudent.length ;){
-                 if(allstudent[allstudent_count] == null){
+              for(; allstudent_pointer < allstudent.length ;){
+                 if(allstudent[allstudent_pointer] == null){
                     break;
                  }
                  //如果allstudent中的學號與personalrecord的object中的std_id一樣，則將資料寫入至excel中.
-                 if( allstudent[allstudent_count].equals(Integer.toString(personalrecord.getStd_id())) ){
-                    titlerow = sheet1.getRow(allstudent_count + rowIndex);
-                    titlerow.createCell(column_count).setCellValue(personalrecord.getTl_type_name());
-                    allstudent_count++;
+                 if( allstudent[allstudent_pointer].equals(Integer.toString(personalrecord.getStd_id())) ){
+                    titlerow = sheet1.getRow(allstudent_pointer + rowIndex);
+                    titlerow.createCell(column_pointer).setCellValue(personalrecord.getTl_type_name());
+
+                    if(personalrecord.getTl_type_name().equals("缺席")){
+                       //if 狀態為 "缺席".
+                       titlerow.getCell(column_pointer).setCellStyle(style_absent);
+
+                    }else if(personalrecord.getTl_type_name().equals("遠距簽到")){
+                       //if 狀態為 "遠距簽到".
+                       titlerow.getCell(column_pointer).setCellStyle(style_farRollcall);
+
+                    }else if(
+                       personalrecord.getTl_type_name().equals("病假") || 
+                       personalrecord.getTl_type_name().equals("事假") || 
+                       personalrecord.getTl_type_name().equals("喪假") || 
+                       personalrecord.getTl_type_name().equals("公假")){
+                          //if 狀態為 "請假狀態".
+                          titlerow.getCell(column_pointer).setCellStyle(style_takeleave);
+
+                     }
+
+                    allstudent_pointer++;
                     break;
                  }else{
-                    allstudent_count++;
+                    allstudent_pointer++;
                  }
               }
               
            }
-           column_count++;
+           column_pointer++;
         }
         
 
