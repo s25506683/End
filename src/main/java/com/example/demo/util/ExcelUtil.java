@@ -144,7 +144,7 @@ public class ExcelUtil {
 
         //將所有學生的學號輸入到陣列中，以便之後跟點名做比對.
         String[] allstudent = new String[100];
-        int allstudent_pointer = 0;
+        int allstudent_index = 0;
         for (ExcelDownload ed : studentList) {
 
             count++;
@@ -157,8 +157,8 @@ public class ExcelUtil {
             cellindex++;
          
             rowDate.createCell(cellindex).setCellValue(ed.getStd_id());
-            allstudent[allstudent_pointer] = Integer.toString(ed.getStd_id());
-            allstudent_pointer++;
+            allstudent[allstudent_index] = Integer.toString(ed.getStd_id());
+            allstudent_index++;
             cellindex++;
          
             rowDate.createCell(cellindex).setCellValue(ed.getStd_name());
@@ -171,33 +171,33 @@ public class ExcelUtil {
         }
         
 
-        int column_pointer = studentinfotitle.length;
+        int column_index = studentinfotitle.length;
         //利用迴圈取出每個點名的starttime.
         for(String starttime : allrollcallstarttime){
 
            //取得單一點名所有學生的點名紀錄.
            List<ExcelDownload> rollcallrecord = dao.findRollcallRecord(classinfo[0], starttime);
-           //將allstudent_pointer歸0.
-           allstudent_pointer = 0;
+           //將allstudent_index歸0.
+           allstudent_index = 0;
            //利用迴圈取出rollcallrecord的List中每一筆學生的點名紀錄.
            for(ExcelDownload personalrecord : rollcallrecord){
               //跑迴圈讓rollcallrecord跟allstudent去比對學號，以防資料錯誤.
-              for(; allstudent_pointer < allstudent.length ;){
-                 if(allstudent[allstudent_pointer] == null){
+              for(; allstudent_index < allstudent.length ;){
+                 if(allstudent[allstudent_index] == null){
                     break;
                  }
                  //如果allstudent中的學號與personalrecord的object中的std_id一樣，則將資料寫入至excel中.
-                 if( allstudent[allstudent_pointer].equals(Integer.toString(personalrecord.getStd_id())) ){
-                    titlerow = sheet1.getRow(allstudent_pointer + rowIndex);
-                    titlerow.createCell(column_pointer).setCellValue(personalrecord.getTl_type_name());
+                 if( allstudent[allstudent_index].equals(Integer.toString(personalrecord.getStd_id())) ){
+                    titlerow = sheet1.getRow(allstudent_index + rowIndex);
+                    titlerow.createCell(column_index).setCellValue(personalrecord.getTl_type_name());
 
                     if(personalrecord.getTl_type_name().equals("缺席")){
                        //if 狀態為 "缺席".
-                       titlerow.getCell(column_pointer).setCellStyle(style_absent);
+                       titlerow.getCell(column_index).setCellStyle(style_absent);
 
                     }else if(personalrecord.getTl_type_name().equals("遠距簽到")){
                        //if 狀態為 "遠距簽到".
-                       titlerow.getCell(column_pointer).setCellStyle(style_farRollcall);
+                       titlerow.getCell(column_index).setCellStyle(style_farRollcall);
 
                     }else if(
                        personalrecord.getTl_type_name().equals("病假") || 
@@ -205,19 +205,19 @@ public class ExcelUtil {
                        personalrecord.getTl_type_name().equals("喪假") || 
                        personalrecord.getTl_type_name().equals("公假")){
                           //if 狀態為 "請假狀態".
-                          titlerow.getCell(column_pointer).setCellStyle(style_takeleave);
+                          titlerow.getCell(column_index).setCellStyle(style_takeleave);
 
                      }
 
-                    allstudent_pointer++;
+                    allstudent_index++;
                     break;
                  }else{
-                    allstudent_pointer++;
+                    allstudent_index++;
                  }
               }
               
            }
-           column_pointer++;
+           column_index++;
         }
         
 
