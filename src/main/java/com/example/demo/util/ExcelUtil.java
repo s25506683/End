@@ -3,7 +3,9 @@ package com.example.demo.util;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -69,12 +71,13 @@ public class ExcelUtil {
         rowIndex += titleindex+1;
 
         //get所有的點名時間
-        String[] allrollcallstarttime = dao.findAllRollcallStartTime(classinfo[0]).split(",");   //classinfo[0] = cs_id
+        String[] allrollcallstarttime = dao.findAllRollcallStartTime(classinfo[0]).replace("-", "/").split(",");   //classinfo[0] = cs_id
 
         // 次要表頭
         String[] head = new String[100];
         //將學生資料加入head.
         String[] studentinfotitle = { "序列", "學號", "姓名", "系所" };
+
         for(int i=0; i<studentinfotitle.length ; i++){
            head[i] = studentinfotitle[i];
         }
@@ -86,14 +89,26 @@ public class ExcelUtil {
         }
 
 
+        
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        Date date = new Date();
         //將head的資料寫入excel中行程點名表的title.
         titlerow = sheet1.createRow(rowIndex);
         for (int i = 0; i < head.length; i++) {
-           //設定每個點名的column寬度.
-           if(i>3){
-              sheet1.setColumnWidth(i, 5000);
+           //如果head中已經沒有資料, break.
+           if(head[i] == null){
+              break;
            }
-           titlerow.createCell(i).setCellValue(head[i]);
+           //設定每個點名的column寬度.
+           if(i>studentinfotitle.length-1){
+              //如果studentinfotitle輸入完畢,先設定時間的格式、columnSize後再行輸入到Excel.
+              head[i] = head[i].substring(0, head[i].length()-3);
+              titlerow.createCell(i).setCellValue(head[i]);
+              sheet1.autoSizeColumn(i);
+           }else{
+              //輸入studentinfotitle的title到Excel.
+              titlerow.createCell(i).setCellValue(head[i]);
+           }
         }
 
         rowIndex++;
@@ -123,7 +138,7 @@ public class ExcelUtil {
          
             rowDate.createCell(cellindex).setCellValue(ed.getStd_department());
             cellindex++;
-      
+
       
         }
         
