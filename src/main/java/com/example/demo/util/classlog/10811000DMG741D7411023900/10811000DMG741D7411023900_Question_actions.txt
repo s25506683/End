@@ -75,3 +75,8 @@
 2020/05/26 22:54:47	student "406401616" watching question in class "10811000DMG741D7411023900".
 2020/05/26 23:05:33	student "406401616" watching question in class "10811000DMG741D7411023900".
 2020/05/26 23:06:04	student "406401616" watching question in class "10811000DMG741D7411023900".
+2020/05/28 20:32:45	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
+2020/05/28 20:33:42	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
+2020/05/28 20:33:47	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
+2020/05/28 20:34:11	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
+2020/05/28 21:01:36	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
