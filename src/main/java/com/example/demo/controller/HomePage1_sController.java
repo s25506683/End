@@ -53,8 +53,10 @@ public class HomePage1_sController {
       int user_id = Integer.parseInt(auth.getCurrentUserName());
 
       if(dao.queryUserRole(user_id) == 1){
+        //1 is teacher.
         return ResponseEntity.ok("1");
       }else{
+        //0 is student.
         return ResponseEntity.ok("0");
       }
       
