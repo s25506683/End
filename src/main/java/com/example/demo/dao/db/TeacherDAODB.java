@@ -76,10 +76,10 @@ public class TeacherDAODB implements TeacherDAO {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode(teacher.getTeacher_password());
 		return jdbcTemplate.update(
-				"insert into teacher (teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image) values(?, ?, ?, ?, ?, ?, ?, ?)",
+				"insert into teacher (teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image) values(?, ?, ?, ?, ?, ?, ?, ?)",
 				teacher.getTeacher_id(), password, teacher.getTeacher_name(), teacher.getTeacher_gender(),
 				teacher.getTeacher_department(), teacher.getTeacher_phone(), teacher.getTeacher_mail(),
-				teacher.getTeacher_image());
+				teacher.getTeacher_office(), teacher.getTeacher_image());
 	}
 
 	public Teacher findOne(int teacher_id) {

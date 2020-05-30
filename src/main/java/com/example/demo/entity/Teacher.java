@@ -9,6 +9,7 @@ public class Teacher {
 	private String teacher_department;
 	private String teacher_phone;
 	private String teacher_mail;
+	private String teacher_office;
 	private String teacher_image;
 	private String old_teacher_password;
 	private String cs_id;
@@ -120,6 +121,14 @@ public class Teacher {
 
 	public void setTeacher_mail(String teacher_mail) {
 		this.teacher_mail = teacher_mail;
+	}
+
+	public String getTeacher_office() {
+		return this.teacher_office;
+	}
+
+	public void setTeacher_office(String teacher_office) {
+		this.teacher_office = teacher_office;
 	}
 
 	public String getTeacher_image() {
