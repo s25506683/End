@@ -27,6 +27,12 @@ public class QuestionDAODB implements QuestionDAO {
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
 
+public int checkTheQuestionHasBeenSolved(int q_id){
+  String sql = "select q_solved from question where q_id = ?";
+  int solved = this.jdbcTemplate.queryForObject(sql, Integer.class, q_id);
+  return solved;
+}
+
 
 public int findQuestionType(String std_id, String cs_id){
   String sql = "select q_type from question where q_std_id = ? and cs_id = ?";
@@ -82,12 +88,29 @@ public int hasQuestion(int std_id, String q_asktime){
   return count;
 }
 
+public int TeacherAddNewMessages(Question question){
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
+    return jdbcTemplate.update(
+      "insert into comment_box (q_id, cb_content, cb_time) values(?, ?, ?)",
+      question.getQ_id(), question.getCb_content(), timestamp);
+}
 
- public int studentinsert(final Question question) {
-   AuthenticationUtil auth = new AuthenticationUtil();
-   String std_id = auth.getCurrentUserName();
-   CurrentTimeStamp ts = new CurrentTimeStamp();
-   String timestamp = ts.getCurrentTimeStamp();
+public int StudentAddNewMessages(Question question){
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
+    return jdbcTemplate.update(
+      "insert into comment_box (q_id, std_id, cb_content, cb_time) values(?, ?, ?, ?)",
+      question.getQ_id(), std_id, question.getCb_content(), timestamp);
+}
+
+public int studentinsert(final Question question) {
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
       "insert into question (q_std_id, q_content, q_asktime, cs_id, q_type) values(?, ?, ?, ?, ?)",
       std_id, question.getQ_content(), timestamp, question.getCs_id(), question.isQ_type());

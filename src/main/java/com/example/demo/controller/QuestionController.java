@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestMethod;
 //import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
@@ -49,6 +50,45 @@ public class QuestionController {
    String writtenmessage = new String();
    String partition = "Question";
 
+   //teacher post new messages in commentbox.
+   //you will input q_id, cb_content.
+   @PostMapping(value = "/teacher/AddNewMessages") 
+   public ResponseEntity<String> Teacheraddnewmessage(@RequestBody final Question question)
+         throws SQLException, IOException, ParseException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+   
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+         return ResponseEntity.badRequest().body("request failed. this question has been solved can't add new messages!");
+      }else{
+         dao.TeacherAddNewMessages(question);
+         writtenmessage = "teacher \"" + teacher_id + "\" comment question " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getCb_time() + "\".";
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+         return ResponseEntity.ok("request successful! your message has been successfully sent!");
+      }  
+   }
+
+   //student post new messages in commentbox.
+   //you will input q_id, cb_content, cs_id.
+   @PostMapping(value = "/student/AddNewMessages") 
+   public ResponseEntity<String> Studentaddnewmessage(@RequestBody final Question question)
+         throws SQLException, IOException, ParseException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      int std_id = Integer.parseInt(auth.getCurrentUserName());
+   
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+         return ResponseEntity.badRequest().body("request failed. this question has been solved can't add new messages!");
+      }else{
+         dao.StudentAddNewMessages(question);
+         writtenmessage = "student \"" + std_id + "\" comment question " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getCb_time() + "\".";
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+         return ResponseEntity.ok("request successful! your message has been successfully sent!");
+      }  
+
+   }
+   
 
    // student post there question to db.
    // you will input q_content, cs_id, q_type.
@@ -168,24 +208,16 @@ public class QuestionController {
          IOException {
 
      AuthenticationUtil auth = new AuthenticationUtil();
-     String std_id = auth.getCurrentUserName();
+     int std_id = Integer.parseInt(auth.getCurrentUserName());
 
-      System.out.println("\n\n\n\n\n\n\n\n");
-      System.out.println(std_id);
-      System.out.println(question.getCs_id());
-      System.out.println(question.getQ_asktime());
-      System.out.println("\n\n\n\n\n\n\n\n");
-      System.out.println(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()));
-      System.out.println("\n\n\n\n\n\n\n\n");
-
-      // if(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()) == 1){
-      //   return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
-      // }else{
+      if(dao.hasBeenReply(std_id, question.getQ_asktime()) == 1){
+        return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
+      }else{
         dao.StudentCompletionQuestion(question);
         writtenmessage = "student \"" + std_id + "\" completion question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
         return ResponseEntity.ok("request successful! your question has been solved!");
-      // }
+      }
    }
    
 
@@ -206,7 +238,7 @@ public class QuestionController {
        }
     }
    
-
+    //老師回覆問題後寄信學生
     //update teacher's reply in this class.
     //You have input q_reply, cs_id, q_std_id, q_asktime.
  @PutMapping(value = "/teacher/question")
