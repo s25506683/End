@@ -80,3 +80,13 @@
 2020/05/28 20:33:47	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
 2020/05/28 20:34:11	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
 2020/05/28 21:01:36	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
+2020/05/30 13:57:20	student "406401616" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32".
+2020/05/30 13:57:42	student "406401616" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32".
+2020/05/30 13:59:01	teacher "16283" reply question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32", student "406401616".
+2020/05/30 13:59:15	student 406401599 writing public question 老師今天會下雨嘛!! in class 10811000DMG741D7411023900 .
+2020/05/30 14:03:22	student "406401616" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32".
+2020/05/30 14:04:33	student "406401616" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 21:51:32".
+2020/05/30 15:42:43	student "406401599" comment question ch12! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 15:45:37	student "406401628" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 22:22:58".
+2020/05/30 16:00:03	student "406401599" comment question ch12! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 16:01:46	teacher "16283" comment question 老師說的算! in class "10811000DMG741D7411023900" with question's asktime "null".

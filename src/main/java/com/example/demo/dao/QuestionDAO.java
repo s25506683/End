@@ -6,6 +6,8 @@ import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
 
+    public int checkTheQuestionHasBeenSolved(int q_id);
+
     public int findQuestionType(String std_id, String cs_id);
 
     public String findClassName(String cs_id);
@@ -23,6 +25,10 @@ public interface QuestionDAO {
     public int hasBeenReply(int std_id, String q_asktime);
 
     public int hasQuestion(int std_id, String q_asktime);
+
+    public int TeacherAddNewMessages(Question question);
+
+    public int StudentAddNewMessages(Question question);
 
     public int studentinsert(Question question);
 
