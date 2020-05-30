@@ -2,10 +2,7 @@ package com.example.demo.util;
 
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -118,8 +115,6 @@ public class ExcelUtil {
 
 
         
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        Date date = new Date();
         //將head的資料寫入excel中行程點名表的title.
         titlerow = sheet1.createRow(rowIndex);
         for (int i = 0; i < head.length; i++) {
@@ -167,37 +162,96 @@ public class ExcelUtil {
             rowDate.createCell(cellindex).setCellValue(ed.getStd_department());
             cellindex++;
 
+            System.out.println("\n\n\n");
+            System.out.println(sheet1.getLastRowNum());
+            System.out.println(studentList.size());
+            System.out.println(rowIndex);
+            System.out.println("\n\n\n");
+
+            //if studentList is the last one.
+            if( (sheet1.getLastRowNum()+1)-rowIndex == studentList.size() ){
+               rowDate = sheet1.createRow(sheet1.getLastRowNum()+2);
+               rowDate.createCell(3).setCellValue("出席人數");
+
+               rowDate = sheet1.createRow(sheet1.getLastRowNum()+1);
+               rowDate.createCell(3).setCellValue("遲到人數");
+               
+               rowDate = sheet1.createRow(sheet1.getLastRowNum()+1);
+               rowDate.createCell(3).setCellValue("遠距人數");
+               
+               rowDate = sheet1.createRow(sheet1.getLastRowNum()+1);
+               rowDate.createCell(3).setCellValue("缺席人數");
+
+               rowDate = sheet1.createRow(sheet1.getLastRowNum()+1);
+               rowDate.createCell(3).setCellValue("請假人數");
+               
+               rowDate = sheet1.createRow(sheet1.getLastRowNum()+1);
+               rowDate.createCell(3).setCellValue("總人數");
+            }
+
       
         }
         
 
         int column_index = studentinfotitle.length;
+        int present_count = 0;
+        int late_count = 0;
+        int far_count = 0;
+        int absent_count = 0;
+        int takeleave_count= 0;
+        int total_count = 0;
+        int student_index = 0;
+
         //利用迴圈取出每個點名的starttime.
         for(String starttime : allrollcallstarttime){
 
            //取得單一點名所有學生的點名紀錄.
            List<ExcelDownload> rollcallrecord = dao.findRollcallRecord(classinfo[0], starttime);
            //將allstudent_index歸0.
-           allstudent_index = 0;
+           student_index = 0;
+           present_count = 0;
+           late_count = 0;
+           far_count = 0;
+           absent_count = 0;
+           takeleave_count = 0;
+           total_count = 0;
+
            //利用迴圈取出rollcallrecord的List中每一筆學生的點名紀錄.
            for(ExcelDownload personalrecord : rollcallrecord){
               //跑迴圈讓rollcallrecord跟allstudent去比對學號，以防資料錯誤.
-              for(; allstudent_index < allstudent.length ;){
-                 if(allstudent[allstudent_index] == null){
+              for(; student_index < allstudent.length ;){
+                 if(allstudent[student_index] == null){
                     break;
                  }
                  //如果allstudent中的學號與personalrecord的object中的std_id一樣，則將資料寫入至excel中.
-                 if( allstudent[allstudent_index].equals(Integer.toString(personalrecord.getStd_id())) ){
-                    titlerow = sheet1.getRow(allstudent_index + rowIndex);
+                 if( allstudent[student_index].equals(Integer.toString(personalrecord.getStd_id())) ){
+                    titlerow = sheet1.getRow(student_index + rowIndex);
                     titlerow.createCell(column_index).setCellValue(personalrecord.getTl_type_name());
 
-                    if(personalrecord.getTl_type_name().equals("缺席")){
+                    if(personalrecord.getTl_type_name().equals("出席")){
+                       //if 狀態為 "出席".
+                       present_count++;
+                       total_count++;
+
+                    }else if(personalrecord.getTl_type_name().equals("遲到")){
+                       //if 狀態為 "遲到".
+                       late_count++;
+                       present_count++;   //因為 "遲到" 也算出席, 故計入之.
+                       total_count++;
+
+                    }
+                    else if(personalrecord.getTl_type_name().equals("缺席")){
                        //if 狀態為 "缺席".
                        titlerow.getCell(column_index).setCellStyle(style_absent);
+                       absent_count++;
+                       total_count++;
 
                     }else if(personalrecord.getTl_type_name().equals("遠距簽到")){
                        //if 狀態為 "遠距簽到".
                        titlerow.getCell(column_index).setCellStyle(style_farRollcall);
+                       far_count++;
+                       present_count++;   //因為 "遠距簽到" 也算出席, 故計入之.
+                       total_count++;
 
                     }else if(
                        personalrecord.getTl_type_name().equals("病假") || 
@@ -206,17 +260,41 @@ public class ExcelUtil {
                        personalrecord.getTl_type_name().equals("公假")){
                           //if 狀態為 "請假狀態".
                           titlerow.getCell(column_index).setCellStyle(style_takeleave);
+                          takeleave_count++;
+                          total_count++;
 
                      }
 
-                    allstudent_index++;
+                    student_index++;
                     break;
                  }else{
-                    allstudent_index++;
+                    student_index++;
                  }
+
               }
               
            }
+
+           //print出席人數.
+           titlerow = sheet1.getRow(allstudent_index + rowIndex+1);
+           titlerow.createCell(column_index).setCellValue(present_count);
+           //print遲到人數.
+           titlerow = sheet1.getRow(allstudent_index + rowIndex+2);
+           titlerow.createCell(column_index).setCellValue(late_count);
+           //print遠距人數.
+           titlerow = sheet1.getRow(allstudent_index + rowIndex+3);
+           titlerow.createCell(column_index).setCellValue(far_count);
+           //print缺席人數.
+           titlerow = sheet1.getRow(allstudent_index + rowIndex+4);
+           titlerow.createCell(column_index).setCellValue(absent_count);
+           //print請假人數.
+           titlerow = sheet1.getRow(allstudent_index + rowIndex+5);
+           titlerow.createCell(column_index).setCellValue(takeleave_count);
+           //print總人數.
+           titlerow = sheet1.getRow(allstudent_index + rowIndex+6);
+           titlerow.createCell(column_index).setCellValue(total_count);
+
+           
            column_index++;
         }
         
