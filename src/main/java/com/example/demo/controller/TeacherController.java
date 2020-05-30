@@ -89,7 +89,7 @@ public class TeacherController {
 		
 	}
 
-	//teacher get imformation himself.
+	//teacher get information himself.
 	//you will get teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image.
 	@GetMapping(value = { "/teacher/information/" })
 	public Teacher retrieveOneStudent() throws SQLException {
@@ -152,7 +152,7 @@ public class TeacherController {
 	}
 
 	//teacher change own office after login.
-	//you have to input old teacher_mail, teacher_mail.
+	//you have to input teacher_office.
 	@PutMapping(value = "/teacher/resetOffice/")
 	public ResponseEntity<String> processForUpdateOffice(@RequestBody Teacher teacher)throws SQLException{
 		AuthenticationUtil auth = new AuthenticationUtil();
@@ -160,19 +160,19 @@ public class TeacherController {
 
 		if(teacher.getTeacher_office().length() > 10){
 			//input teacher_office.length out of range in db.
-			return ResponseEntity.badRequest().body("您輸入的Office長度過長!");
+			return ResponseEntity.badRequest().body("input Office too long!");
 		}
 		else{
 			dao.updateTeacherOffice(teacher_id, teacher.getTeacher_office());
 			writtenmessage = "teacher \"" + teacher_id + "\" update new Office \"";
 			logfile.writeLog(writtenmessage);
-			return ResponseEntity.ok("修改Office成功!");
+			return ResponseEntity.ok("renew Office Seccessful!");
 		}
 
 	}
 
 	//teacher change own Phone number after login.
-	//you have to input old teacher_phone, teacher_phone
+	//you have to input teacher_phone
 	@PutMapping(value = "/teacher/resetPhone")
 	public ResponseEntity<String> processUpdatePhone(@RequestBody final Teacher teacher)throws SQLException{
 		AuthenticationUtil auth = new AuthenticationUtil();
