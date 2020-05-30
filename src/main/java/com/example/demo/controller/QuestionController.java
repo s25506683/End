@@ -141,26 +141,53 @@ public class QuestionController {
        }
     }
 
+
+ //student get his question in this class.
+ //you will get q_content, q_asktime.
  @GetMapping(value = {"/student/question/CheckHisQuestion/{cs_id}"})
     public ResponseEntity<List<Question>> findAllQuestionsThisStudentAsked(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
    
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
-
-      System.out.println("\n\n\n\n\n\n");
-      System.out.println(cs_id);
-      System.out.println("\n\n\n\n\n\n");
       if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
          //if student does not belong to this class.
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
-         writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
+         writtenmessage = "student \"" + std_id + "\" watching his question in class \"" + cs_id + "\".";
          logfile.writeLog(writtenmessage, cs_id, partition);
          return new ResponseEntity<List<Question>>(dao.findAllQuestionsThisStudentAsked(std_id, cs_id), HttpStatus.OK);
        }
 
     }
+
+   //update student's question solved in this class.
+   //You have input q_std_id, q_asktime, cs_id.
+   @PutMapping(value = "/student/CompletionQuestion")
+   public ResponseEntity<String> UpdateStudentCompletionQuestion(@RequestBody final Question question) throws SQLException,
+         IOException {
+
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String std_id = auth.getCurrentUserName();
+
+      System.out.println("\n\n\n\n\n\n\n\n");
+      System.out.println(std_id);
+      System.out.println(question.getCs_id());
+      System.out.println(question.getQ_asktime());
+      System.out.println("\n\n\n\n\n\n\n\n");
+      System.out.println(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()));
+      System.out.println("\n\n\n\n\n\n\n\n");
+
+      // if(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()) == 1){
+      //   return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
+      // }else{
+        dao.StudentCompletionQuestion(question);
+        writtenmessage = "student \"" + std_id + "\" completion question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
+        logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+        return ResponseEntity.ok("request successful! your question has been solved!");
+      // }
+   }
+   
 
    //update student's question in this class.
    //You have input q_asktime, q_content, q_std_id, cs_id.
@@ -209,12 +236,6 @@ public class QuestionController {
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
-
-      
-      System.out.println("\n\n\n\n\n\n\n");
-      System.out.println(std_id);
-      System.out.println(question.getQ_std_id());
-      System.out.println("\n\n\n\n\n\n\n");
 
       if(question.getQ_std_id() != std_id){
          //if the student don't have sufficient permissions to delete question.

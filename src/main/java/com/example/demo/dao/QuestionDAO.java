@@ -34,6 +34,8 @@ public interface QuestionDAO {
 
     //public Question findOne(String cs_id,int std_id);
 
+    public int StudentCompletionQuestion(Question question);
+
     public int updateStudentQuestionContent(Question question);
 
     public int updateTeacherReply(Question question);

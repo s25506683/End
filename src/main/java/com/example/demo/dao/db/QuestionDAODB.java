@@ -143,6 +143,15 @@ public int hasQuestion(int std_id, String q_asktime){
  }
 
 
+public int StudentCompletionQuestion(Question question){
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  return jdbcTemplate.update(
+    "update question set q_solved = 1 where q_std_id = ? and q_asktime = ?",
+    std_id, question.getQ_asktime()); 
+}
+
+
 public int updateStudentQuestionContent(final Question question) {
   AuthenticationUtil auth = new AuthenticationUtil();
   String std_id = auth.getCurrentUserName();
@@ -156,7 +165,7 @@ public int updateStudentQuestionContent(final Question question) {
   CurrentTimeStamp ts = new CurrentTimeStamp();
   String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "update question set q_reply = ?, q_replytime = ?, q_solved = 1 where q_std_id = ? and q_asktime = ?",
+      "update question set q_reply = ?, q_replytime = ? where q_std_id = ? and q_asktime = ?",
       question.getQ_reply(), timestamp, question.getQ_std_id(), question.getQ_asktime());
  }
 
