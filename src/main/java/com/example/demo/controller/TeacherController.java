@@ -56,7 +56,7 @@ public class TeacherController {
 	LocalDateTime now = LocalDateTime.now();
 
 	//teacher register and enter basic information.
-	//you will input teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image.
+	//you will input teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image.
 	@PostMapping(value = "/teacher_re")
 	public ResponseEntity<String> processFormCreate(@RequestBody Teacher teacher)
 	throws SQLException, IOException {
@@ -65,7 +65,7 @@ public class TeacherController {
 		if(dao.queryUser(teacher.getTeacher_id()) == 0){
 			//if input's std_id out of range(or less than) 9
 			if(Integer.toString(teacher.getTeacher_id()).length() == 5){
-				//if input email's format is alright
+				//if input email's format is right
 				if(teacher.getTeacher_mail().contains("@")){
 					dao.insert(teacher);
 					String writtenmessage = dtf.format(now) + "\t" + Integer.toString((teacher.getTeacher_id())) + " now has a realdy registered!";      
