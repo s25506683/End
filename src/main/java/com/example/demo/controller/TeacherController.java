@@ -89,8 +89,8 @@ public class TeacherController {
 		
 	}
 
-	//teacher get imformation about this teacher.
-	//you will get teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image.
+	//teacher get imformation himself.
+	//you will get teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image.
 	@GetMapping(value = { "/teacher/information/" })
 	public Teacher retrieveOneStudent() throws SQLException {
 		AuthenticationUtil auth = new AuthenticationUtil();
@@ -98,15 +98,13 @@ public class TeacherController {
 		return dao.findOne(teacher_id);
 	}
 
-	//teacher get all teacher information in DB
+	//teacher get all teacher information in DB	(目前前端沒有用到).
 	//you will get teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_image.
 	@GetMapping(value = { "/teacher/" })
 	public List<Teacher> retrieveTeacher() throws SQLException {
 		return dao.findAll();
 	}
 
-
-	//teacher
 
 	@GetMapping(value = {"/teacher/findStudentInformation/{std_id}"})
 	public ResponseEntity<List<Teacher>> retrieveTeacherfindstudent(@PathVariable("std_id") String std_id) throws SQLException{
@@ -141,26 +139,39 @@ public class TeacherController {
 		AuthenticationUtil auth = new AuthenticationUtil();
 		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
 
-		if(dao.queryUser(teacher.getTeacher_id()) == 0){
-			//if input's std_id out of range(or less than) 9
-
-				//if input email's format is alright
-				if(teacher.getTeacher_mail().contains("@")){
-					dao.updateTeacherMail(teacher_id, teacher.getTeacher_mail());
-					writtenmessage = "teacher \"" + teacher_id + "\" update new Email \"";    
-					logfile.writeLog(writtenmessage);
-					return ResponseEntity.ok("修改Email成功!");
-				}
-				else{
-					return ResponseEntity.badRequest().body("email格式錯誤");
-				}
-			
-		}else{
-			return ResponseEntity.badRequest().body("此帳號已存在");
+		if(teacher.getTeacher_mail().contains("@")){
+			dao.updateTeacherMail(teacher_id, teacher.getTeacher_mail());
+			writtenmessage = "teacher \"" + teacher_id + "\" update new Email \"";    
+			logfile.writeLog(writtenmessage);
+			return ResponseEntity.ok("修改Email成功!");
 		}
+		else{
+			return ResponseEntity.badRequest().body("email格式錯誤");
+		}
+			
 	}
 
-	//teacher change owm Phone after login.
+	//teacher change own office after login.
+	//you have to input old teacher_mail, teacher_mail.
+	@PutMapping(value = "/teacher/resetOffice/")
+	public ResponseEntity<String> processForUpdateOffice(@RequestBody Teacher teacher)throws SQLException{
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+		if(teacher.getTeacher_office().length() > 10){
+			//input teacher_office.length out of range in db.
+			return ResponseEntity.badRequest().body("您輸入的Office長度過長!");
+		}
+		else{
+			dao.updateTeacherOffice(teacher_id, teacher.getTeacher_office());
+			writtenmessage = "teacher \"" + teacher_id + "\" update new Office \"";
+			logfile.writeLog(writtenmessage);
+			return ResponseEntity.ok("修改Office成功!");
+		}
+
+	}
+
+	//teacher change own Phone number after login.
 	//you have to input old teacher_phone, teacher_phone
 	@PutMapping(value = "/teacher/resetPhone")
 	public ResponseEntity<String> processUpdatePhone(@RequestBody final Teacher teacher)throws SQLException{

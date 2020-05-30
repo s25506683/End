@@ -67,6 +67,11 @@ public class TeacherDAODB implements TeacherDAO {
 		teacher_mail,teacher_id);
 	}
 
+	public int updateTeacherOffice(int teacher_id, String teacher_office){
+		return jdbcTemplate.update("update teacher set teacher_office = ? where teacher_id = ?",
+		teacher_office,teacher_id);
+	}
+
 	public int updateTeacherPhone(int teacher_id, String teacher_phone){
 		return jdbcTemplate.update("update teacher set teacher_phone = ? where teacher_id = ?",
 		teacher_phone,teacher_id);
@@ -76,7 +81,7 @@ public class TeacherDAODB implements TeacherDAO {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String password = passwordEncoder.encode(teacher.getTeacher_password());
 		return jdbcTemplate.update(
-				"insert into teacher (teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image) values(?, ?, ?, ?, ?, ?, ?, ?)",
+				"insert into teacher (teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				teacher.getTeacher_id(), password, teacher.getTeacher_name(), teacher.getTeacher_gender(),
 				teacher.getTeacher_department(), teacher.getTeacher_phone(), teacher.getTeacher_mail(),
 				teacher.getTeacher_office(), teacher.getTeacher_image());
@@ -109,6 +114,7 @@ public class TeacherDAODB implements TeacherDAO {
 			teacher.setTeacher_department(rs.getString("teacher_department"));
 			teacher.setTeacher_phone(rs.getString("teacher_phone"));
 			teacher.setTeacher_mail(rs.getString("teacher_mail"));
+			teacher.setTeacher_office(rs.getString("teacher_office"));
 			teacher.setTeacher_image(rs.getString("teacher_image"));
 			return teacher;
 		}
