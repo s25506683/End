@@ -14,6 +14,8 @@ public interface TeacherDAO {
 
 	public int updateTeacherMail(int teacher_id, String teacher_mail);
 
+	public int updateTeacherOffice(int teacher_id, String teacher_office);
+
 	public int updateTeacherPhone(int teacher_id, String teacher_phone);
 
 	public int insert(Teacher teacher);
