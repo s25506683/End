@@ -67,6 +67,11 @@ public class CourseDAODB implements CourseDAO {
     return cs_id;
   }
 
+  public Course findTeacherInformation(String cs_id){
+    return this.jdbcTemplate.queryForObject( "select t.* from teacher t join class_teacher ct on ct.teacher_id = t.teacher_id where cs_id = ?"
+    , new Object[]{cs_id}, new RollcallMapper2());
+  }
+
   public List<Course> findClassStudentList(final String cs_id){
     return this.jdbcTemplate.query("select s.std_id, s.std_name, s.std_department from student s inner join class_student cs on cs.std_id = s.std_id where cs.cs_id = ?"
     , new Object[]{cs_id}, new RollcallMapper());
@@ -78,6 +83,18 @@ public class CourseDAODB implements CourseDAO {
         course.setStd_id(rs.getInt("std_id"));
         course.setStd_name(rs.getString("std_name"));
         course.setStd_department(rs.getString("std_department"));
+        return course;
+    }
+  }
+
+  private static final class RollcallMapper2 implements RowMapper<Course> {
+    public Course mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+       final Course course = new Course();
+        course.setTeacher_name(rs.getString("teacher_name"));
+        course.setTeacher_department(rs.getString("teacher_department"));
+        course.setTeacher_phone(rs.getString("teacher_phone"));
+        course.setTeacher_mail(rs.getString("teacher_mail"));
+        course.setTeacher_office(rs.getString("teacher_office"));
         return course;
     }
   }
