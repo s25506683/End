@@ -8,7 +8,7 @@ public interface QuestionDAO {
 
     public int checkTheQuestionHasBeenSolved(int q_id);
 
-    public int findQuestionType(String std_id, String cs_id);
+    public int findQuestionSolved(String cs_id, String q_asktime);
 
     public String findClassName(String cs_id);
 
@@ -30,6 +30,8 @@ public interface QuestionDAO {
 
     public int StudentAddNewMessages(Question question);
 
+    public int teacherinsert(Question question);
+
     public int studentinsert(Question question);
 
     public List<Question> findQuestion(String cs_id);
@@ -39,6 +41,8 @@ public interface QuestionDAO {
     public String findCsId(int std_id, String q_asktime);
 
     //public Question findOne(String cs_id,int std_id);
+
+    public int TeacherCompletionQuestion(Question question);
 
     public int StudentCompletionQuestion(Question question);
 

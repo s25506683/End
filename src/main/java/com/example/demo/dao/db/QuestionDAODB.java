@@ -33,11 +33,10 @@ public int checkTheQuestionHasBeenSolved(int q_id){
   return solved;
 }
 
-
-public int findQuestionType(String std_id, String cs_id){
-  String sql = "select q_type from question where q_std_id = ? and cs_id = ?";
-  int Type = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id, cs_id);
-  return Type;
+public int findQuestionSolved(String cs_id, String q_asktime){
+  String sql = "select q_solved from question where cs_id = ? and q_asktime = ?";
+  int solved = this.jdbcTemplate.queryForObject(sql, Integer.class, cs_id, q_asktime);
+  return solved;
 }
 
 public String findClassName(String cs_id){
@@ -92,7 +91,7 @@ public int TeacherAddNewMessages(Question question){
   CurrentTimeStamp ts = new CurrentTimeStamp();
   String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "insert into comment_box (q_id, cb_content, cb_time) values(?, ?, ?)",
+      "insert into comment_box (q_id, cb_content, cb_time, cb_role) values(?, ?, ?, 1)",
       question.getQ_id(), question.getCb_content(), timestamp);
 }
 
@@ -102,8 +101,16 @@ public int StudentAddNewMessages(Question question){
   CurrentTimeStamp ts = new CurrentTimeStamp();
   String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "insert into comment_box (q_id, std_id, cb_content, cb_time) values(?, ?, ?, ?)",
+      "insert into comment_box (q_id, std_id, cb_content, cb_time, cb_role) values(?, ?, ?, ?, 0)",
       question.getQ_id(), std_id, question.getCb_content(), timestamp);
+}
+
+public int teacherinsert(Question question){
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
+    return jdbcTemplate.update(
+      "insert into question (q_content, q_asktime, cs_id, q_role) values(?, ?, ?, 1)",
+      question.getQ_content(), timestamp, question.getCs_id()); 
 }
 
 public int studentinsert(final Question question) {
@@ -112,8 +119,8 @@ public int studentinsert(final Question question) {
   CurrentTimeStamp ts = new CurrentTimeStamp();
   String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "insert into question (q_std_id, q_content, q_asktime, cs_id, q_type) values(?, ?, ?, ?, ?)",
-      std_id, question.getQ_content(), timestamp, question.getCs_id(), question.isQ_type());
+      "insert into question (q_std_id, q_content, q_asktime, cs_id, q_role) values(?, ?, ?, ?, 0)",
+      std_id, question.getQ_content(), timestamp, question.getCs_id());
  }
 
  /*public Question findOne(final String cs_id, final int std_id) {
@@ -121,7 +128,7 @@ public int studentinsert(final Question question) {
   }*/
 
  public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_replytime, q.q_solved, q.q_type from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime"
+     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime"
      , new Object[]{cs_id}, new QuestionMapper());
  }
 
@@ -143,15 +150,12 @@ public int studentinsert(final Question question) {
          question.setQ_id(rs.getInt("q_id"));
          question.setQ_std_id(rs.getInt("q_std_id"));
          question.setQ_content(rs.getString("q_content"));
-         question.setQ_reply(rs.getString("q_reply"));
          question.setCs_id(rs.getString("cs_id"));
          question.setCs_name(rs.getString("cs_name"));
          //df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
          question.setQ_asktime(df.format(rs.getTimestamp("q_asktime")));
-         question.setQ_replytime(rs.getString("q_replytime"));
          //question.setQ_time(rs.getTime("q_time"));
          question.setQ_solved(rs.getString("q_solved"));
-         question.setQ_type(rs.getBoolean("q_type"));
          return question;
      }
  }
@@ -164,6 +168,13 @@ public int studentinsert(final Question question) {
          return question;
      }
  }
+
+
+ public int TeacherCompletionQuestion(Question question){
+  return jdbcTemplate.update(
+    "update question set q_solved = 1 where cs_id = ? and q_asktime = ?",
+    question.getCs_id(), question.getQ_asktime()); 
+}
 
 
 public int StudentCompletionQuestion(Question question){
