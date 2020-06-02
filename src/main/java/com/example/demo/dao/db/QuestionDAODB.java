@@ -185,6 +185,19 @@ public int StudentCompletionQuestion(Question question){
     std_id, question.getQ_asktime()); 
 }
 
+public int updateStudentCommentBoxContent(final Question question) {
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  return jdbcTemplate.update(
+    "update comment_box set cb_content = ? where std_id = ? and cb_time = ?",
+    question.getCb_content(), std_id, question.getCb_time());
+}
+
+public int updateTeacherCommentBoxContent(final Question question) {
+  return jdbcTemplate.update(
+    "update comment_box set cb_content = ? where q_id = ? and cb_time = ?",
+    question.getCb_content(), question.getQ_id(), question.getCb_time());
+}
 
 public int updateStudentQuestionContent(final Question question) {
   AuthenticationUtil auth = new AuthenticationUtil();
@@ -213,7 +226,24 @@ public int updateStudentQuestionContent(final Question question) {
   return jdbcTemplate.update(
     "update question set q_reply = null, q_solved = 0, q_replytime = null where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
 }
- //顯示學生自己問過的問題
+
+public int deleteStudentMessages(Question question){
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  return jdbcTemplate.update(
+  "delete from comment_box where std_id = ? and cb_time = ?"
+  , std_id, question.getCb_time());
+}
+
+public int deleteTeacherMessages(Question question){
+  return jdbcTemplate.update( 
+  "delete from comment_box where q_id = ? and cb_time = ?"
+  , question.getQ_id(), question.getCb_time());
+}
+
+
+
+
 }
 
 
