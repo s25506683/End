@@ -163,7 +163,7 @@ public class QuestionController {
 
 
   //student get all question in this class.
-  //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
+  //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
  @GetMapping(value = {"/student/question/all/{cs_id}"})
     public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
@@ -185,7 +185,7 @@ public class QuestionController {
     }
 
    //teacher get all question in this class.
-   //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
  @GetMapping(value = {"/teacher/question/all/{cs_id}"})
     public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
@@ -259,6 +259,47 @@ public class QuestionController {
         return ResponseEntity.ok("request successful! your question has been solved!");
       }
    }
+
+   //update student's comment message in this class.
+   //You have input q_id, cb_content, std_id, cb_time, cs_id.
+   @PutMapping(value = "/student/updateCommentMessages")
+   public ResponseEntity<String> UpdateStudentCommentBoxnContent(@RequestBody final Question question) throws SQLException,
+         IOException {
+     AuthenticationUtil auth = new AuthenticationUtil();
+     int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. you can't update message your question has already replied from teacher or student!");
+      }else if(question.getCb_content() == ""){
+        return ResponseEntity.badRequest().body("request failed. comment_box content can't be empty");
+      }else{
+        dao.updateStudentCommentBoxContent(question);
+        writtenmessage = "student \"" + std_id + "\" update commentbox content " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with comment box time \"" + question.getCb_time() + "\".";
+        logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+        return ResponseEntity.ok("request successful! your messages update completed!");
+      }
+   }
+
+   //update teacher comment message in this class.
+   //You have input q_id, cb_content, cs_id ,cb_time.
+   @PutMapping(value = "/teacher/updateCommentMessages")
+   public ResponseEntity<String> UpdateTeacherCommentBoxnContent(@RequestBody final Question question) throws SQLException,
+         IOException {
+     AuthenticationUtil auth = new AuthenticationUtil();
+     int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. you can't update message your question has already replied from teacher or student!");
+      }else if(question.getCb_content() == ""){
+        return ResponseEntity.badRequest().body("request failed. comment_box content can't be empty");
+      }else{
+        dao.updateTeacherCommentBoxContent(question);
+        writtenmessage = "teacher \"" + teacher_id + "\" update commentbox content " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with comment box time \"" + question.getCb_time() + "\".";
+        logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+        return ResponseEntity.ok("request successful! your messages update completed!");
+      }
+   }
+
    
 
    //update student's question in this class.
@@ -345,24 +386,39 @@ public class QuestionController {
       }
     }
  
-
-   //teacher delete there question's reply.
-   //input std_id, q_asktime.
- @DeleteMapping(value = "/teacher/deletequestionreply/")
- public ResponseEntity<String> TeacherdeleteQuestionReply(@RequestBody final Question question) throws SQLException,
-       IOException {
-   AuthenticationUtil auth = new AuthenticationUtil();
-   String teacher_id = auth.getCurrentUserName();
-   if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
-      //if the question not found.
-      return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
-   }else{
-      dao.deleteQuestionReply(question);
-      writtenmessage = "teacher \"" + teacher_id + "\" deleted question reply with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
+   //student delete his messages.
+   //input q_id, cb_time.
+   @DeleteMapping(value = "/student/deleteStudentMessages/")
+   public ResponseEntity<String> StudentdeleteMessage(@RequestBody final Question question) throws SQLException, IOException{
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String std_id = auth.getCurrentUserName();
+     
+     if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. the question has been solved. you can't delete this message");
+     }else{
+      dao.deleteStudentMessages(question);
+      writtenmessage = "student \"" + std_id + "\" deleted message with question \"" + question.getQ_id() + "\".";
       logfile.writeLog(writtenmessage);
-      return ResponseEntity.ok("request successful! the student's \"" + question.getQ_std_id() + "\" question reply has been deleted!");
+      return ResponseEntity.ok("request successful! student deleted this message");
+     }
    }
- }
+
+   //teacher delete his messages.
+   //input q_id, cb_time.
+   @DeleteMapping(value = "/teacher/deleteTeacherMessages/")
+   public ResponseEntity<String> TeacherdeleteMessage(@RequestBody final Question question) throws SQLException, IOException{
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String teacher_id = auth.getCurrentUserName();
+     
+     if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. the question has been solved. you can't delete this message");
+     }else{
+      dao.deleteTeacherMessages(question);
+      writtenmessage = "teacher \"" + teacher_id + "\" deleted message with question \"" + question.getQ_id() + "\".";
+      logfile.writeLog(writtenmessage);
+      return ResponseEntity.ok("request successful! student deleted this message");
+     }
+   }
    
 
 }

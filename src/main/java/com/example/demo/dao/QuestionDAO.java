@@ -46,6 +46,10 @@ public interface QuestionDAO {
 
     public int StudentCompletionQuestion(Question question);
 
+    public int updateStudentCommentBoxContent(Question question);
+
+    public int updateTeacherCommentBoxContent(Question question);
+
     public int updateStudentQuestionContent(Question question);
 
     public int updateTeacherReply(Question question);
@@ -53,6 +57,10 @@ public interface QuestionDAO {
     public int deleteQuestion(Question question);
 
     public int deleteQuestionReply(Question question);
+
+    public int deleteStudentMessages(Question question);
+
+    public int deleteTeacherMessages(Question question);
 
 }
 
