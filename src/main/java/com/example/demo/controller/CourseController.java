@@ -171,6 +171,21 @@ public class CourseController {
    }
   }
 
+  //student watch teacher information in this class.
+  //you will get teacher_name, teacher_department, teacher_phone, teacher_mail, teacher_office returns.
+  @GetMapping(value = {"/student/Course/studentList/TeacherInformation/{cs_id}"})                        
+  public ResponseEntity<Course> StudentretrieveTeacherInformation(@PathVariable("cs_id") String cs_id) throws SQLException{
+   AuthenticationUtil auth = new AuthenticationUtil();
+   String std_id = auth.getCurrentUserName();
+   if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+      //if student not in this class.
+     return new ResponseEntity<Course>(HttpStatus.BAD_REQUEST);
+   }else{
+     return new ResponseEntity<Course>(dao.findTeacherInformation(cs_id), HttpStatus.OK);
+   }
+  }
+
+
 
 
  //老師新增課程（輸入課程名稱、課程ID）POST (done)

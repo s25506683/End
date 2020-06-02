@@ -20,6 +20,8 @@ public interface CourseDAO {
 
     public String findThisCsId(String cs_qrcode);
 
+    public Course findTeacherInformation(String cs_id);
+
     public List<Course> findClassStudentList(String cs_id);
 
     public int updateCsQRcode(String cs_id, String cs_qrcode);
