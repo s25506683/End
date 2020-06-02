@@ -90,3 +90,20 @@
 2020/05/30 15:45:37	student "406401628" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-05-26 22:22:58".
 2020/05/30 16:00:03	student "406401599" comment question ch12! in class "10811000DMG741D7411023900" with question's asktime "null".
 2020/05/30 16:01:46	teacher "16283" comment question 老師說的算! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 16:23:41	student "406401616" watching his question in class "10811000DMG741D7411023900".
+2020/05/30 17:19:46	teacher "16283" comment question 老師說的算! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 17:21:15	teacher "16283" comment question 這題這樣解...! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 17:24:56	student "406401599" comment question 這題我會唷! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 17:25:01	student "406401599" comment question 這題我會唷! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/05/30 17:48:56	student 16283 writing question 課堂搶答! in class 10811000DMG741D7411023900 .
+2020/06/02 16:56:57	student 16283 writing question 下課前回答出來可以加分唷! in class 10811000DMG741D7411023900 .
+2020/06/02 16:57:38	student "406401599" comment question 啊啊我會! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/02 16:58:01	teacher "16283" comment question 學生你好...! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/02 16:59:32	student "406401616" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-06-02 16:55:53".
+2020/06/02 17:00:03	student "406401599" comment question 啊啊我會! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/02 17:00:32	teacher "16283" comment question 學生你好...! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/02 17:03:28	student "406401616" watching his question in class "10811000DMG741D7411023900".
+2020/06/02 17:21:16	student "16283" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-06-02 16:56:57".
+2020/06/02 17:21:24	student "16283" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-06-02 16:56:57".
+2020/06/02 17:27:41	student "16283" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-06-02 16:56:57".
+2020/06/02 17:35:29	student "16283" completion question in class "10811000DMG741D7411023900" with question's asktime "2020-06-02 16:56:57".
