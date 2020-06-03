@@ -35,3 +35,8 @@
 2020/06/02 17:03:22	teacher that you watching question in class "Cs121".
 2020/06/02 17:03:25	student "406401616" watching question in class "Cs121".
 2020/06/02 19:51:07	teacher that you watching question in class "Cs121".
+2020/06/02 21:39:59	teacher that you watching question in class "Cs121".
+2020/06/02 22:18:59	student 406401616 writing question 老師今天可以不要上課嗎 in class Cs121 .
+2020/06/03 17:17:33	teacher that you watching question in class "Cs121".
+2020/06/03 17:30:23	teacher that you watching question in class "Cs121".
+2020/06/03 17:32:02	student "406401616" watching question in class "Cs121".

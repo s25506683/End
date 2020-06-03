@@ -6,6 +6,10 @@ import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
 
+    // public int findReplycount()
+
+    public int changeSolvedState(String std_id, String q_asktime);
+
     public int checkTheQuestionHasBeenSolved(int q_id);
 
     public int findQuestionSolved(String cs_id, String q_asktime);
