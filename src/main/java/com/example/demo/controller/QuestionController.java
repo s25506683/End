@@ -160,15 +160,11 @@ public class QuestionController {
     }
 
 
-
-
-  //student get all question in this class.
-  //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
- @GetMapping(value = {"/student/question/all/{cs_id}"})
+   //student get all question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+    @GetMapping(value = {"/student/question/all/{cs_id}"})
     public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
-      // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      // System.out.println("in Login2" + authentication.getPrincipal());
 
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
@@ -219,6 +215,8 @@ public class QuestionController {
        }
 
     }
+
+   //
 
 
    //update teacher's question solved in this class.
