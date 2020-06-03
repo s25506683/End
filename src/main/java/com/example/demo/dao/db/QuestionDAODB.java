@@ -27,6 +27,13 @@ public class QuestionDAODB implements QuestionDAO {
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
 
+
+public int changeSolvedState(String std_id, String q_asktime){
+  String sql = "update question set q_solved = 1 where q_std_id = ? and q_asktime = ?";
+  int q_solved = this.jdbcTemplate.queryForObject(sql,Integer.class, std_id, q_asktime);
+  return q_solved;
+}
+
 public int checkTheQuestionHasBeenSolved(int q_id){
   String sql = "select q_solved from question where q_id = ?";
   int solved = this.jdbcTemplate.queryForObject(sql, Integer.class, q_id);
