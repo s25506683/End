@@ -19,7 +19,7 @@ import com.example.demo.util.Logfile;
 
 
 @RestController
-@RequestMapping("/teacher/downloadExcel")
+@RequestMapping("/downloadExcel")
 public class ExcelDownloadController {
 
     @Autowired
