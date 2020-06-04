@@ -134,10 +134,15 @@ public int studentinsert(final Question question) {
     return this.jdbcTemplate.queryForObject( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q_time, q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? and q.q_std_id = ? ", new Object[]{cs_id,std_id}, new QuestionMapper());
   }*/
 
- public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime"
+ public List<Question> findSolvedQuestion(final String cs_id) {
+     return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 1 group by q.q_id order by q.q_asktime"
      , new Object[]{cs_id}, new QuestionMapper());
  }
+
+ public List<Question> findUnresolvedQuestion(final String cs_id) {
+  return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 0 group by q.q_id order by q.q_asktime"
+  , new Object[]{cs_id}, new QuestionMapper());
+}
 
  public List<Question> findAllQuestionsThisStudentAsked(String std_id, String cs_id){
      return this.jdbcTemplate.query("select q_content, q_asktime from question where q_std_id = ? and cs_id = ?"
@@ -154,6 +159,7 @@ public int studentinsert(final Question question) {
   private SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
      public Question mapRow(final ResultSet rs, final int rowNum) throws SQLException {
          final Question question = new Question();
+         question.setCount(rs.getInt("count"));
          question.setQ_id(rs.getInt("q_id"));
          question.setQ_std_id(rs.getInt("q_std_id"));
          question.setQ_content(rs.getString("q_content"));

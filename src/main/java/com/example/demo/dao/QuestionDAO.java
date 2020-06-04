@@ -38,7 +38,9 @@ public interface QuestionDAO {
 
     public int studentinsert(Question question);
 
-    public List<Question> findQuestion(String cs_id);
+    public List<Question> findSolvedQuestion(String cs_id);
+
+    public List<Question> findUnresolvedQuestion(String cs_id);
 
     public List<Question> findAllQuestionsThisStudentAsked(String std_id, String cs_id);
 

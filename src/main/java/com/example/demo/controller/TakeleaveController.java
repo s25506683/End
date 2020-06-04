@@ -103,14 +103,6 @@ public class TakeleaveController {
 
   }
 
-  
-  // @GetMapping(value = {"/student/takeleave/all"})
-  //   public List<Takeleave> retrieveTakeleave() throws SQLException{
-  //      return dao.findAll();
-  //   }
-
-
-    
       //教師不允許請假後無法再次申請
       //學生請假過後 不可再修改請假內容
   //student post new takeleave to db
@@ -164,6 +156,7 @@ public class TakeleaveController {
             writtenmessage = "teacher \"" + teacher_id + "  \" unallowleave takeleave in rollcall \"" + takeleave.getRc_id() + "\".";
             logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
             dao.UnAllowleave(takeleave);
+            dao.UnAllowUpdateTltypeID(takeleave);
             return ResponseEntity.badRequest().body("教師不准假");
 
         }else if(takeleave.getTl_state() == 1){ //教師准許請假
