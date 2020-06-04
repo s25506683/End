@@ -36,6 +36,11 @@ public int updateTltypeID(final Takeleave takeleave){
     takeleave.getRc_id(), takeleave.getStd_id(), takeleave.getTl_type_id(), takeleave.getRc_id(), takeleave.getStd_id());
 }
 
+public int UnAllowUpdateTltypeID(final Takeleave takeleave){
+    return jdbcTemplate.update("update rc_record set rc_id = ?, std_id = ?, tl_type_id = 8 where rc_id = ? and std_id = ?",
+    takeleave.getRc_id(), takeleave.getStd_id(),takeleave.getRc_id(), takeleave.getStd_id());
+}
+
 public int findTltypeID(final int rc_id, final int std_id){
     String sql = "select tl_type_id from takeleave where rc_id = ? and std_id = ?";
     final int typeID = this.jdbcTemplate.queryForObject(sql, Integer.class, rc_id, std_id);
@@ -91,7 +96,7 @@ public List<Takeleave> findStudentTakeleaveRecord(final String std_id, final Str
 }
 
 public List<Takeleave> findStudentTakeleave(final String std_id, final String cs_id){
-    return this.jdbcTemplate.query("select tl.tl_id, rc.rc_id, rc.rc_starttime, rc.rc_inputsource, rcre.tl_type_id from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id inner join takeleave tl on tl.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ? and rcre.tl_type_id = 0",
+    return this.jdbcTemplate.query("select rc.rc_id, rc.rc_starttime, rc.rc_inputsource, rcre.tl_type_id from rc_record rcre inner join rollcall rc on rc.rc_id = rcre.rc_id where rcre.std_id = ? and rc.cs_id = ? and rcre.tl_type_id = 0",
         new Object[]{std_id, cs_id}, new TakeleaveMapper2());
 }
 
@@ -135,7 +140,6 @@ private static final class TakeleaveMapper2 implements RowMapper<Takeleave> {
 
     public Takeleave mapRow(ResultSet rs, int rowNum) throws SQLException {
      Takeleave takeleave = new Takeleave();
-     takeleave.setTl_id(rs.getInt("tl_id"));
      takeleave.setRc_id(rs.getInt("rc_id"));
      takeleave.setRc_starttime(rs.getString("rc_starttime"));
      takeleave.setRc_inputsource(rs.getString("rc_inputsource"));

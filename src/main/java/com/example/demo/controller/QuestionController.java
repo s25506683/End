@@ -160,10 +160,10 @@ public class QuestionController {
     }
 
 
-   //student get all question in this class.
+   //student get all solved question in this class.
    //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
-    @GetMapping(value = {"/student/question/all/{cs_id}"})
-    public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+    @GetMapping(value = {"/student/solvedquestion/all/{cs_id}"})
+    public ResponseEntity<List<Question>> solvedQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
 
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -173,26 +173,62 @@ public class QuestionController {
          //if student does not belong to this class.
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
-         writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
+         writtenmessage = "student \"" + std_id + "\" watching solved question in class \"" + cs_id + "\".";
          logfile.writeLog(writtenmessage, cs_id, partition);
-         return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
+         return new ResponseEntity<List<Question>>(dao.findSolvedQuestion(cs_id), HttpStatus.OK);
        }
 
     }
 
-   //teacher get all question in this class.
+   //student get all unresolved question in this class.
    //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
- @GetMapping(value = {"/teacher/question/all/{cs_id}"})
-    public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+   @GetMapping(value = {"/student/unresolvedquestion/all/{cs_id}"})
+   public ResponseEntity<List<Question>> UnresolvedQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+         IOException {
+
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String std_id = auth.getCurrentUserName();
+
+     if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+        //if student does not belong to this class.
+        return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+      }else{
+        writtenmessage = "student \"" + std_id + "\" watching unresolved question in class \"" + cs_id + "\".";
+        logfile.writeLog(writtenmessage, cs_id, partition);
+        return new ResponseEntity<List<Question>>(dao.findUnresolvedQuestion(cs_id), HttpStatus.OK);
+      }
+
+   }
+
+   //teacher get all solved question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+ @GetMapping(value = {"/teacher/solvedquestion/all/{cs_id}"})
+    public ResponseEntity<List<Question>> solvedQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
        if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
-         writtenmessage = "teacher that you watching question in class \"" + cs_id + "\".";
+         writtenmessage = "teacher that you watching solved question in class \"" + cs_id + "\".";
          logfile.writeLog(writtenmessage, cs_id, partition);
-         return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
+         return new ResponseEntity<List<Question>>(dao.findSolvedQuestion(cs_id), HttpStatus.OK);
+       }
+    }
+
+   //teacher get all unresolved question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+ @GetMapping(value = {"/teacher/unresolvedquestion/all/{cs_id}"})
+    public ResponseEntity<List<Question>> unresolvedQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+          IOException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+       if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+       }else{
+         writtenmessage = "teacher that you watching unresolved question in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage, cs_id, partition);
+         return new ResponseEntity<List<Question>>(dao.findUnresolvedQuestion(cs_id), HttpStatus.OK);
        }
     }
 
@@ -247,6 +283,13 @@ public class QuestionController {
 
      AuthenticationUtil auth = new AuthenticationUtil();
      int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+     System.out.println("\n\n\n\n\n\n\n");
+     System.out.println(std_id);
+     System.out.println(question.getQ_asktime());
+     System.out.println(question.getCs_id());
+     System.out.println(dao.hasBeenReply(std_id, question.getQ_asktime()));
+     System.out.println("\n\n\n\n\n\n\n");
 
       if(dao.hasBeenReply(std_id, question.getQ_asktime()) == 1){
         return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");

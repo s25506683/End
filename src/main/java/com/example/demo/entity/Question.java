@@ -19,6 +19,15 @@ public class Question {
     private boolean q_type;
     private String cb_content;
     private String cb_time;
+    private int count;
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getCb_content() {
         return this.cb_content;
