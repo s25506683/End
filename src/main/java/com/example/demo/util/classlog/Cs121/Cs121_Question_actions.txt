@@ -54,3 +54,9 @@
 2020/06/04 20:36:05	student "406401616" completion question in class "Cs121" with question's asktime "2020-05-26 20:46:35".
 2020/06/04 20:38:18	student 406401616 writing question 我要關閉提問啦 in class Cs121 .
 2020/06/04 20:42:04	student "406401616" completion question in class "Cs121" with question's asktime "2020-06-04 20:38:18".
+2020/06/04 22:22:28	student 406401616 writing question 我要關閉提問啦 in class Cs121 .
+2020/06/05 16:31:41	teacher that you watching unresolved question in class "103".
+2020/06/05 16:31:51	teacher that you watching unresolved question in class "119".
+2020/06/05 16:35:09	student that you watching all messages in the question "119".
+2020/06/05 16:35:23	teacher that you watching all messages in the question "119".
+2020/06/05 16:35:39	teacher that you watching all messages in the question "119".

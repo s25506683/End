@@ -149,6 +149,11 @@ public int studentinsert(final Question question) {
      , new Object[]{std_id, cs_id}, new QuestionMapper2());
 }
 
+public List<Question> findAllmessageIntheQuestion(int q_id){
+  return this.jdbcTemplate.query("select cb.std_id, cb.cb_content, cb.cb_time, cb.cb_role, q.q_content, q.q_asktime from comment_box cb inner join question q on cb.q_id = q.q_id where cb.q_id = ?"
+  , new Object[]{q_id}, new QuestionMapper3());
+}
+
  public String findCsId(int std_id, String q_asktime){
   String sql = "select cs_id from question where q_std_id = ? and q_asktime = ?";
   String cs_id = this.jdbcTemplate.queryForObject(sql,String.class, std_id, q_asktime);
@@ -181,6 +186,19 @@ public int studentinsert(final Question question) {
          return question;
      }
  }
+
+private static final class QuestionMapper3 implements RowMapper<Question> {
+  public Question mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+      final Question question = new Question();
+      question.setStd_id(rs.getInt("std_id"));
+      question.setCb_content(rs.getString("cb_content"));
+      question.setCb_time(rs.getString("cb_time"));
+      question.setCb_role(rs.getBoolean("cb_role"));
+      question.setQ_content(rs.getString("q_content"));
+      question.setQ_asktime(rs.getString("q_asktime"));
+      return question;
+  }
+}
 
 
  public int TeacherCompletionQuestion(Question question){

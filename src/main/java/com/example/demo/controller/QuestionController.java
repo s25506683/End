@@ -50,6 +50,25 @@ public class QuestionController {
    String writtenmessage = new String();
    String partition = "Question";
 
+   // public static void UsetimeTosolveQuestion(@RequestBody final Question question){
+   //     //ing
+     
+   //       question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
+   //       //抓取現在的時間
+   //       Date timenow = new Date(); 
+   //       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+   //       //抓取上一次發問的時間
+   //       String oldAsktime = question.getQ_asktime();
+   //       //將上次發問的時間轉換成毫秒
+   //       long timeInMillis = sdf.parse(oldAsktime).getTime();
+   //       long number = timenow.getTime() - timeInMillis;
+   //       if(number > 10000){
+   //          //if the time of the last question is too close now.
+   //          dao.changeSolvedState(std_id, question.getQ_asktime());
+   //        }
+
+   //    }
+   
    //teacher post new messages in commentbox.
    //you will input q_id, cb_content.
    @PostMapping(value = "/teacher/AddNewMessages") 
@@ -128,12 +147,12 @@ public class QuestionController {
 
       if(dao.hasThisStudentInQuestion(std_id, question.getCs_id()) >= 1){
          question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
-         //抓取現在的時間
+         //get the current time
          Date timenow = new Date(); 
          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         //抓取上一次發問的時間
+         //get the time of the last question
          String oldAsktime = question.getQ_asktime();
-         //將上次發問的時間轉換成毫秒
+         //Convert the time of the last question to milliseconds
          long timeInMillis = sdf.parse(oldAsktime).getTime();
          long number = timenow.getTime() - timeInMillis;
          if(number < 300000){
@@ -252,7 +271,43 @@ public class QuestionController {
 
     }
 
-   //
+   //student get all messege int this question.
+   //You will get std_id, cb_content, cb_time, cb_role, q_content, q_asktime.
+   @GetMapping(value = {"/student/findAllmessageIntheQuestion/{cs_id}/{q_id}"})
+   public ResponseEntity<List<Question>> findAllmessageIntheQuestion(@PathVariable("cs_id") final String cs_id, @PathVariable("q_id") final int q_id) throws SQLException,
+         IOException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String std_id = auth.getCurrentUserName();  
+
+      if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+         //if student does not belong to this class.
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+      }else{
+       writtenmessage = "student that you watching all messages in the question \"" + q_id + "\".";
+       logfile.writeLog(writtenmessage, cs_id, partition);
+       return new ResponseEntity<List<Question>>(dao.findAllmessageIntheQuestion(q_id), HttpStatus.OK);
+      }
+   }
+
+   //teacher get all messege int this question.
+   //You will get std_id, cb_content, cb_time, cb_role, q_content, q_asktime.
+   @GetMapping(value = {"/teacher/findAllmessageIntheQuestion/{cs_id}/{q_id}"})
+   public ResponseEntity<List<Question>> teacherfindAllmessageIntheQuestion(@PathVariable("cs_id") final String cs_id, @PathVariable("q_id") final int q_id) throws SQLException,
+         IOException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();  
+
+      if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
+         //if teacher does not belong to this class.
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+      }else{
+       writtenmessage = "teacher that you watching all messages in the question \"" + q_id + "\".";
+       logfile.writeLog(writtenmessage, cs_id, partition);
+       return new ResponseEntity<List<Question>>(dao.findAllmessageIntheQuestion(q_id), HttpStatus.OK);
+      }
+   }
 
 
    //update teacher's question solved in this class.
@@ -291,9 +346,12 @@ public class QuestionController {
      System.out.println(dao.hasBeenReply(std_id, question.getQ_asktime()));
      System.out.println("\n\n\n\n\n\n\n");
 
-      if(dao.hasBeenReply(std_id, question.getQ_asktime()) == 1){
+   if(dao.hasQuestion(std_id, question.getQ_asktime()) == 0){
+      //if the question not found.
+      return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
+   }else if(dao.hasBeenReply(std_id, question.getQ_asktime()) == 1){
         return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
-      }else{
+   }else{
         dao.StudentCompletionQuestion(question);
         writtenmessage = "student \"" + std_id + "\" completion question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
