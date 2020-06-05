@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestMethod;
 //import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 //import org.springframework.web.servlet.ModelAndView;
 
@@ -49,9 +50,75 @@ public class QuestionController {
    String writtenmessage = new String();
    String partition = "Question";
 
+   //teacher post new messages in commentbox.
+   //you will input q_id, cb_content.
+   @PostMapping(value = "/teacher/AddNewMessages") 
+   public ResponseEntity<String> Teacheraddnewmessage(@RequestBody final Question question)
+         throws SQLException, IOException, ParseException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+   
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+         return ResponseEntity.badRequest().body("request failed. this question has been solved can't add new messages!");
+      }else{
+         dao.TeacherAddNewMessages(question);
+         writtenmessage = "teacher \"" + teacher_id + "\" comment question " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getCb_time() + "\".";
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+         return ResponseEntity.ok("request successful! your message has been successfully sent!");
+      }  
+   }
+
+   //student post new messages in commentbox.
+   //you will input q_id, cb_content, cs_id.
+   @PostMapping(value = "/student/AddNewMessages") 
+   public ResponseEntity<String> Studentaddnewmessage(@RequestBody final Question question)
+         throws SQLException, IOException, ParseException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      int std_id = Integer.parseInt(auth.getCurrentUserName());
+   
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+         return ResponseEntity.badRequest().body("request failed. this question has been solved can't add new messages!");
+      }else{
+         dao.StudentAddNewMessages(question);
+         writtenmessage = "student \"" + std_id + "\" comment question " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getCb_time() + "\".";
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+         return ResponseEntity.ok("request successful! your message has been successfully sent!");
+      }  
+
+   }
+
+   // teacher post there question to db.
+   // you will input q_content, cs_id.
+   @PostMapping(value = "/teacher/question")
+   public ResponseEntity<String> proccessTeacherQuestion(@RequestBody final Question question)
+         throws SQLException, IOException, ParseException {
+
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+
+       if(question.getQ_content() == ""){
+          //if question content is null.
+          return ResponseEntity.badRequest().body("request failed. input content is null!");
+       }else if(dao.queryCs_id(question.getCs_id()) == 0){
+          //if cs_id does not found.
+          return ResponseEntity.badRequest().body("request failed. input ClassId not found!");
+       }else if(userintheclass.queryTeacherInTheClass(teacher_id, question.getCs_id()) == 0){
+          //if teacher does not in this class.
+          return ResponseEntity.badRequest().body("request failed. teacher does not in this class");
+       }else{
+         dao.teacherinsert(question);
+         question.getCs_id();
+         writtenmessage = "student "+ teacher_id + " writing question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+         return ResponseEntity.ok("public request successful!");
+       }
+    }
+   
 
    // student post there question to db.
-   // you will input q_content, cs_id, q_type.
+   // you will input q_content, cs_id.
    @PostMapping(value = "/student/question")
    public ResponseEntity<String> proccessStudentQuestion(@RequestBody final Question question)
          throws SQLException, IOException, ParseException {
@@ -84,32 +151,20 @@ public class QuestionController {
           //if student does not in this class.
           return ResponseEntity.badRequest().body("request failed. student does not in this class");
        }else{
-            if(question.isQ_type() == true){
-               //if student select personal question in this class.
-               dao.studentinsert(question);
-               question.getCs_id();
-               writtenmessage = "student "+ std_id + " writing personal question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
-               logfile.writeLog(writtenmessage, question.getCs_id(), partition);
-               return ResponseEntity.ok("personal request successful!");
-            }else{
-                //if student select public question in this class.
-               dao.studentinsert(question);
-               question.getCs_id();
-               writtenmessage = "student "+ std_id + " writing public question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
-               logfile.writeLog(writtenmessage, question.getCs_id(), partition);
-               return ResponseEntity.ok("public request successful!");
-            }
+         dao.studentinsert(question);
+         question.getCs_id();
+         writtenmessage = "student "+ std_id + " writing question " + question.getQ_content() + " in class " + question.getCs_id() + " .";
+         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+         return ResponseEntity.ok("public request successful!");
        }
     }
 
 
-  //student get all question in this class.
-  //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved, q_type.
- @GetMapping(value = {"/student/question/all/{cs_id}"})
-    public ResponseEntity<List<Question>> retrieveQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+   //student get all solved question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+    @GetMapping(value = {"/student/solvedquestion/all/{cs_id}"})
+    public ResponseEntity<List<Question>> solvedQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
-      // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-      // System.out.println("in Login2" + authentication.getPrincipal());
 
       AuthenticationUtil auth = new AuthenticationUtil();
       String std_id = auth.getCurrentUserName();
@@ -118,26 +173,62 @@ public class QuestionController {
          //if student does not belong to this class.
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
-         writtenmessage = "student \"" + std_id + "\" watching question in class \"" + cs_id + "\".";
+         writtenmessage = "student \"" + std_id + "\" watching solved question in class \"" + cs_id + "\".";
          logfile.writeLog(writtenmessage, cs_id, partition);
-         return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
+         return new ResponseEntity<List<Question>>(dao.findSolvedQuestion(cs_id), HttpStatus.OK);
        }
 
     }
 
-   //teacher get all question in this class.
-   //You will get q_id, q_std_id, q_content, q_reply, cs_id, cs_name, q_asktime, q_solved, q_type.
- @GetMapping(value = {"/teacher/question/all/{cs_id}"})
-    public ResponseEntity<List<Question>> retrieveQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+   //student get all unresolved question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+   @GetMapping(value = {"/student/unresolvedquestion/all/{cs_id}"})
+   public ResponseEntity<List<Question>> UnresolvedQuestionstudentview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+         IOException {
+
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String std_id = auth.getCurrentUserName();
+
+     if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+        //if student does not belong to this class.
+        return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+      }else{
+        writtenmessage = "student \"" + std_id + "\" watching unresolved question in class \"" + cs_id + "\".";
+        logfile.writeLog(writtenmessage, cs_id, partition);
+        return new ResponseEntity<List<Question>>(dao.findUnresolvedQuestion(cs_id), HttpStatus.OK);
+      }
+
+   }
+
+   //teacher get all solved question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+ @GetMapping(value = {"/teacher/solvedquestion/all/{cs_id}"})
+    public ResponseEntity<List<Question>> solvedQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
        if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
          return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
        }else{
-         writtenmessage = "teacher that you watching question in class \"" + cs_id + "\".";
+         writtenmessage = "teacher that you watching solved question in class \"" + cs_id + "\".";
          logfile.writeLog(writtenmessage, cs_id, partition);
-         return new ResponseEntity<List<Question>>(dao.findQuestion(cs_id), HttpStatus.OK);
+         return new ResponseEntity<List<Question>>(dao.findSolvedQuestion(cs_id), HttpStatus.OK);
+       }
+    }
+
+   //teacher get all unresolved question in this class.
+   //You will get q_id, q_std_id, q_content, cs_id, cs_name, q_asktime, q_solved.
+ @GetMapping(value = {"/teacher/unresolvedquestion/all/{cs_id}"})
+    public ResponseEntity<List<Question>> unresolvedQuestionteacherview(@PathVariable("cs_id") final String cs_id) throws SQLException,
+          IOException {
+      AuthenticationUtil auth = new AuthenticationUtil();
+      String teacher_id = auth.getCurrentUserName();
+       if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
+         return new ResponseEntity<List<Question>>(HttpStatus.BAD_REQUEST);
+       }else{
+         writtenmessage = "teacher that you watching unresolved question in class \"" + cs_id + "\".";
+         logfile.writeLog(writtenmessage, cs_id, partition);
+         return new ResponseEntity<List<Question>>(dao.findUnresolvedQuestion(cs_id), HttpStatus.OK);
        }
     }
 
@@ -161,6 +252,29 @@ public class QuestionController {
 
     }
 
+   //
+
+
+   //update teacher's question solved in this class.
+   //You have input cs_id, q_asktime.
+   @PutMapping(value = "/teacher/CompletionQuestion")
+   public ResponseEntity<String> UpdateTeacherCompletionQuestion(@RequestBody final Question question) throws SQLException,
+         IOException {
+
+     AuthenticationUtil auth = new AuthenticationUtil();
+     int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+      if(dao.findQuestionSolved(question.getCs_id(), question.getQ_asktime()) == 1){
+        return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher!");
+      }else{
+        dao.TeacherCompletionQuestion(question);
+        writtenmessage = "student \"" + teacher_id + "\" completion question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
+        logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+        return ResponseEntity.ok("request successful! your question has been solved!");
+      }
+   }
+
+
    //update student's question solved in this class.
    //You have input q_std_id, q_asktime, cs_id.
    @PutMapping(value = "/student/CompletionQuestion")
@@ -168,25 +282,65 @@ public class QuestionController {
          IOException {
 
      AuthenticationUtil auth = new AuthenticationUtil();
-     String std_id = auth.getCurrentUserName();
+     int std_id = Integer.parseInt(auth.getCurrentUserName());
 
-      System.out.println("\n\n\n\n\n\n\n\n");
-      System.out.println(std_id);
-      System.out.println(question.getCs_id());
-      System.out.println(question.getQ_asktime());
-      System.out.println("\n\n\n\n\n\n\n\n");
-      System.out.println(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()));
-      System.out.println("\n\n\n\n\n\n\n\n");
+     System.out.println("\n\n\n\n\n\n\n");
+     System.out.println(std_id);
+     System.out.println(question.getQ_asktime());
+     System.out.println(question.getCs_id());
+     System.out.println(dao.hasBeenReply(std_id, question.getQ_asktime()));
+     System.out.println("\n\n\n\n\n\n\n");
 
-      // if(dao.hasBeenReply(question.getQ_std_id(), question.getQ_asktime()) == 1){
-      //   return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
-      // }else{
+      if(dao.hasBeenReply(std_id, question.getQ_asktime()) == 1){
+        return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
+      }else{
         dao.StudentCompletionQuestion(question);
         writtenmessage = "student \"" + std_id + "\" completion question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\".";
         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
         return ResponseEntity.ok("request successful! your question has been solved!");
-      // }
+      }
    }
+
+   //update student's comment message in this class.
+   //You have input q_id, cb_content, std_id, cb_time, cs_id.
+   @PutMapping(value = "/student/updateCommentMessages")
+   public ResponseEntity<String> UpdateStudentCommentBoxnContent(@RequestBody final Question question) throws SQLException,
+         IOException {
+     AuthenticationUtil auth = new AuthenticationUtil();
+     int std_id = Integer.parseInt(auth.getCurrentUserName());
+
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. you can't update message your question has already replied from teacher or student!");
+      }else if(question.getCb_content() == ""){
+        return ResponseEntity.badRequest().body("request failed. comment_box content can't be empty");
+      }else{
+        dao.updateStudentCommentBoxContent(question);
+        writtenmessage = "student \"" + std_id + "\" update commentbox content " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with comment box time \"" + question.getCb_time() + "\".";
+        logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+        return ResponseEntity.ok("request successful! your messages update completed!");
+      }
+   }
+
+   //update teacher comment message in this class.
+   //You have input q_id, cb_content, cs_id ,cb_time.
+   @PutMapping(value = "/teacher/updateCommentMessages")
+   public ResponseEntity<String> UpdateTeacherCommentBoxnContent(@RequestBody final Question question) throws SQLException,
+         IOException {
+     AuthenticationUtil auth = new AuthenticationUtil();
+     int teacher_id = Integer.parseInt(auth.getCurrentUserName());
+
+      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. you can't update message your question has already replied from teacher or student!");
+      }else if(question.getCb_content() == ""){
+        return ResponseEntity.badRequest().body("request failed. comment_box content can't be empty");
+      }else{
+        dao.updateTeacherCommentBoxContent(question);
+        writtenmessage = "teacher \"" + teacher_id + "\" update commentbox content " + question.getCb_content() + " in class \"" + question.getCs_id() + "\" with comment box time \"" + question.getCb_time() + "\".";
+        logfile.writeLog(writtenmessage, question.getCs_id(), partition);
+        return ResponseEntity.ok("request successful! your messages update completed!");
+      }
+   }
+
    
 
    //update student's question in this class.
@@ -206,7 +360,7 @@ public class QuestionController {
        }
     }
    
-
+    //老師回覆問題後寄信學生
     //update teacher's reply in this class.
     //You have input q_reply, cs_id, q_std_id, q_asktime.
  @PutMapping(value = "/teacher/question")
@@ -273,24 +427,39 @@ public class QuestionController {
       }
     }
  
-
-   //teacher delete there question's reply.
-   //input std_id, q_asktime.
- @DeleteMapping(value = "/teacher/deletequestionreply/")
- public ResponseEntity<String> TeacherdeleteQuestionReply(@RequestBody final Question question) throws SQLException,
-       IOException {
-   AuthenticationUtil auth = new AuthenticationUtil();
-   String teacher_id = auth.getCurrentUserName();
-   if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
-      //if the question not found.
-      return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
-   }else{
-      dao.deleteQuestionReply(question);
-      writtenmessage = "teacher \"" + teacher_id + "\" deleted question reply with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
+   //student delete his messages.
+   //input q_id, cb_time.
+   @DeleteMapping(value = "/student/deleteStudentMessages/")
+   public ResponseEntity<String> StudentdeleteMessage(@RequestBody final Question question) throws SQLException, IOException{
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String std_id = auth.getCurrentUserName();
+     
+     if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. the question has been solved. you can't delete this message");
+     }else{
+      dao.deleteStudentMessages(question);
+      writtenmessage = "student \"" + std_id + "\" deleted message with question \"" + question.getQ_id() + "\".";
       logfile.writeLog(writtenmessage);
-      return ResponseEntity.ok("request successful! the student's \"" + question.getQ_std_id() + "\" question reply has been deleted!");
+      return ResponseEntity.ok("request successful! student deleted this message");
+     }
    }
- }
+
+   //teacher delete his messages.
+   //input q_id, cb_time.
+   @DeleteMapping(value = "/teacher/deleteTeacherMessages/")
+   public ResponseEntity<String> TeacherdeleteMessage(@RequestBody final Question question) throws SQLException, IOException{
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String teacher_id = auth.getCurrentUserName();
+     
+     if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+        return ResponseEntity.badRequest().body("request failed. the question has been solved. you can't delete this message");
+     }else{
+      dao.deleteTeacherMessages(question);
+      writtenmessage = "teacher \"" + teacher_id + "\" deleted message with question \"" + question.getQ_id() + "\".";
+      logfile.writeLog(writtenmessage);
+      return ResponseEntity.ok("request successful! student deleted this message");
+     }
+   }
    
 
 }

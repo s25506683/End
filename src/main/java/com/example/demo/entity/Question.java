@@ -17,6 +17,33 @@ public class Question {
     private String q_solved;
     private String std_mail;
     private boolean q_type;
+    private String cb_content;
+    private String cb_time;
+    private int count;
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getCb_content() {
+        return this.cb_content;
+    }
+
+    public void setCb_content(String cb_content) {
+        this.cb_content = cb_content;
+    }
+
+    public String getCb_time() {
+        return this.cb_time;
+    }
+
+    public void setCb_time(String cb_time) {
+        this.cb_time = cb_time;
+    }
 
     public boolean isQ_type() {
         return this.q_type;

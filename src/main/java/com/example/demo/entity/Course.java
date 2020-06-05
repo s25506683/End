@@ -11,6 +11,13 @@ public class Course {
     private String std_name;
     private String std_department;
 
+    private String teacher_name;
+    private String teacher_department;
+    private String teacher_phone;
+    private String teacher_mail;
+    private String teacher_office;
+
+
 
 
     public String getCs_id() {
@@ -67,6 +74,48 @@ public class Course {
 
     public void setStd_department(String std_department) {
         this.std_department = std_department;
+    }
+
+
+    
+    public String getTeacher_name() {
+        return this.teacher_name;
+    }
+
+    public void setTeacher_name(String teacher_name) {
+        this.teacher_name = teacher_name;
+    }
+
+    public String getTeacher_department() {
+        return this.teacher_department;
+    }
+
+    public void setTeacher_department(String teacher_department) {
+        this.teacher_department = teacher_department;
+    }
+
+    public String getTeacher_phone() {
+        return this.teacher_phone;
+    }
+
+    public void setTeacher_phone(String teacher_phone) {
+        this.teacher_phone = teacher_phone;
+    }
+
+    public String getTeacher_mail() {
+        return this.teacher_mail;
+    }
+
+    public void setTeacher_mail(String teacher_mail) {
+        this.teacher_mail = teacher_mail;
+    }
+
+    public String getTeacher_office() {
+        return this.teacher_office;
+    }
+
+    public void setTeacher_office(String teacher_office) {
+        this.teacher_office = teacher_office;
     }
 
 }
