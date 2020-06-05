@@ -20,6 +20,24 @@ public class Question {
     private String cb_content;
     private String cb_time;
     private int count;
+    private int std_id;
+    private boolean cb_role;
+
+    public boolean isCb_role() {
+        return this.cb_role;
+    }
+
+    public void setCb_role(boolean cb_role) {
+        this.cb_role = cb_role;
+    }
+
+    public int getStd_id() {
+        return this.std_id;
+    }
+
+    public void setStd_id(int std_id) {
+        this.std_id = std_id;
+    }
 
     public int getCount() {
         return this.count;

@@ -61,7 +61,6 @@ public class TakeleaveController {
          //if teacher not in this class.
          return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
       }else{
-
         return new ResponseEntity<List<Takeleave>>(dao.findTakeleaveInTheClass(cs_id), HttpStatus.OK);
       }
      
