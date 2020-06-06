@@ -290,7 +290,7 @@ public int updateAcceptanceLine(Acceptance acceptance){
 
  public int updateTag(Acceptance acceptance){
     return jdbcTemplate.update(
-      "update acceptance set accept_tag = ?, accept_done = 1 where accept_std_id = ? and accept_hw_id = ?",
+      "update acceptance set accept_tag = ? where accept_std_id = ? and accept_hw_id = ?",
       acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
  }
 
