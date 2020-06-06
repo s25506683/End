@@ -6,7 +6,13 @@ import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
 
-    public int findQuestionType(String std_id, String cs_id);
+    // public int findReplycount()
+
+    public int changeSolvedState(String std_id, String q_asktime);
+
+    public int checkTheQuestionHasBeenSolved(int q_id);
+
+    public int findQuestionSolved(String cs_id, String q_asktime);
 
     public String findClassName(String cs_id);
 
@@ -24,17 +30,33 @@ public interface QuestionDAO {
 
     public int hasQuestion(int std_id, String q_asktime);
 
+    public int TeacherAddNewMessages(Question question);
+
+    public int StudentAddNewMessages(Question question);
+
+    public int teacherinsert(Question question);
+
     public int studentinsert(Question question);
 
-    public List<Question> findQuestion(String cs_id);
+    public List<Question> findSolvedQuestion(String cs_id);
+
+    public List<Question> findUnresolvedQuestion(String cs_id);
 
     public List<Question> findAllQuestionsThisStudentAsked(String std_id, String cs_id);
+
+    public List<Question> findAllmessageIntheQuestion(int q_id);
 
     public String findCsId(int std_id, String q_asktime);
 
     //public Question findOne(String cs_id,int std_id);
 
+    public int TeacherCompletionQuestion(Question question);
+
     public int StudentCompletionQuestion(Question question);
+
+    public int updateStudentCommentBoxContent(Question question);
+
+    public int updateTeacherCommentBoxContent(Question question);
 
     public int updateStudentQuestionContent(Question question);
 
@@ -43,6 +65,10 @@ public interface QuestionDAO {
     public int deleteQuestion(Question question);
 
     public int deleteQuestionReply(Question question);
+
+    public int deleteStudentMessages(Question question);
+
+    public int deleteTeacherMessages(Question question);
 
 }
 

@@ -17,6 +17,51 @@ public class Question {
     private String q_solved;
     private String std_mail;
     private boolean q_type;
+    private String cb_content;
+    private String cb_time;
+    private int count;
+    private int std_id;
+    private boolean cb_role;
+
+    public boolean isCb_role() {
+        return this.cb_role;
+    }
+
+    public void setCb_role(boolean cb_role) {
+        this.cb_role = cb_role;
+    }
+
+    public int getStd_id() {
+        return this.std_id;
+    }
+
+    public void setStd_id(int std_id) {
+        this.std_id = std_id;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getCb_content() {
+        return this.cb_content;
+    }
+
+    public void setCb_content(String cb_content) {
+        this.cb_content = cb_content;
+    }
+
+    public String getCb_time() {
+        return this.cb_time;
+    }
+
+    public void setCb_time(String cb_time) {
+        this.cb_time = cb_time;
+    }
 
     public boolean isQ_type() {
         return this.q_type;

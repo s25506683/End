@@ -32,6 +32,8 @@ public int UnAllowleave(Takeleave takeleave); //教師不允許請假
 
 public int updateTltypeID(Takeleave takeleave);
 
+public int UnAllowUpdateTltypeID(Takeleave takeleave);
+
 public int findTltypeID(int rc_id, int std_id);
 
 public int updateContent(Takeleave takeleave); //學生修改請假內容

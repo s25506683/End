@@ -28,10 +28,22 @@ public class QuestionDAODB implements QuestionDAO {
 //jdbcTemplate 
 
 
-public int findQuestionType(String std_id, String cs_id){
-  String sql = "select q_type from question where q_std_id = ? and cs_id = ?";
-  int Type = this.jdbcTemplate.queryForObject(sql, Integer.class, std_id, cs_id);
-  return Type;
+public int changeSolvedState(String std_id, String q_asktime){
+  String sql = "update question set q_solved = 1 where q_std_id = ? and q_asktime = ?";
+  int q_solved = this.jdbcTemplate.queryForObject(sql,Integer.class, std_id, q_asktime);
+  return q_solved;
+}
+
+public int checkTheQuestionHasBeenSolved(int q_id){
+  String sql = "select q_solved from question where q_id = ?";
+  int solved = this.jdbcTemplate.queryForObject(sql, Integer.class, q_id);
+  return solved;
+}
+
+public int findQuestionSolved(String cs_id, String q_asktime){
+  String sql = "select q_solved from question where cs_id = ? and q_asktime = ?";
+  int solved = this.jdbcTemplate.queryForObject(sql, Integer.class, cs_id, q_asktime);
+  return solved;
 }
 
 public String findClassName(String cs_id){
@@ -82,29 +94,64 @@ public int hasQuestion(int std_id, String q_asktime){
   return count;
 }
 
-
- public int studentinsert(final Question question) {
-   AuthenticationUtil auth = new AuthenticationUtil();
-   String std_id = auth.getCurrentUserName();
-   CurrentTimeStamp ts = new CurrentTimeStamp();
-   String timestamp = ts.getCurrentTimeStamp();
+public int TeacherAddNewMessages(Question question){
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update(
-      "insert into question (q_std_id, q_content, q_asktime, cs_id, q_type) values(?, ?, ?, ?, ?)",
-      std_id, question.getQ_content(), timestamp, question.getCs_id(), question.isQ_type());
+      "insert into comment_box (q_id, cb_content, cb_time, cb_role) values(?, ?, ?, 1)",
+      question.getQ_id(), question.getCb_content(), timestamp);
+}
+
+public int StudentAddNewMessages(Question question){
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
+    return jdbcTemplate.update(
+      "insert into comment_box (q_id, std_id, cb_content, cb_time, cb_role) values(?, ?, ?, ?, 0)",
+      question.getQ_id(), std_id, question.getCb_content(), timestamp);
+}
+
+public int teacherinsert(Question question){
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
+    return jdbcTemplate.update(
+      "insert into question (q_content, q_asktime, cs_id, q_role) values(?, ?, ?, 1)",
+      question.getQ_content(), timestamp, question.getCs_id()); 
+}
+
+public int studentinsert(final Question question) {
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  CurrentTimeStamp ts = new CurrentTimeStamp();
+  String timestamp = ts.getCurrentTimeStamp();
+    return jdbcTemplate.update(
+      "insert into question (q_std_id, q_content, q_asktime, cs_id, q_role) values(?, ?, ?, ?, 0)",
+      std_id, question.getQ_content(), timestamp, question.getCs_id());
  }
 
  /*public Question findOne(final String cs_id, final int std_id) {
     return this.jdbcTemplate.queryForObject( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q_time, q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? and q.q_std_id = ? ", new Object[]{cs_id,std_id}, new QuestionMapper());
   }*/
 
- public List<Question> findQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select q.q_id, q.q_std_id, q.q_content, q_reply, c.cs_id, c.cs_name, q.q_asktime, q.q_replytime, q.q_solved, q.q_type from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? order by q.q_asktime"
+ public List<Question> findSolvedQuestion(final String cs_id) {
+     return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 1 group by q.q_id order by q.q_asktime"
      , new Object[]{cs_id}, new QuestionMapper());
  }
+
+ public List<Question> findUnresolvedQuestion(final String cs_id) {
+  return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 0 group by q.q_id order by q.q_asktime"
+  , new Object[]{cs_id}, new QuestionMapper());
+}
 
  public List<Question> findAllQuestionsThisStudentAsked(String std_id, String cs_id){
      return this.jdbcTemplate.query("select q_content, q_asktime from question where q_std_id = ? and cs_id = ?"
      , new Object[]{std_id, cs_id}, new QuestionMapper2());
+}
+
+public List<Question> findAllmessageIntheQuestion(int q_id){
+  return this.jdbcTemplate.query("select cb.std_id, cb.cb_content, cb.cb_time, cb.cb_role, q.q_content, q.q_asktime from comment_box cb inner join question q on cb.q_id = q.q_id where cb.q_id = ?"
+  , new Object[]{q_id}, new QuestionMapper3());
 }
 
  public String findCsId(int std_id, String q_asktime){
@@ -117,18 +164,16 @@ public int hasQuestion(int std_id, String q_asktime){
   private SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
      public Question mapRow(final ResultSet rs, final int rowNum) throws SQLException {
          final Question question = new Question();
+         question.setCount(rs.getInt("count"));
          question.setQ_id(rs.getInt("q_id"));
          question.setQ_std_id(rs.getInt("q_std_id"));
          question.setQ_content(rs.getString("q_content"));
-         question.setQ_reply(rs.getString("q_reply"));
          question.setCs_id(rs.getString("cs_id"));
          question.setCs_name(rs.getString("cs_name"));
          //df.setTimeZone(TimeZone.getTimeZone("Asia/Taipei"));
          question.setQ_asktime(df.format(rs.getTimestamp("q_asktime")));
-         question.setQ_replytime(rs.getString("q_replytime"));
          //question.setQ_time(rs.getTime("q_time"));
          question.setQ_solved(rs.getString("q_solved"));
-         question.setQ_type(rs.getBoolean("q_type"));
          return question;
      }
  }
@@ -142,6 +187,26 @@ public int hasQuestion(int std_id, String q_asktime){
      }
  }
 
+private static final class QuestionMapper3 implements RowMapper<Question> {
+  public Question mapRow(final ResultSet rs, final int rowNum) throws SQLException {
+      final Question question = new Question();
+      question.setStd_id(rs.getInt("std_id"));
+      question.setCb_content(rs.getString("cb_content"));
+      question.setCb_time(rs.getString("cb_time"));
+      question.setCb_role(rs.getBoolean("cb_role"));
+      question.setQ_content(rs.getString("q_content"));
+      question.setQ_asktime(rs.getString("q_asktime"));
+      return question;
+  }
+}
+
+
+ public int TeacherCompletionQuestion(Question question){
+  return jdbcTemplate.update(
+    "update question set q_solved = 1 where cs_id = ? and q_asktime = ?",
+    question.getCs_id(), question.getQ_asktime()); 
+}
+
 
 public int StudentCompletionQuestion(Question question){
   AuthenticationUtil auth = new AuthenticationUtil();
@@ -151,6 +216,19 @@ public int StudentCompletionQuestion(Question question){
     std_id, question.getQ_asktime()); 
 }
 
+public int updateStudentCommentBoxContent(final Question question) {
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  return jdbcTemplate.update(
+    "update comment_box set cb_content = ? where std_id = ? and cb_time = ?",
+    question.getCb_content(), std_id, question.getCb_time());
+}
+
+public int updateTeacherCommentBoxContent(final Question question) {
+  return jdbcTemplate.update(
+    "update comment_box set cb_content = ? where q_id = ? and cb_time = ?",
+    question.getCb_content(), question.getQ_id(), question.getCb_time());
+}
 
 public int updateStudentQuestionContent(final Question question) {
   AuthenticationUtil auth = new AuthenticationUtil();
@@ -179,7 +257,24 @@ public int updateStudentQuestionContent(final Question question) {
   return jdbcTemplate.update(
     "update question set q_reply = null, q_solved = 0, q_replytime = null where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
 }
- //顯示學生自己問過的問題
+
+public int deleteStudentMessages(Question question){
+  AuthenticationUtil auth = new AuthenticationUtil();
+  String std_id = auth.getCurrentUserName();
+  return jdbcTemplate.update(
+  "delete from comment_box where std_id = ? and cb_time = ?"
+  , std_id, question.getCb_time());
+}
+
+public int deleteTeacherMessages(Question question){
+  return jdbcTemplate.update( 
+  "delete from comment_box where q_id = ? and cb_time = ?"
+  , question.getQ_id(), question.getCb_time());
+}
+
+
+
+
 }
 
 

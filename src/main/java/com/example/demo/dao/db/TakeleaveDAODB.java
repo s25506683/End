@@ -36,6 +36,11 @@ public int updateTltypeID(final Takeleave takeleave){
     takeleave.getRc_id(), takeleave.getStd_id(), takeleave.getTl_type_id(), takeleave.getRc_id(), takeleave.getStd_id());
 }
 
+public int UnAllowUpdateTltypeID(final Takeleave takeleave){
+    return jdbcTemplate.update("update rc_record set rc_id = ?, std_id = ?, tl_type_id = 8 where rc_id = ? and std_id = ?",
+    takeleave.getRc_id(), takeleave.getStd_id(),takeleave.getRc_id(), takeleave.getStd_id());
+}
+
 public int findTltypeID(final int rc_id, final int std_id){
     String sql = "select tl_type_id from takeleave where rc_id = ? and std_id = ?";
     final int typeID = this.jdbcTemplate.queryForObject(sql, Integer.class, rc_id, std_id);
@@ -81,12 +86,12 @@ public int Applyforleave(final Takeleave takeleave) {
 }
 
 public List<Takeleave> findTakeleaveInTheClass(final String cs_id){
-    return this.jdbcTemplate.query("select tl.rc_id, rc.rc_starttime,rcrc.record_time, tl.tl_createtime, s.std_id ,s.std_name, tt.tl_type_name, tl.tl_type_id, tl.tl_content, tl.tl_state from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join student s on s.std_id = tl.std_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where rc.cs_id = ? group by tl.tl_id",
+    return this.jdbcTemplate.query("select tl.tl_id, tl.rc_id, rc.rc_starttime,rcrc.record_time, tl.tl_createtime, s.std_id ,s.std_name, tt.tl_type_name, tl.tl_type_id, tl.tl_content, tl.tl_state from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join student s on s.std_id = tl.std_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where rc.cs_id = ? group by tl.tl_id",
         new Object[]{cs_id}, new TakeleaveMapper());
 }
 
 public List<Takeleave> findStudentTakeleaveRecord(final String std_id, final String cs_id){
-    return this.jdbcTemplate.query("select tl.rc_id, rc.rc_starttime, rcrc.record_time, tl.tl_createtime, tl.tl_type_id, tl.tl_content, tl.tl_state, tt.tl_type_name from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where tl.std_id = ? and rc.cs_id= ? group by tl.tl_id",
+    return this.jdbcTemplate.query("select tl.tl_id, tl.rc_id, rc.rc_starttime, rcrc.record_time, tl.tl_createtime, tl.tl_type_id, tl.tl_content, tl.tl_state, tt.tl_type_name from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where tl.std_id = ? and rc.cs_id= ? group by tl.tl_id",
         new Object[]{std_id, cs_id}, new TakeleaveMapper1());
 }
 
@@ -99,6 +104,7 @@ private static final class TakeleaveMapper implements RowMapper<Takeleave> {
 
     public Takeleave mapRow(ResultSet rs, int rowNum) throws SQLException {
      Takeleave takeleave = new Takeleave();
+     takeleave.setTl_id(rs.getInt("tl_id"));
      takeleave.setRc_id(rs.getInt("rc_id"));
      takeleave.setRc_starttime(rs.getString("rc_starttime"));
      takeleave.setRecord_time(rs.getString("record_time"));
@@ -117,6 +123,7 @@ private static final class TakeleaveMapper1 implements RowMapper<Takeleave> {
 
     public Takeleave mapRow(ResultSet rs, int rowNum) throws SQLException {
      Takeleave takeleave = new Takeleave();
+     takeleave.setTl_id(rs.getInt("tl_id"));
      takeleave.setRc_id(rs.getInt("rc_id"));
      takeleave.setRc_starttime(rs.getString("rc_starttime"));
      takeleave.setRecord_time(rs.getString("record_time"));
@@ -142,25 +149,6 @@ private static final class TakeleaveMapper2 implements RowMapper<Takeleave> {
 }
 
 
-
-
-
-// private static final class TakeleaveMapper implements RowMapper<Takeleave> {
-
-//     public Takeleave mapRow(ResultSet rs, int rowNum) throws SQLException {
-//      Takeleave takeleave = new Takeleave();
-//      takeleave.setTl_id(rs.getInt("tl_id"));
-//      takeleave.setRc_id(rs.getInt("rc_id"));
-//      takeleave.setStd_id(rs.getInt("std_id"));
-//      takeleave.setTl_content(rs.getString("tl_content"));
-//      takeleave.setTl_state(rs.getInt("tl_state"));
-//      takeleave.setTl_type_id(rs.getInt("tl_type_id"));
-//      takeleave.setTl_teacher_reply(rs.getString("tl_teacher_reply"));
-//      takeleave.setTl_createtime(rs.getString("tl_createtime"));
-
-//         return takeleave;
-//     }
-// }
 
 public int Allowleave(final Takeleave takeleave){
 

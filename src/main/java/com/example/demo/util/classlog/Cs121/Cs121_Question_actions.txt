@@ -17,3 +17,46 @@
 2020/05/26 22:49:07	teacher that you watching question in class "Cs121".
 2020/05/26 22:49:18	teacher that you watching question in class "Cs121".
 2020/05/26 22:50:43	student "406401616" watching question in class "Cs121".
+2020/05/30 16:17:09	student 406401616 writing public question 今天可以不要上課嗎 in class Cs121 .
+2020/05/30 16:17:51	teacher that you watching question in class "Cs121".
+2020/05/30 16:22:47	teacher that you watching question in class "Cs121".
+2020/05/30 16:34:47	student "406401616" watching question in class "Cs121".
+2020/05/30 16:44:32	teacher that you watching question in class "Cs121".
+2020/05/30 16:44:42	student "406401616" watching question in class "Cs121".
+2020/05/30 16:48:06	student "406401616" watching question in class "Cs121".
+2020/05/30 16:48:21	student "406401616" watching question in class "Cs121".
+2020/05/30 16:48:29	teacher that you watching question in class "Cs121".
+2020/05/30 16:48:32	student "406401616" watching question in class "Cs121".
+2020/05/30 17:30:34	teacher that you watching question in class "Cs121".
+2020/05/30 17:30:56	teacher that you watching question in class "Cs121".
+2020/05/30 17:31:38	student 406401616 writing question 今天可以不要上課嗎 in class Cs121 .
+2020/05/30 17:36:03	student 406401616 writing question 今天可以不要上課嗎 in class Cs121 .
+2020/06/02 16:55:53	student 406401616 writing question 老師今天可以不要上課嗎 in class Cs121 .
+2020/06/02 17:03:22	teacher that you watching question in class "Cs121".
+2020/06/02 17:03:25	student "406401616" watching question in class "Cs121".
+2020/06/02 19:51:07	teacher that you watching question in class "Cs121".
+2020/06/02 21:39:59	teacher that you watching question in class "Cs121".
+2020/06/02 22:18:59	student 406401616 writing question 老師今天可以不要上課嗎 in class Cs121 .
+2020/06/03 17:17:33	teacher that you watching question in class "Cs121".
+2020/06/03 17:30:23	teacher that you watching question in class "Cs121".
+2020/06/03 17:32:02	student "406401616" watching question in class "Cs121".
+2020/06/04 20:11:05	student "406401616" watching question in class "Cs121".
+2020/06/04 20:11:30	student "406401616" watching question in class "Cs121".
+2020/06/04 20:13:30	student "406401616" watching question in class "Cs121".
+2020/06/04 20:13:43	teacher that you watching question in class "Cs121".
+2020/06/04 20:14:22	teacher that you watching question in class "Cs121".
+2020/06/04 20:16:21	teacher that you watching question in class "Cs121".
+2020/06/04 20:22:56	student "406401616" watching solved question in class "Cs121".
+2020/06/04 20:23:01	teacher that you watching solved question in class "Cs121".
+2020/06/04 20:26:12	teacher that you watching unresolved question in class "Cs121".
+2020/06/04 20:26:39	student "406401616" watching unresolved question in class "Cs121".
+2020/06/04 20:35:06	student 406401616 writing question 我要關閉提問啦 in class Cs121 .
+2020/06/04 20:36:05	student "406401616" completion question in class "Cs121" with question's asktime "2020-05-26 20:46:35".
+2020/06/04 20:38:18	student 406401616 writing question 我要關閉提問啦 in class Cs121 .
+2020/06/04 20:42:04	student "406401616" completion question in class "Cs121" with question's asktime "2020-06-04 20:38:18".
+2020/06/04 22:22:28	student 406401616 writing question 我要關閉提問啦 in class Cs121 .
+2020/06/05 16:31:41	teacher that you watching unresolved question in class "103".
+2020/06/05 16:31:51	teacher that you watching unresolved question in class "119".
+2020/06/05 16:35:09	student that you watching all messages in the question "119".
+2020/06/05 16:35:23	teacher that you watching all messages in the question "119".
+2020/06/05 16:35:39	teacher that you watching all messages in the question "119".
