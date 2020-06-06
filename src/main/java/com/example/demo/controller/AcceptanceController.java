@@ -206,7 +206,7 @@ public class AcceptanceController {
 
    
    //teacher get homework about content in this class.
-   //You will get hw_name, hw_createtime, hw_content, hw_id.
+   //You will get hw_name, hw_createtime, hw_content, hw_id, hw_closed.
     @GetMapping(value = {"/teacher/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptanceTeacher(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
@@ -401,7 +401,8 @@ public class AcceptanceController {
          dao.updateClosedHomework(acceptance);
          //尋找被退回的學生但老師已經有註記或是評分.
          String unAcceptRejectStudent = dao.findUnAcceptRejectStudent(acceptance.getHw_id());
-         if(!unAcceptRejectStudent.equals("")){
+
+         if(unAcceptRejectStudent != null){
             if(unAcceptRejectStudent.contains(",")){
                String[] unAcceptRejectStudent_arr = unAcceptRejectStudent.split(",");
                //將所有學生的state更改成1.
