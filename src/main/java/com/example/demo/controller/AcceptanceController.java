@@ -206,7 +206,7 @@ public class AcceptanceController {
 
    
    //teacher get homework about content in this class.
-   //You will get hw_name, hw_createtime, hw_content, hw_id.
+   //You will get hw_name, hw_createtime, hw_content, hw_id, hw_closed.
     @GetMapping(value = {"/teacher/acceptance/{hw_cs_id}"})
     public ResponseEntity<List<Acceptance>> retrieveOneAcceptanceTeacher(@PathVariable("hw_cs_id") final String hw_cs_id) throws SQLException,
           IOException {
