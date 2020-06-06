@@ -51,9 +51,31 @@ public class TeacherController {
     UserInTheClass userintheclass;
 
 	String writtenmessage = new String();
+	String partition = "Question";
 
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	LocalDateTime now = LocalDateTime.now();
+
+
+	//teacher at the end of the semester close this course.
+	//you have input cs_id.
+	@PutMapping(value = "/teacher/CloseTheCourse")
+	public ResponseEntity<String> TeacherCloseTheCourse(@RequestBody final Teacher teacher) throws SQLException,
+		  IOException {
+ 
+	  AuthenticationUtil auth = new AuthenticationUtil();
+	  String teacher_id = auth.getCurrentUserName();
+ 
+	  if(userintheclass.queryTeacherInTheClass(teacher_id, teacher.getCs_id()) == 0){
+		//if teacher not in this class.
+		return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
+	  }else{
+		 dao.TeacherClosesThisCourse(teacher);
+		 writtenmessage = "teacher \"" + teacher_id + "\" colsed coures in class \"" + teacher.getCs_id() + "\".";
+		 logfile.writeLog(writtenmessage, teacher.getCs_id(), partition);
+		 return ResponseEntity.ok("request successful! your course has been closed!");
+	   }
+	}
 
 	//teacher register and enter basic information.
 	//you will input teacher_id, teacher_password, teacher_name, teacher_gender, teacher_department, teacher_phone, teacher_mail, teacher_office, teacher_image.
