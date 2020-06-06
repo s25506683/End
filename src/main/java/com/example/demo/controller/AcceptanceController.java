@@ -401,7 +401,8 @@ public class AcceptanceController {
          dao.updateClosedHomework(acceptance);
          //尋找被退回的學生但老師已經有註記或是評分.
          String unAcceptRejectStudent = dao.findUnAcceptRejectStudent(acceptance.getHw_id());
-         if(!unAcceptRejectStudent.equals("")){
+
+         if(unAcceptRejectStudent != null){
             if(unAcceptRejectStudent.contains(",")){
                String[] unAcceptRejectStudent_arr = unAcceptRejectStudent.split(",");
                //將所有學生的state更改成1.
