@@ -6,8 +6,6 @@ import com.example.demo.entity.Question;
 
 public interface QuestionDAO {
 
-    // public int findReplycount()
-
     public int changeSolvedState(String std_id, String q_asktime);
 
     public int checkTheQuestionHasBeenSolved(int q_id);
@@ -48,8 +46,6 @@ public interface QuestionDAO {
 
     public String findCsId(int std_id, String q_asktime);
 
-    //public Question findOne(String cs_id,int std_id);
-
     public int TeacherCompletionQuestion(Question question);
 
     public int StudentCompletionQuestion(Question question);
@@ -60,11 +56,7 @@ public interface QuestionDAO {
 
     public int updateStudentQuestionContent(Question question);
 
-    public int updateTeacherReply(Question question);
-
     public int deleteQuestion(Question question);
-
-    public int deleteQuestionReply(Question question);
 
     public int deleteStudentMessages(Question question);
 
