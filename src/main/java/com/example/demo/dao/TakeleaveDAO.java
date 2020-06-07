@@ -10,7 +10,7 @@ public interface TakeleaveDAO {
 
 public List<Takeleave> findTakeleaveInTheClass(String cs_id);
 
-public List<Takeleave> findStudentTakeleaveRecord(String std_id, String cs_id);
+public List<Takeleave> findStudentTakeleaveRecord(String std_id, String cs_id, int tl_state);
 
 public List<Takeleave> findStudentTakeleave(String std_id, String cs_id);
 

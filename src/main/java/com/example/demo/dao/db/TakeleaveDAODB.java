@@ -90,9 +90,9 @@ public List<Takeleave> findTakeleaveInTheClass(final String cs_id){
         new Object[]{cs_id}, new TakeleaveMapper());
 }
 
-public List<Takeleave> findStudentTakeleaveRecord(final String std_id, final String cs_id){
-    return this.jdbcTemplate.query("select tl.tl_id, tl.rc_id, rc.rc_starttime, rcrc.record_time, tl.tl_createtime, tl.tl_type_id, tl.tl_content, tl.tl_state, tt.tl_type_name from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where tl.std_id = ? and rc.cs_id= ? group by tl.tl_id",
-        new Object[]{std_id, cs_id}, new TakeleaveMapper1());
+public List<Takeleave> findStudentTakeleaveRecord(String std_id, String cs_id, int tl_state){
+    return this.jdbcTemplate.query("select tl.tl_id, tl.rc_id, rc.rc_starttime, rcrc.record_time, tl.tl_createtime, tl.tl_type_id, tl.tl_content, tl.tl_state, tt.tl_type_name from takeleave tl inner join rc_record rcrc on rcrc.rc_id = tl.rc_id inner join rollcall rc on rc.rc_id = tl.rc_id inner join takeleave_type tt on tt.tl_type_id = tl.tl_type_id where tl.std_id = ? and rc.cs_id= ? and tl.tl_state = ? group by tl.tl_id",
+        new Object[]{std_id, cs_id, tl_state}, new TakeleaveMapper1());
 }
 
 public List<Takeleave> findStudentTakeleave(final String std_id, final String cs_id){
