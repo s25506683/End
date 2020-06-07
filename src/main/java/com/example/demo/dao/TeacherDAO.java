@@ -6,6 +6,8 @@ import com.example.demo.entity.Teacher;
 
 public interface TeacherDAO {
 
+	public int TeacherClosesThisCourse(Teacher teacher);
+
 	public int queryUser(int teacher_id);
 
 	public String getPassword(int teacher_id);

@@ -17,6 +17,15 @@ public class Teacher {
 	private String std_name;
 	private String std_gender;
 	private String std_department;
+	private boolean cs_close;
+
+	public boolean isCs_close() {
+		return this.cs_close;
+	}
+
+	public void setCs_close(boolean cs_close) {
+		this.cs_close = cs_close;
+	}
 
 	public String getStd_name() {
 		return this.std_name;
