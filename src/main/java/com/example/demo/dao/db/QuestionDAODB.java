@@ -238,25 +238,10 @@ public int updateStudentQuestionContent(final Question question) {
     question.getQ_content(), std_id, question.getQ_asktime());
 }
 
-
- public int updateTeacherReply(final Question question) {
-  CurrentTimeStamp ts = new CurrentTimeStamp();
-  String timestamp = ts.getCurrentTimeStamp();
-    return jdbcTemplate.update(
-      "update question set q_reply = ?, q_replytime = ? where q_std_id = ? and q_asktime = ?",
-      question.getQ_reply(), timestamp, question.getQ_std_id(), question.getQ_asktime());
- }
-
  public int deleteQuestion(Question question) {
     return jdbcTemplate.update(
       "delete from question where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
  }
-
- //delete teacher reply?? (have to set q_solved to 0).
- public int deleteQuestionReply(Question question) {
-  return jdbcTemplate.update(
-    "update question set q_reply = null, q_solved = 0, q_replytime = null where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
-}
 
 public int deleteStudentMessages(Question question){
   AuthenticationUtil auth = new AuthenticationUtil();

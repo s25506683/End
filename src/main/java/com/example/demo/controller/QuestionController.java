@@ -49,25 +49,6 @@ public class QuestionController {
 
    String writtenmessage = new String();
    String partition = "Question";
-
-   // public static void UsetimeTosolveQuestion(@RequestBody final Question question){
-   //     //ing
-     
-   //       question.setQ_asktime(dao.findQuestionAsktime(std_id, question.getCs_id()));
-   //       //抓取現在的時間
-   //       Date timenow = new Date(); 
-   //       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-   //       //抓取上一次發問的時間
-   //       String oldAsktime = question.getQ_asktime();
-   //       //將上次發問的時間轉換成毫秒
-   //       long timeInMillis = sdf.parse(oldAsktime).getTime();
-   //       long number = timenow.getTime() - timeInMillis;
-   //       if(number > 10000){
-   //          //if the time of the last question is too close now.
-   //          dao.changeSolvedState(std_id, question.getQ_asktime());
-   //        }
-
-   //    }
    
    //teacher post new messages in commentbox.
    //you will input q_id, cb_content.
@@ -78,7 +59,10 @@ public class QuestionController {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
    
-      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+      if(question.getCb_content() == ""){
+         //if comment_box content is null.
+         return ResponseEntity.badRequest().body("request failed. input content is null!");
+      }else if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
          return ResponseEntity.badRequest().body("request failed. this question has been solved can't add new messages!");
       }else{
          dao.TeacherAddNewMessages(question);
@@ -97,7 +81,10 @@ public class QuestionController {
       AuthenticationUtil auth = new AuthenticationUtil();
       int std_id = Integer.parseInt(auth.getCurrentUserName());
    
-      if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
+      if(question.getCb_content() == ""){
+         //if comment_box content is null.
+         return ResponseEntity.badRequest().body("request failed. input content is null!");
+      }else if(dao.checkTheQuestionHasBeenSolved(question.getQ_id()) == 1){
          return ResponseEntity.badRequest().body("request failed. this question has been solved can't add new messages!");
       }else{
          dao.StudentAddNewMessages(question);
@@ -339,13 +326,6 @@ public class QuestionController {
      AuthenticationUtil auth = new AuthenticationUtil();
      int std_id = Integer.parseInt(auth.getCurrentUserName());
 
-     System.out.println("\n\n\n\n\n\n\n");
-     System.out.println(std_id);
-     System.out.println(question.getQ_asktime());
-     System.out.println(question.getCs_id());
-     System.out.println(dao.hasBeenReply(std_id, question.getQ_asktime()));
-     System.out.println("\n\n\n\n\n\n\n");
-
    if(dao.hasQuestion(std_id, question.getQ_asktime()) == 0){
       //if the question not found.
       return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
@@ -418,29 +398,6 @@ public class QuestionController {
        }
     }
    
-    //老師回覆問題後寄信學生
-    //update teacher's reply in this class.
-    //You have input q_reply, cs_id, q_std_id, q_asktime.
- @PutMapping(value = "/teacher/question")
-    public ResponseEntity<String> processFormUpdate(@RequestBody final Question question) throws SQLException,
-          IOException {
-      AuthenticationUtil auth = new AuthenticationUtil();   
-      String teacher_id = auth.getCurrentUserName();
-
-      if(userintheclass.queryTeacherInTheClass(teacher_id, question.getCs_id()) == 0){
-         //if teacher not in this class.
-         return ResponseEntity.badRequest().body("request failed. teacher not in this class!");
-      }else if(userintheclass.queryStudentInTheClass(Integer.toString(question.getQ_std_id()), question.getCs_id()) == 0){
-         //if input student not in this class.
-         return ResponseEntity.badRequest().body("request failed. input student not in this class!");
-      }else{
-         dao.updateTeacherReply(question);
-         writtenmessage = "teacher \"" + teacher_id + "\" reply question in class \"" + question.getCs_id() + "\" with question's asktime \"" + question.getQ_asktime() + "\", student \"" + question.getQ_std_id() + "\".";
-         logfile.writeLog(writtenmessage, question.getCs_id(), partition);
-         return ResponseEntity.ok("request successful! your reply update completed!");
-      }
-    }
-
    //student delete there question.
    //input q_std_id, q_asktime.
  @DeleteMapping(value = "/student/deletequestioncontent/")
