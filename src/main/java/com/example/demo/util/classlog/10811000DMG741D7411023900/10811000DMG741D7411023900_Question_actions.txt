@@ -146,3 +146,13 @@
 2020/06/02 21:40:28	student "406401616" watching his question in class "10811000DMG741D7411023900".
 2020/06/02 21:40:34	student "406401599" watching his question in class "10811000DMG741D7411023900".
 2020/06/03 17:17:38	student "406401599" watching his question in class "10811000DMG741D7411023900".
+2020/06/07 16:17:04	student "406401599" comment question 啊啊我會! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:17:09	student "406401599" comment question 啊啊我會! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:17:32	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:17:33	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:17:34	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:36:15	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:36:16	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:36:16	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:36:17	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".
+2020/06/07 16:38:20	student "406401599" comment question ! in class "10811000DMG741D7411023900" with question's asktime "null".

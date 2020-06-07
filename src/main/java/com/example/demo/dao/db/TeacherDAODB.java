@@ -26,6 +26,12 @@ public class TeacherDAODB implements TeacherDAO {
 
 //jdbcTemplate 
 
+	public int TeacherClosesThisCourse(Teacher teacher) {
+  	return jdbcTemplate.update(
+    	"update class set cs_close = 1 where cs_id = ?",
+    	teacher.getCs_id());
+}
+
 	public int AddstudentManually(String std_id, String cs_id){
 	return jdbcTemplate.update(
       "insert into class_student (std_id, cs_id) values(?, ?)",

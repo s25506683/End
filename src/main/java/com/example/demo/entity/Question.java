@@ -8,12 +8,9 @@ public class Question {
     private int q_id;
     private int q_std_id;
     private String q_content;
-    private String q_reply;
     private String cs_id;
     private String cs_name;
     private String q_asktime;
-    private String q_replytime;
-    //private Time q_time;
     private String q_solved;
     private String std_mail;
     private boolean q_type;
@@ -104,13 +101,7 @@ public class Question {
         this.q_content = q_content;
     }
 
-    public String getQ_reply() {
-        return this.q_reply;
-    }
 
-    public void setQ_reply(String q_reply) {
-        this.q_reply = q_reply;
-    }
 
     public String getCs_id() {
         return this.cs_id;
@@ -151,14 +142,6 @@ public class Question {
 
     public void setQ_asktime(String q_asktime) {
         this.q_asktime = q_asktime;
-    }
-
-    public String getQ_replytime() {
-        return this.q_replytime;
-    }
-
-    public void setQ_replytime(String q_replytime) {
-        this.q_replytime = q_replytime;
     }
 
     public String getQ_solved() {

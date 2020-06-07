@@ -36,10 +36,9 @@ public int queryUserRole(int user_id){
 }
 
 
-
  public List<HomePage1_s> findStudentCourse(int std_id) {
      System.out.println(AuthenticationUtil.class.getName());
-     sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name, cs.std_id, st.std_name from class c inner join class_student cs on c.cs_id = cs.cs_id inner join student st on cs.std_id = st.std_id inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id where cs.std_id = ? order by c.cs_id";
+     sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name,cs.std_id,st.std_name from class c inner join class_student cs on c.cs_id = cs.cs_id inner join student st on cs.std_id = st.std_id inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id where cs.std_id = ? and c.cs_close = 0 order by c.cs_id";
     return this.jdbcTemplate.query( sql, new Object[]{std_id}, new HomePage1_sMapper_findStudentCourse());
   }
 
