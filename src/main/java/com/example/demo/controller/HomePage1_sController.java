@@ -74,7 +74,8 @@ public class HomePage1_sController {
    
  }
 
- 
+ //student get his all class.
+ //you will get cs_id, cs_name, cs_photo, teacher_name, std_id, std_name.
  @GetMapping(value = {"/student/HomePage1_s/one/"})
     public List<HomePage1_s> retrieveStudentCourse() throws SQLException {
       AuthenticationUtil auth = new AuthenticationUtil();
@@ -83,6 +84,9 @@ public class HomePage1_sController {
       return dao.findStudentCourse(Integer.parseInt(std_id));
       
     }
+
+    //teacher get his all class.
+    //you will get cs_id, cs_name, cs_photo, teacher_name, teacher_id, std_count(這堂課所有的學生).
   @GetMapping(value = {"/teacher/HomePage1_s/one/"})
     public List<HomePage1_s> retrieveTeacherCourse() throws SQLException {
       AuthenticationUtil auth = new AuthenticationUtil();
