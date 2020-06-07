@@ -39,12 +39,12 @@ public int queryUserRole(int user_id){
 
  public List<HomePage1_s> findStudentCourse(int std_id) {
      System.out.println(AuthenticationUtil.class.getName());
-     sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name,cs.std_id,st.std_name from class c inner join class_student cs on c.cs_id = cs.cs_id inner join student st on cs.std_id = st.std_id inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id where cs.std_id = ? order by c.cs_id";
+     sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name, cs.std_id, st.std_name from class c inner join class_student cs on c.cs_id = cs.cs_id inner join student st on cs.std_id = st.std_id inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id where cs.std_id = ? order by c.cs_id";
     return this.jdbcTemplate.query( sql, new Object[]{std_id}, new HomePage1_sMapper_findStudentCourse());
   }
 
   public List<HomePage1_s> findTeacherCourse(int teacher_id) {
-      sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name,ct.teacher_id from class c inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id where ct.teacher_id = ? order by c.cs_id";
+        sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name, ct.teacher_id, count(csst.std_id) as std_count from class c inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id join class_student csst on csst.cs_id = c.cs_id where ct.teacher_id = ? group by c.cs_id order by c.cs_id";
     return this.jdbcTemplate.query( sql, new Object[]{teacher_id}, new HomePage1_sMapper_findTeacherCourse());
   }
 
@@ -79,6 +79,7 @@ public int queryUserRole(int user_id){
         homepage1_s.setCs_photo(rs.getString("cs_photo"));
         homepage1_s.setTeacher_name(rs.getString("teacher_name"));
         homepage1_s.setTeacher_id(rs.getInt("teacher_id"));
+        homepage1_s.setStd_count(rs.getInt("std_count"));
         return homepage1_s;
     }
 }
