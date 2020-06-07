@@ -34,9 +34,9 @@ public int queryStudentAcceptDone(int accept_std_id, boolean accept_done, int ac
   return count; //查看學生是否已經驗收完成 
 }
 
-public int findHomeworkID(String hw_name) {
-  String sql = "select hw_id from homework where hw_name = ?";
-  int homeworkId = this.jdbcTemplate.queryForObject(sql, Integer.class, hw_name);
+public int findHomeworkID(String cs_id, String hw_name) {
+  String sql = "select hw_id from homework where hw_cs_id = ? and hw_name = ?";
+  int homeworkId = this.jdbcTemplate.queryForObject(sql, Integer.class, cs_id, hw_name);
   return homeworkId; //透過hw_id找hw_name
 }
 

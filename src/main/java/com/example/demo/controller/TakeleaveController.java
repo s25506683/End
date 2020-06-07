@@ -75,9 +75,6 @@ public class TakeleaveController {
       //if student not in this class.
       return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
     }else{
-<<<<<<< HEAD
-      return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id), HttpStatus.OK);
-=======
       int tl_state = 0;
       return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id,tl_state), HttpStatus.OK);
       
@@ -117,7 +114,6 @@ public class TakeleaveController {
       int tl_state = 2;
       return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id,tl_state), HttpStatus.OK);
       
->>>>>>> 18e6e0fe9f75a67eadbcdc691a4bd59e4a34a49c
     }
   }
 

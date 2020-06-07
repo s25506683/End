@@ -47,11 +47,10 @@ public class AcceptanceController {
 
       if(userintheclass.queryStudentInTheClass(Integer.toString(acceptance.getStd_id()), acceptance.getCs_id()) == 1){
          //if student in this class.
-
          
          if(dao.hasThisHomework(acceptance.getCs_id(), acceptance.getHw_name()) == 1){
             //if homework and classId exist.
-            acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
+            acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getCs_id(), acceptance.getHw_name()));
 
             if(dao.hasHomeworkClosed(acceptance.getAccept_hw_id()) == 1){
                //if homework has closed by teacher.
@@ -60,6 +59,7 @@ public class AcceptanceController {
 
             if(dao.hasInLine(acceptance.getCs_id(), acceptance.getHw_name(), acceptance.getStd_id()) == 1){
                //if student 在排隊列表中.
+
                if(dao.hasRejectByTeacher(acceptance.getCs_id(), acceptance.getHw_name(), acceptance.getStd_id()) == 1){
                   //if student state is 2(被老師退回的狀態).
                   Acceptance rejectAcceptDetail = dao.getRejectAcceptance(acceptance.getCs_id(), acceptance.getHw_name(), acceptance.getStd_id());
@@ -455,14 +455,13 @@ public class AcceptanceController {
    }
    
  //student delete there acceptance.   
- //input std_id, hw_name.
+ //input std_id, cs_id, hw_name.
  @DeleteMapping(value = "/student/acceptance/deleteAcceptance")
     public ResponseEntity<String> deleteAcceptance(@RequestBody Acceptance acceptance) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       acceptance.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
-      acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
-      acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
+      acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getCs_id(), acceptance.getHw_name()));
 
       if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 0){
          //if student not in acceptance.
@@ -480,14 +479,13 @@ public class AcceptanceController {
 
     } 
  //student delete there acceptance.   
- //input std_id, hw_name.
+ //input std_id, cs_id, hw_name.
  @DeleteMapping(value = "/teacher/acceptance/deleteAcceptance")
  public ResponseEntity<String> deleteAcceptanceByTeacher(@RequestBody Acceptance acceptance) throws SQLException,
        IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       acceptance.setTeacher_id(Integer.parseInt(auth.getCurrentUserName()));
-      acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getHw_name()));
-      acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
+      acceptance.setAccept_hw_id(dao.findHomeworkID(acceptance.getCs_id(), acceptance.getHw_name()));
 
       if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 0){
          //if student not in acceptance.
