@@ -26,10 +26,6 @@ public class TakeleaveDAODB implements TakeleaveDAO {
 
 //jdbcTemplate 
 
-// public int findCsID(final int rc_id){
-//     String sql = "select rc.cs_id from takeleave tl inner join rollcall rc on rc.rc_id = tl.rc_id where rc.rc_id = 2";
-//     final int CsID = this.jdbcTemplate.queryForObject(sql, Integer.class, rc_id); //find cs_id from rc_id
-// }
 
 public int updateTltypeID(final Takeleave takeleave){
     return jdbcTemplate.update("update rc_record set rc_id = ?, std_id = ?, tl_type_id = ? where rc_id = ? and std_id = ?",
@@ -70,12 +66,6 @@ public int queryStudentInTakeleave(int rc_id, int std_id){
     final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,rc_id, std_id);
     return count; //這個請假中是否已經有此學生
 }
-
-
-// public List<Takeleave> findAll() {
-//     return this.jdbcTemplate.query( "select * from takeleave", new TakeleaveMapper());
-// }
-
 
 public int Applyforleave(final Takeleave takeleave) {
     CurrentTimeStamp ts = new CurrentTimeStamp();
