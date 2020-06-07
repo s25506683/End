@@ -64,10 +64,10 @@ public class TakeleaveController {
       }
     }
 
-   //student get all takeleave record in this class.
+   //student get all takeleave record in this class(state is 0).
    //you will get rc_id, rc_starttime, record_time, tl_createtime, tl_type_id, tl_content, tl_state tl_type_name returns.
-  @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}"}) //get學生的全部請假紀錄
-  public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecord(@PathVariable("cs_id") final String cs_id) throws SQLException{
+  @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}/0/"}) //get老師尚未審核的學生請假紀錄
+  public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecordStste_0(@PathVariable("cs_id") final String cs_id) throws SQLException{
 
     AuthenticationUtil auth = new AuthenticationUtil();
     String std_id = auth.getCurrentUserName(); 
@@ -75,7 +75,49 @@ public class TakeleaveController {
       //if student not in this class.
       return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
     }else{
+<<<<<<< HEAD
       return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id), HttpStatus.OK);
+=======
+      int tl_state = 0;
+      return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id,tl_state), HttpStatus.OK);
+      
+    }
+
+  }
+
+  //student get all takeleave record in this class(state is 1).
+   //you will get rc_id, rc_starttime, record_time, tl_createtime, tl_type_id, tl_content, tl_state tl_type_name returns.
+   @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}/1/"}) //get通過老師審核的學生請假紀錄
+   public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecordStste_1(@PathVariable("cs_id") final String cs_id) throws SQLException{
+ 
+     AuthenticationUtil auth = new AuthenticationUtil();
+     String std_id = auth.getCurrentUserName(); 
+     if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+       //if student not in this class.
+       return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
+     }else{
+       int tl_state = 1;
+       return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id,tl_state), HttpStatus.OK);
+       
+     }
+ 
+   }
+
+   //student get all takeleave record in this class(state is 2).
+   //you will get rc_id, rc_starttime, record_time, tl_createtime, tl_type_id, tl_content, tl_state tl_type_name returns.
+  @GetMapping(value = {"/student/takeleave/TakeleaveRecord/{cs_id}/2/"}) //get未通過老師審核的學生請假紀錄
+  public ResponseEntity<List<Takeleave>> retrieveTakeleaveRecordStste_2(@PathVariable("cs_id") final String cs_id) throws SQLException{
+
+    AuthenticationUtil auth = new AuthenticationUtil();
+    String std_id = auth.getCurrentUserName(); 
+    if(userintheclass.queryStudentInTheClass(std_id, cs_id) == 0){
+      //if student not in this class.
+      return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
+    }else{
+      int tl_state = 2;
+      return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id,tl_state), HttpStatus.OK);
+      
+>>>>>>> 18e6e0fe9f75a67eadbcdc691a4bd59e4a34a49c
     }
   }
 
