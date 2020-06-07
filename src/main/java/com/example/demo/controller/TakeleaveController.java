@@ -56,15 +56,12 @@ public class TakeleaveController {
 
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
-      
       if(userintheclass.queryTeacherInTheClass(teacher_id, cs_id) == 0){
          //if teacher not in this class.
          return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
       }else{
         return new ResponseEntity<List<Takeleave>>(dao.findTakeleaveInTheClass(cs_id), HttpStatus.OK);
       }
-     
-
     }
 
    //student get all takeleave record in this class.
@@ -78,11 +75,8 @@ public class TakeleaveController {
       //if student not in this class.
       return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
     }else{
-      
       return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleaveRecord(std_id,cs_id), HttpStatus.OK);
-      
     }
-
   }
 
   //student get absence record for himself(when state == 0).
@@ -97,13 +91,10 @@ public class TakeleaveController {
       return new ResponseEntity<List<Takeleave>>(HttpStatus.BAD_REQUEST);
     }else{
     return new ResponseEntity<List<Takeleave>>(dao.findStudentTakeleave(std_id,cs_id), HttpStatus.OK);
-    
     }
-
   }
 
-      //教師不允許請假後無法再次申請
-      //學生請假過後 不可再修改請假內容
+
   //student post new takeleave to db
   //you will input rc_id, std_id, tl_content, tl_type_id, tl_createtime.
   @PostMapping(value = {"/student/takeleave"})
@@ -113,30 +104,20 @@ public class TakeleaveController {
           AuthenticationUtil auth = new AuthenticationUtil();
           takeleave.setStd_id(Integer.parseInt(auth.getCurrentUserName()));
           takeleave.setCs_id(dao.findCsID(takeleave.getRc_id()));
-          //takeleave.setRc_id(takeleave.getRc_id());
-    
-            // if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
-            //   //教師已審核完成，不可再次申請
-            //   return ResponseEntity.badRequest().body("教師已審核過該筆請假，請勿再次申請");     
-            // }else      
+             
           if(dao.queryStudentInTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) == 0){
-
              dao.Applyforleave(takeleave);
              takeleave.getRc_id();
              writtenmessage = "student \"" + takeleave.getStd_id() + "\" apply takeleave in rollcall \"" + takeleave.getRc_id() + "\".";
              logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
              return ResponseEntity.ok("申請成功");
-       
             }else{
            return ResponseEntity.badRequest().body("你已申請過請假，請耐心等待老師的回覆");
-         //已申請中，但教師尚未批改
           }
-        
     }
 
- //state == 1 or 2 時不能再次修改
- //teacher update student state in this takeleave
- //you have input rc_id, std_id, tl_state.
+  //teacher update student state in this takeleave
+  //you have input rc_id, std_id, tl_state.
   @PutMapping(value = "/teacher/takeleave")
      public ResponseEntity<String> processFormUpdate(@RequestBody final Takeleave takeleave) throws SQLException,
          IOException {
@@ -149,17 +130,13 @@ public class TakeleaveController {
         if(dao.findStateInTheTakeleave(takeleave.getRc_id(), takeleave.getStd_id()) != 0){
           //學生的state已為1 or 2 無法再次更動
           return ResponseEntity.badRequest().body("已成功審核學生，無法再次修改");    
-
         }else if(takeleave.getTl_state() == 2){ //教師不准許請假
-          
             writtenmessage = "teacher \"" + teacher_id + "  \" unallowleave takeleave in rollcall \"" + takeleave.getRc_id() + "\".";
             logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
             dao.UnAllowleave(takeleave);
             dao.UnAllowUpdateTltypeID(takeleave);
             return ResponseEntity.badRequest().body("教師不准假");
-
         }else if(takeleave.getTl_state() == 1){ //教師准許請假
-            
             writtenmessage = "teacher \"" + teacher_id + "\" allowleave takeleave in rollcall \"" + takeleave.getRc_id() + "\".";
             logfile.writeLog(writtenmessage, takeleave.getCs_id(), partition);
             dao.Allowleave(takeleave);
@@ -190,9 +167,7 @@ public class TakeleaveController {
           dao.updateContent(takeleave);
           return ResponseEntity.ok("已修改請假內容");
         }        
-      }//內容不得為空
-      //如果state==2 or 1 不可修改
-        
+      }
     }
 			
         
