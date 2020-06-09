@@ -322,6 +322,29 @@ public class AcceptanceController {
  
     }
 
+ //teacher update student score in this homework after finish acceptance.
+ //You have input std_id, accept_hw_id, accept_score.
+ @PutMapping(value = "/teacher/updateScoreAfterFinish")
+ public ResponseEntity<String> processFormUpdateScore(@RequestBody Acceptance acceptance) throws SQLException,
+       IOException {
+   AuthenticationUtil auth = new AuthenticationUtil();
+   String teacher_id = auth.getCurrentUserName();
+   acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
+
+   if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 1){
+      //if student in this homework(acceptance line).
+      dao.updateScoreAfterFinish(acceptance);
+      writtenmessage = "teacher \"" + teacher_id + "\" update score in homework \"" + acceptance.getAccept_hw_id() +"\".";
+      logfile.writeLog(writtenmessage, acceptance.getCs_id(), partition);
+      return ResponseEntity.ok("已修改成績");
+   }else{
+      //student not in this homework(acceptance line).
+      return ResponseEntity.badRequest().body("此學生尚未排隊");
+   } 
+
+ }
+
+
    //teacher update student tag in this homework.
    //You have input std_id, accept_hw_id, accept_tag.
    @PutMapping(value = "/teacher/updateTag")
