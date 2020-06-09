@@ -62,6 +62,8 @@ public interface AcceptanceDAO {
 
  public int updateScore(Acceptance acceptance);
 
+ public int updateScoreAfterFinish(Acceptance acceptance);
+
  public int updateTag(Acceptance acceptance);
 
  public int updateContent(Acceptance acceptance);

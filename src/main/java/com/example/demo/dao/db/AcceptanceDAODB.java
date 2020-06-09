@@ -286,6 +286,13 @@ public int updateAcceptanceLine(Acceptance acceptance){
       "update acceptance set accept_score = ?, accept_content = ?, accept_tag = ?, accept_done = 1 where accept_std_id = ? and accept_hw_id = ?",
       acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
  }
+
+
+ public int updateScoreAfterFinish(Acceptance acceptance){
+    return jdbcTemplate.update(
+      "update acceptance set accept_score = ? where accept_std_id = ? and accept_hw_id = ?",
+      acceptance.getAccept_score(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
+ }
  
 
  public int updateTag(Acceptance acceptance){
