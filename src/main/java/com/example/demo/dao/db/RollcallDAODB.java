@@ -96,7 +96,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public Rollcall findOneRollcallSummaryRecord(int rc_id){
-    return this.jdbcTemplate.queryForObject( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0 || tl_type_id = 8) as otherwise from rc_record where rc_id = ?"
+    return this.jdbcTemplate.queryForObject( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3 and tl_type_id < 8) as takeleave, sum(tl_type_id = 0 || tl_type_id = 8) as otherwise from rc_record where rc_id = ?"
     , new Object[]{rc_id}, new RollcallMapper7());
   }
 
@@ -106,7 +106,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findAllRollcallRecord(final String cs_id) {
-     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id > 3 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id order by rc.rc_starttime desc"
+     return this.jdbcTemplate.query( "select rc.rc_id, rc.rc_starttime, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 or rcre.tl_type_id = 8 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id > 3 and rcre.tl_type_id < 8 then 1 else 0 end) as otherwise, rc.rc_inputsource from rollcall as rc inner join rc_record as rcre on rc.rc_id = rcre.rc_id where rc.cs_id = ? group by rc.rc_id order by rc.rc_starttime desc"
      , new Object[]{cs_id}, new RollcallMapper2());
   }
 
