@@ -51,7 +51,7 @@ public class QuestionController {
    String partition = "Question";
    
    //teacher post new messages in commentbox.
-   //you will input q_id, cb_content.
+   //you will input q_id, cb_content, cs_id.
    @PostMapping(value = "/teacher/AddNewMessages") 
    public ResponseEntity<String> Teacheraddnewmessage(@RequestBody final Question question)
          throws SQLException, IOException, ParseException {

@@ -96,7 +96,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public Rollcall findOneRollcallSummaryRecord(int rc_id){
-    return this.jdbcTemplate.queryForObject( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0) as otherwise from rc_record where rc_id = ?"
+    return this.jdbcTemplate.queryForObject( "select sum(tl_type_id = 1 or tl_type_id = 3) as present, sum(tl_type_id = 2) as long_distance, sum(tl_type_id > 3) as takeleave, sum(tl_type_id = 0 || tl_type_id = 8) as otherwise from rc_record where rc_id = ?"
     , new Object[]{rc_id}, new RollcallMapper7());
   }
 
