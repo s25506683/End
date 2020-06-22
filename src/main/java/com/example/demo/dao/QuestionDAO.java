@@ -28,6 +28,8 @@ public interface QuestionDAO {
 
     public int hasQuestion(int std_id, String q_asktime);
 
+    public int hasQuestionFromTeacher(String q_asktime);
+
     public int TeacherAddNewMessages(Question question);
 
     public int StudentAddNewMessages(Question question);
@@ -57,6 +59,8 @@ public interface QuestionDAO {
     public int updateStudentQuestionContent(Question question);
 
     public int deleteQuestion(Question question);
+
+    public int deleteTeacherQuestion(Question question);
 
     public int deleteStudentMessages(Question question);
 

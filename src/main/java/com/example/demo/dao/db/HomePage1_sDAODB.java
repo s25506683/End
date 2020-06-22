@@ -43,7 +43,7 @@ public int queryUserRole(int user_id){
   }
 
   public List<HomePage1_s> findTeacherCourse(int teacher_id) {
-        sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name, ct.teacher_id, count(csst.std_id) as std_count from class c inner join class_teacher ct on c.cs_id = ct.cs_id inner join teacher t on ct.teacher_id = t. teacher_id join class_student csst on csst.cs_id = c.cs_id where ct.teacher_id = ? group by c.cs_id order by c.cs_id";
+        sql = "select c.cs_id, c.cs_name, c.cs_photo, t.teacher_name, ct.teacher_id, count(csst.std_id) as std_count from class c  join class_teacher ct on c.cs_id = ct.cs_id  join teacher t on ct.teacher_id = t. teacher_id left join class_student csst on csst.cs_id = c.cs_id where ct.teacher_id = ? and c.cs_close = 0 group by c.cs_id order by c.cs_id";
     return this.jdbcTemplate.query( sql, new Object[]{teacher_id}, new HomePage1_sMapper_findTeacherCourse());
   }
 

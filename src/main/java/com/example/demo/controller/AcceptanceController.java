@@ -212,9 +212,14 @@ public class AcceptanceController {
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName(); 
+      System.out.println("\n\n\n");
+      System.out.println(teacher_id);
+      System.out.println(hw_cs_id);
+      System.out.println(dao.queryTeacherInTheClass(hw_cs_id,teacher_id));
+      System.out.println("\n\n\n");
      
       if(dao.queryTeacherInTheClass(hw_cs_id,teacher_id) == 0){
-         //如果學生不屬於這個課堂
+         //如果老師不屬於這個課堂
          return new ResponseEntity<List<Acceptance>>(HttpStatus.BAD_REQUEST);
       }else{
          writtenmessage = "teacher \"" + teacher_id + "\" watching homework in class \"" + hw_cs_id + "\".";
@@ -246,7 +251,7 @@ public class AcceptanceController {
     
  //teacher get acceptance list about content in this class.
  //input cs_id, hw_name.
- //You will get accept_id, accept_std_id, std_name, accept_hw_id, accept_state, accept_time, accept_score, accept_content, accept_tag, accept_done, hw_name, hw_content.
+ //You will get accept_id, accept_std_id, std_name, accept_hw_id, accept_state, accept_time, accept_sc/student/acceptance/hw/ore, accept_content, accept_tag, accept_done, hw_name, hw_content.
     @GetMapping(value = {"/teacher/acceptance/hw/{cs_id}/{hw_name}"})
     public ResponseEntity<List<Acceptance>> retrieveAcceptanceTeacher(@PathVariable("cs_id") final String cs_id, @PathVariable("hw_name") final String hw_name) throws SQLException,
           IOException {
@@ -278,12 +283,18 @@ public class AcceptanceController {
 
 
  //teacher reject student acceptance in this homework.
- //You have input std_id, accept_hw_id, accept_score, accept_content, accept_tag.
- @PutMapping(value = "/teacher/rejectAcceptance")
+ //You have input std_id, accept_hw_id, accept_score, accept_content.
+ @PutMapping(value = "/teacher/rejectAcceptance/")
     public ResponseEntity<String> rejectAcceptance(@RequestBody Acceptance acceptance) throws SQLException,
           IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
+      System.out.println("\n\n\n");
+      System.out.println(acceptance.getStd_id());
+      System.out.println(acceptance.getAccept_hw_id());
+      System.out.println(acceptance.getAccept_score());
+      System.out.println(acceptance.getAccept_content());
+      System.out.println("\n\n\n");
       acceptance.setCs_id(dao.findCsID(acceptance.getAccept_hw_id()));
 
       if(dao.queryStudentInTheAcceptance(acceptance.getStd_id(),acceptance.getAccept_hw_id()) == 1){
@@ -301,7 +312,7 @@ public class AcceptanceController {
 
     
  //teacher update student score in this homework (finish acceptance).
- //You have input std_id, accept_hw_id, accept_score, accept_content, accept_tag.
+ //You have input std_id, accept_hw_id, accept_score, accept_content.
  @PutMapping(value = "/teacher/updateScore")
     public ResponseEntity<String> processFormUpdate(@RequestBody Acceptance acceptance) throws SQLException,
           IOException {
@@ -412,7 +423,7 @@ public class AcceptanceController {
 
  //teacher closed this homework (all student can not accept this homework after proccess this api).
  //You have input hw_id.
- @PutMapping(value = "/teacher/closedHomework")
+ @PutMapping(value = "/teacher/closedHomework/")
    public ResponseEntity<String> processClosedHomework(@RequestBody Acceptance acceptance) throws SQLException,
          IOException {
       AuthenticationUtil auth = new AuthenticationUtil();
