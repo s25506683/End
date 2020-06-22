@@ -328,7 +328,7 @@ public class QuestionController {
 
    if(dao.hasQuestion(std_id, question.getQ_asktime()) == 0){
       //if the question not found.
-      return ResponseEntity.badRequest().body("request failed. thw question with asktime was not found!");
+      return ResponseEntity.badRequest().body("request failed. the question with asktime was not found!");
    }else if(dao.hasBeenReply(std_id, question.getQ_asktime()) == 1){
         return ResponseEntity.badRequest().body("request failed. your question has been solved from teacher or student!");
    }else{
@@ -431,15 +431,31 @@ public class QuestionController {
     public ResponseEntity<String> TeacherdeleteQuestion(@RequestBody final Question question) throws SQLException, IOException{
       AuthenticationUtil auth = new AuthenticationUtil();
       String teacher_id = auth.getCurrentUserName();
-      if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
-         //if the question not found.
-         return ResponseEntity.badRequest().body("request failed. the question with asktime was not found!");
+      if(question.getStd_id() == 0){
+         //要刪除的紀錄為自己(沒有傳入std_id).
+         if(dao.hasQuestionFromTeacher(question.getQ_asktime()) == 0){
+            //if the question not found.
+            return ResponseEntity.badRequest().body("request failed. the question with asktime was not found!(teacher)");
+         }else{
+            dao.deleteTeacherQuestion(question);
+            writtenmessage = "teacher \"" + teacher_id + "\" deleted question himself, question's asktime \"" + question.getQ_asktime() + "\".";
+            logfile.writeLog(writtenmessage);
+            return ResponseEntity.ok("request successful! Teacher delete question himself completed!");
+         }
+
       }else{
-         dao.deleteQuestion(question);
-         writtenmessage = "teacher \"" + teacher_id + "\" deleted question with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
-         logfile.writeLog(writtenmessage);
-         return ResponseEntity.ok("request successful! the student \"" + question.getQ_std_id() + "\"'s question has been deleted!");
+         //刪除特定學生的問題.
+         if(dao.hasQuestion(question.getQ_std_id(), question.getQ_asktime()) == 0){
+            //if the question not found.
+            return ResponseEntity.badRequest().body("request failed. the question with asktime was not found!(student)");
+         }else{
+            dao.deleteQuestion(question);
+            writtenmessage = "teacher \"" + teacher_id + "\" deleted question with student \"" + question.getQ_std_id() + "\", question's asktime \"" + question.getQ_asktime() + "\".";
+            logfile.writeLog(writtenmessage);
+            return ResponseEntity.ok("request successful! the student \"" + question.getQ_std_id() + "\"'s question has been deleted!");
+         }
       }
+      
     }
  
    //student delete his messages.

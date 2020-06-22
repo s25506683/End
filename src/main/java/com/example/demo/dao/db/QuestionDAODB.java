@@ -94,6 +94,12 @@ public int hasQuestion(int std_id, String q_asktime){
   return count;
 }
 
+public int hasQuestionFromTeacher(String q_asktime){
+  String sql = "select count(q_id) as count from question where q_std_id is null and q_asktime = ?";
+  int count = this.jdbcTemplate.queryForObject(sql,Integer.class, q_asktime);
+  return count;
+}
+
 public int TeacherAddNewMessages(Question question){
   CurrentTimeStamp ts = new CurrentTimeStamp();
   String timestamp = ts.getCurrentTimeStamp();
@@ -135,12 +141,12 @@ public int studentinsert(final Question question) {
   }*/
 
  public List<Question> findSolvedQuestion(final String cs_id) {
-     return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 1 group by q.q_id order by q.q_asktime"
+     return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, s.std_name, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q left join student s on s.std_id = q.q_std_id join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 1 group by q.q_id order by q.q_asktime"
      , new Object[]{cs_id}, new QuestionMapper());
  }
 
  public List<Question> findUnresolvedQuestion(final String cs_id) {
-  return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 0 group by q.q_id order by q.q_asktime"
+     return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, s.std_name, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q left join student s on s.std_id = q.q_std_id join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 0 group by q.q_id order by q.q_asktime"
   , new Object[]{cs_id}, new QuestionMapper());
 }
 
@@ -150,7 +156,7 @@ public int studentinsert(final Question question) {
 }
 
 public List<Question> findAllmessageIntheQuestion(int q_id){
-  return this.jdbcTemplate.query("select cb.std_id, cb.cb_content, cb.cb_time, cb.cb_role, q.q_content, q.q_asktime from comment_box cb inner join question q on cb.q_id = q.q_id where cb.q_id = ?"
+  return this.jdbcTemplate.query("select cb.std_id, s.std_name, cb.cb_content, cb.cb_time, cb.cb_role, q.q_content, q.q_asktime from comment_box cb left join student s on cb.std_id = s.std_id inner join question q on cb.q_id = q.q_id where cb.q_id = ?"
   , new Object[]{q_id}, new QuestionMapper3());
 }
 
@@ -241,6 +247,11 @@ public int updateStudentQuestionContent(final Question question) {
  public int deleteQuestion(Question question) {
     return jdbcTemplate.update(
       "delete from question where q_std_id = ? and q_asktime = ?", question.getQ_std_id(), question.getQ_asktime());
+ }
+
+ public int deleteTeacherQuestion(Question question){
+    return jdbcTemplate.update(
+      "delete from question where q_std_id is null and q_asktime = ?", question.getQ_asktime());
  }
 
 public int deleteStudentMessages(Question question){

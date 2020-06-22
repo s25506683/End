@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.ExcelDownload;
+import com.fasterxml.jackson.databind.deser.ValueInstantiator.Gettable;
 import com.example.demo.dao.ExcelDownloadDAO;
 
 @Repository
@@ -24,17 +26,17 @@ public class ExcelUtil {
    @Autowired
    ExcelDownloadDAO dao;
 
-    public void write(List<ExcelDownload> studentList, String[] classinfo, String function, HttpServletResponse response) throws Exception {
+    public void write(final List<ExcelDownload> studentList, final String[] classinfo, final String function, final HttpServletResponse response) throws Exception {
 
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFFont font_absent = workbook.createFont();
-        HSSFFont font_farRollcall = workbook.createFont();
-        HSSFFont font_takeleave = workbook.createFont();
-        HSSFCellStyle style_absent = workbook.createCellStyle();
-        HSSFCellStyle style_farRollcall = workbook.createCellStyle();
-        HSSFCellStyle style_takeleave = workbook.createCellStyle();
+        final HSSFWorkbook workbook = new HSSFWorkbook();
+        final HSSFFont font_absent = workbook.createFont();
+        final HSSFFont font_farRollcall = workbook.createFont();
+        final HSSFFont font_takeleave = workbook.createFont();
+        final HSSFCellStyle style_absent = workbook.createCellStyle();
+        final HSSFCellStyle style_farRollcall = workbook.createCellStyle();
+        final HSSFCellStyle style_takeleave = workbook.createCellStyle();
 
-        //設定請假類別為 "缺席" 的字型(顏色為紅色).
+        //設定請假類別為 "缺席"以及"審核未通過" 的字型(顏色為紅色).
         font_absent.setColor(IndexedColors.RED.index);
         //設定 "缺席" 的style.
         style_absent.setFont(font_absent);
@@ -67,14 +69,14 @@ public class ExcelUtil {
         HSSFRow titlerow = sheet1.createRow(rowIndex);
         
         
-        String Title = "課程ID";  //classinfo[0]
-        String Title2 = "課程名稱";   //classinfo[1]
-        String Title3 = "授課教師";   //classinfo[2]
-        String Title4 = "學生人數";   //classinfo[3]
+        final String Title = "課程ID";  //classinfo[0]
+        final String Title2 = "課程名稱";   //classinfo[1]
+        final String Title3 = "授課教師";   //classinfo[2]
+        final String Title4 = "學生人數";   //classinfo[3]
 
         
         //寫入基本資料
-        int titleindex = classinfo.length;
+        final int titleindex = classinfo.length;
         titlerow.createCell(rowIndex).setCellValue(Title);
         titlerow.createCell(rowIndex+1).setCellValue(classinfo[0]);
         //跳column
@@ -96,12 +98,12 @@ public class ExcelUtil {
         rowIndex += titleindex+1;
 
         //get所有的點名時間
-        String[] allrollcallstarttime = dao.findAllRollcallStartTime(classinfo[0]).replace("-", "/").split(",");   //classinfo[0] = cs_id
+        final String[] allrollcallstarttime = dao.findAllRollcallStartTime(classinfo[0]).replace("-", "/").split(",");   //classinfo[0] = cs_id
 
         // 次要表頭
-        String[] head = new String[100];
+        final String[] head = new String[100];
         //將學生資料加入head.
-        String[] studentinfotitle = { "序列", "學號", "姓名", "系所" };
+        final String[] studentinfotitle = { "序列", "學號", "姓名", "系所" };
 
         for(int i=0; i<studentinfotitle.length ; i++){
            head[i] = studentinfotitle[i];
@@ -138,9 +140,9 @@ public class ExcelUtil {
         int count = 0;
 
         //將所有學生的學號輸入到陣列中，以便之後跟點名做比對.
-        String[] allstudent = new String[100];
+        final String[] allstudent = new String[100];
         int allstudent_index = 0;
-        for (ExcelDownload ed : studentList) {
+        for (final ExcelDownload ed : studentList) {
 
             count++;
             int cellindex = 0;
@@ -203,10 +205,10 @@ public class ExcelUtil {
         int student_index = 0;
 
         //利用迴圈取出每個點名的starttime.
-        for(String starttime : allrollcallstarttime){
+        for(final String starttime : allrollcallstarttime){
 
            //取得單一點名所有學生的點名紀錄.
-           List<ExcelDownload> rollcallrecord = dao.findRollcallRecord(classinfo[0], starttime);
+           final List<ExcelDownload> rollcallrecord = dao.findRollcallRecord(classinfo[0], starttime);
            //將allstudent_index歸0.
            student_index = 0;
            present_count = 0;
@@ -217,7 +219,7 @@ public class ExcelUtil {
            total_count = 0;
 
            //利用迴圈取出rollcallrecord的List中每一筆學生的點名紀錄.
-           for(ExcelDownload personalrecord : rollcallrecord){
+           for(final ExcelDownload personalrecord : rollcallrecord){
               //跑迴圈讓rollcallrecord跟allstudent去比對學號，以防資料錯誤.
               for(; student_index < allstudent.length ;){
                  if(allstudent[student_index] == null){
@@ -226,7 +228,13 @@ public class ExcelUtil {
                  //如果allstudent中的學號與personalrecord的object中的std_id一樣，則將資料寫入至excel中.
                  if( allstudent[student_index].equals(Integer.toString(personalrecord.getStd_id())) ){
                     titlerow = sheet1.getRow(student_index + rowIndex);
-                    titlerow.createCell(column_index).setCellValue(personalrecord.getTl_type_name());
+                    
+                    //如果學生的狀態為"審核未通過"，將原本的字改成"缺席（審核未通過）."
+                    if(personalrecord.getTl_type_name().equals("審核未通過")){
+                     titlerow.createCell(column_index).setCellValue("缺席（審核未通過）");
+                    }else{
+                       titlerow.createCell(column_index).setCellValue(personalrecord.getTl_type_name());
+                    }
 
                     if(personalrecord.getTl_type_name().equals("出席")){
                        //if 狀態為 "出席".
@@ -240,8 +248,8 @@ public class ExcelUtil {
                        total_count++;
 
                     }
-                    else if(personalrecord.getTl_type_name().equals("缺席")){
-                       //if 狀態為 "缺席".
+                    else if(personalrecord.getTl_type_name().equals("缺席") || personalrecord.getTl_type_name().equals("審核未通過")){
+                       //if 狀態為 "缺席"or"審核未通過".
                        titlerow.getCell(column_index).setCellStyle(style_absent);
                        absent_count++;
                        total_count++;
@@ -300,7 +308,7 @@ public class ExcelUtil {
         
 
         
-        String fileName = classinfo[1] + "Rollcalls.xls";
+        final String fileName = classinfo[1] + "Rollcalls.xls";
 
         
         //String home = System.getProperty("user.home");
@@ -314,7 +322,22 @@ public class ExcelUtil {
 
 
         response.setContentType("application/ms-excel;charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(fileName, "UTF-8"))));
+        System.out.println("\n\n\n");
+        System.out.println(fileName);
+        System.out.println(String.valueOf(URLEncoder.encode(fileName, "UTF-8")));
+        System.out.println("\n\n\n");
+        //response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(fileName)));
+        //response.setHeader("Content-Disposition", "attachment;filename=".concat(String.valueOf(URLEncoder.encode(fileName, "UTF-8"))));
+
+
+
+
+
+        String headerValue = "attachment;";
+        headerValue  = " filename=\"" + encodeURIComponent(fileName)+"\";";
+        headerValue  = " filename*=utf-8''" + encodeURIComponent(fileName);
+        response.setHeader("Content-Disposition", headerValue);
+
         OutputStream out = response.getOutputStream();
         try {
             workbook.write(out);// output .xls file
@@ -328,6 +351,15 @@ public class ExcelUtil {
 
         
     }
+
+    public static String encodeURIComponent(String value) {
+      try {
+      return URLEncoder.encode(value, "UTF-8").replaceAll("\\ ", "%20");
+      } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+      return null;
+      }
+   }
       
       
 }

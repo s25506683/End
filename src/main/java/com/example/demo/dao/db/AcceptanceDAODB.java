@@ -154,7 +154,7 @@ public int insertHomework(final Acceptance acceptance){
   }
 
  public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name) {  
-     return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ?"
+     return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ? order by a.accept_time"
        , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
  }
 
@@ -165,7 +165,7 @@ public int insertHomework(final Acceptance acceptance){
  }
 
  public List<Acceptance> findHomeworkDetailformTeacher(String cs_id, String hw_name) {  
-      return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_content, a.accept_tag, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ?"
+      return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_content, a.accept_tag, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ? order by a.accept_time"
         , new Object[]{cs_id,hw_name}, new AcceptanceMapper2());
 }
 
@@ -262,8 +262,8 @@ private static class HomeWorkMapper2 implements RowMapper<Acceptance>{
 
 public int rejectAcceptance(Acceptance acceptance){
   return jdbcTemplate.update(
-      "update acceptance set accept_state = 2, accept_score = ?, accept_content = ?, accept_tag = ? where accept_std_id = ? and accept_hw_id = ?",
-      acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
+      "update acceptance set accept_state = 2, accept_score = ?, accept_content = ? where accept_std_id = ? and accept_hw_id = ?",
+      acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
 }
 
 public int updateFromRejectStateToAcceptdone(int std_id, int hw_id){
@@ -283,8 +283,8 @@ public int updateAcceptanceLine(Acceptance acceptance){
 
  public int updateScore(Acceptance acceptance) {
     return jdbcTemplate.update(
-      "update acceptance set accept_score = ?, accept_content = ?, accept_tag = ?, accept_done = 1 where accept_std_id = ? and accept_hw_id = ?",
-      acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
+      "update acceptance set accept_score = ?, accept_content = ?, accept_done = 1 where accept_std_id = ? and accept_hw_id = ?",
+      acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
  }
 
 
@@ -310,18 +310,27 @@ public int updateAcceptanceLine(Acceptance acceptance){
  }
 
  public int updateClosedHomework(Acceptance acceptance){
+  System.out.println("\n\n\n");
+  System.out.println("hw_closed");
+   System.out.println("\n\n\n");
     return jdbcTemplate.update(
       "update homework set hw_closed = 1 where hw_id = ?",
       acceptance.getHw_id());
  }
 
  public int updateReopenHomework(Acceptance acceptance){
+   System.out.println("\n\n\n");
+   System.out.println("hw_closed");
+   System.out.println("\n\n\n");
     return jdbcTemplate.update(
       "update homework set hw_closed = 0 where hw_id = ?",
       acceptance.getHw_id());
   }
 
  public int deleteAcceptance(Acceptance acceptance){
+  System.out.println("\n\n\n");
+  System.out.println("hw_open");
+  System.out.println("\n\n\n");
     return jdbcTemplate.update(
       "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getStd_id(), acceptance.getAccept_hw_id());
  }
