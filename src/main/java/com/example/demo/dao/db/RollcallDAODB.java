@@ -121,7 +121,7 @@ public class RollcallDAODB implements RollcallDAO {
   }
 
   public List<Rollcall> findRollcallByPerson(String cs_id){
-    return this.jdbcTemplate.query("select rcre.std_id, st.std_name, st.std_department, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id > 0 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 2 then 1 else 0 end) as otherwise from rc_record as rcre inner join rollcall as rc on rc.rc_id = rcre.rc_id inner join student as st on st.std_id = rcre.std_id where rc.cs_id = ? group by rcre.std_id order by rcre.std_id"
+    return this.jdbcTemplate.query("select rcre.std_id, st.std_name, st.std_department, sum(case when rcre.tl_type_id <= 3 and rcre.tl_type_id >= 1 then 1 else 0 end) as present, sum(case when rcre.tl_type_id = 0 or rcre.tl_type_id = 8 then 1 else 0 end) as absent, sum(case when rcre.tl_type_id >= 4 and rcre.tl_type_id <= 7 then 1 else 0 end) as otherwise from rc_record as rcre inner join rollcall as rc on rc.rc_id = rcre.rc_id inner join student as st on st.std_id = rcre.std_id where rc.cs_id = ? group by rcre.std_id order by rcre.std_id"
       , new Object[]{cs_id}, new RollcallMapper5());
   }
 
