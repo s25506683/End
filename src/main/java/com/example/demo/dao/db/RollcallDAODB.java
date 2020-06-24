@@ -2,11 +2,7 @@ package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
-
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,13 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.RollcallDAO;
 import com.example.demo.entity.Rollcall;
-import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
 public class RollcallDAODB implements RollcallDAO {
 
- @Autowired
- private DataSource dataSource;
  @Autowired
  JdbcTemplate jdbcTemplate;
 
@@ -130,7 +123,6 @@ public class RollcallDAODB implements RollcallDAO {
     , new Object[]{qrcode}, new RollcallMapper6());
   }
 
-
   private static final class RollcallMapper implements RowMapper<Rollcall> {
      public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
         final Rollcall rollcall = new Rollcall();
@@ -156,16 +148,6 @@ public class RollcallDAODB implements RollcallDAO {
         return rollcall2;
     }
 }
-
-  private static final class RollcallMapper3 implements RowMapper<Rollcall> {
-    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
-       final Rollcall rollcall3 = new Rollcall();
-        rollcall3.setStd_id(rs.getInt("std_id"));
-        rollcall3.setStd_name(rs.getString("std_name"));
-        rollcall3.setStd_department(rs.getString("std_department"));
-        return rollcall3;
-    }
-  }
 
   private static final class RollcallMapper4 implements RowMapper<Rollcall> {
    public Rollcall mapRow(final ResultSet rs, final int rowNum) throws SQLException {
@@ -224,9 +206,6 @@ public class RollcallDAODB implements RollcallDAO {
          return rollcall8;
      }
    }
-
-   
-
 
   public String findQRcodeInRollcallName(int rc_id){
     String sql = "select qrcode from rollcall where rc_id = ?";

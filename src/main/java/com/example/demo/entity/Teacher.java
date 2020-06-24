@@ -19,6 +19,8 @@ public class Teacher {
 	private String std_department;
 	private boolean cs_close;
 
+
+
 	public boolean isCs_close() {
 		return this.cs_close;
 	}
@@ -58,7 +60,6 @@ public class Teacher {
 	public void setStd_id(String std_id) {
 		this.std_id = std_id;
 	}
-
 	
 	public String getCs_id() {
 		return this.cs_id;

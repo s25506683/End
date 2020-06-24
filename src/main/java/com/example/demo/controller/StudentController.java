@@ -1,17 +1,13 @@
 package com.example.demo.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.object.SqlCall;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,14 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-
-//import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Student;
 import com.example.demo.dao.StudentDAO;
@@ -70,15 +59,11 @@ public class StudentController {
 			}else{
 				return ResponseEntity.badRequest().body("request failed. Id too long/smail!");
 			}
-
-			
 		}else{
 			return ResponseEntity.badRequest().body("This account has already exist!");
 			
 		}
-
 	}
-
 	
 	@GetMapping(value = { "/student/information/" })
 	public Student retrieveOneStudent() throws SQLException {
@@ -86,7 +71,6 @@ public class StudentController {
 		int std_id = Integer.parseInt(auth.getCurrentUserName());
 		return dao.findOne(std_id);
 	}
-
 
 	@GetMapping(value = { "/student/" })
 	public List<Student> retrieveStudent() throws SQLException {
@@ -97,15 +81,12 @@ public class StudentController {
 	//You will get login std_id.
 	@GetMapping(value = {"/student/std_id"})
 	public ResponseEntity<Student> findStudentInTheAccept() throws SQLException{
-  	AuthenticationUtil auth = new AuthenticationUtil();
-   	int std_id = Integer.parseInt(auth.getCurrentUserName());
-   	Student student = new Student();
-   	student.setStd_id(std_id);
-   	return new ResponseEntity<Student>(student,HttpStatus.OK);
-
-}
-
-
+		AuthenticationUtil auth = new AuthenticationUtil();
+		int std_id = Integer.parseInt(auth.getCurrentUserName());
+		Student student = new Student();
+		student.setStd_id(std_id);
+		return new ResponseEntity<Student>(student,HttpStatus.OK);
+	}
 
 	//student change own password after login.
 	//you have to input old_std_password, std_password.
@@ -113,7 +94,6 @@ public class StudentController {
 	public ResponseEntity<String> processFormUpdate(@RequestBody final Student student) throws SQLException {
 		AuthenticationUtil auth = new AuthenticationUtil();
 		int std_id = Integer.parseInt(auth.getCurrentUserName());
-
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		//macth old password in database.
@@ -124,7 +104,6 @@ public class StudentController {
 		}else{
 			return ResponseEntity.badRequest().body("request failed. old password was round!");
 		}
-		
 	}
 
 	//student change own Email after login.
@@ -146,15 +125,11 @@ public class StudentController {
 				}else{
 					return ResponseEntity.badRequest().body("request failed. Email format error!");
 				}
-			
-			
 		}else{
 			return ResponseEntity.badRequest().body("This account has already exist!");
 			
 		}
-		
 	}
-
 
 	//student change owm Phone after login.
 	//you have to input old std_phone, std_phone
@@ -170,18 +145,12 @@ public class StudentController {
 		}else{
 			return ResponseEntity.badRequest().body("input Phone number format error! Only 10 number. ");
 		}
-	
-	
-	
 	}
-
-
 
 	//send new uuid password to student's email address.
 	//you have to  input std_id, std_email, std_phone.
 	@PutMapping(value = "/sendStudentEmailWithNewPassword/")
 	public ResponseEntity<String> sendNewPasswordToStudentEmail(@RequestBody final Student student) throws SQLException {
-
 		UUID uuid  =  UUID.randomUUID();
 		String[] idarr = uuid.toString().split("-");
 		String id = idarr[0];
@@ -200,8 +169,6 @@ public class StudentController {
 			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
 			return ResponseEntity.ok("email send(NewPassword) successful!");
 		}
-		
-		
 	}	
 
 	@DeleteMapping(value = "/student/{std_id}")

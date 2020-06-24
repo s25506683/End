@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.ExcelDownload;
-import com.fasterxml.jackson.databind.deser.ValueInstantiator.Gettable;
 import com.example.demo.dao.ExcelDownloadDAO;
 
 @Repository

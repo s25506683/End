@@ -5,15 +5,12 @@ import java.util.List;
 import com.example.demo.entity.Student;
 
 public interface StudentDAO {
-	//public void writeLog(String writtenmessage);
 
 	public int queryUser(int std_id);
 
 	public String getStudentName(int std_id);
 
 	public String getPassword(int std_id);
-
-	//public int passwordHasRound(int std_id, String old_std_password);
 
 	public int resetPasswordVerify(int std_id, String std_mail, String std_phone);
 

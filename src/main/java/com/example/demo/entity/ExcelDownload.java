@@ -4,15 +4,13 @@ public class ExcelDownload {
     private int std_id;
     private String std_name;
     private String std_department;
-
     private String cs_id;
-
     private String rc_inputsource;
-
     private String record_time;
-
     private String tl_type_name;
 
+
+    
     public int getStd_id() {
         return this.std_id;
     }

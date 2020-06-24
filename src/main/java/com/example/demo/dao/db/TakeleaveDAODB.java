@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,8 +17,6 @@ import com.example.demo.util.CurrentTimeStamp;
 @Repository
 public class TakeleaveDAODB implements TakeleaveDAO {
 
- @Autowired
- private DataSource dataSource;
  @Autowired
  JdbcTemplate jdbcTemplate;
 
@@ -72,7 +68,6 @@ public int Applyforleave(final Takeleave takeleave) {
     String timestamp = ts.getCurrentTimeStamp();
     return jdbcTemplate.update("insert into takeleave (rc_id, std_id, tl_content, tl_type_id, tl_createtime) values(?, ?, ?, ?, ?)",
     takeleave.getRc_id(), takeleave.getStd_id(), takeleave.getTl_content(), takeleave.getTl_type_id(), timestamp);
-    
 }
 
 public List<Takeleave> findTakeleaveInTheClass(final String cs_id){
@@ -138,19 +133,14 @@ private static final class TakeleaveMapper2 implements RowMapper<Takeleave> {
     }
 }
 
-
-
 public int Allowleave(final Takeleave takeleave){
-
     return jdbcTemplate.update("update takeleave set rc_id = ?, std_id = ?, tl_state = 1 where rc_id = ? and std_id = ?",
     takeleave.getRc_id(), takeleave.getStd_id(),takeleave.getRc_id(), takeleave.getStd_id());
 }
 
 public int UnAllowleave(final Takeleave takeleave){
-
     return jdbcTemplate.update("update takeleave set rc_id = ?, std_id = ?, tl_state = 2 where rc_id = ? and std_id = ?",
     takeleave.getRc_id(), takeleave.getStd_id(),takeleave.getRc_id(), takeleave.getStd_id());
-    
 }
 
 public int updateContent(final Takeleave takeleave){
@@ -161,7 +151,6 @@ public int updateContent(final Takeleave takeleave){
 }
 
 
- 
 }
 
 

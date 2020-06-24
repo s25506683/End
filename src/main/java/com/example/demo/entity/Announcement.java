@@ -7,7 +7,6 @@ public class Announcement {
     private String at_title;
     private String at_content;
     private String at_posttime;
-
     private String cs_name;
 
 

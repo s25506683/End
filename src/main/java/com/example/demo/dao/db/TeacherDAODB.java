@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,13 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.TeacherDAO;
 import com.example.demo.entity.Teacher;
-import com.example.demo.util.AuthenticationUtil;
 
 @Repository
 public class TeacherDAODB implements TeacherDAO {
 
-	@Autowired
-	private DataSource dataSource;
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -30,7 +25,7 @@ public class TeacherDAODB implements TeacherDAO {
   	return jdbcTemplate.update(
     	"update class set cs_close = 1 where cs_id = ?",
     	teacher.getCs_id());
-}
+	}
 
 	public int AddstudentManually(String std_id, String cs_id){
 	return jdbcTemplate.update(
@@ -126,7 +121,6 @@ public class TeacherDAODB implements TeacherDAO {
 		}
 	}
 
-
 	private static final class TeacherMapper2 implements RowMapper<Teacher> {
 
 		public Teacher mapRow(final ResultSet rs, final int rowNum) throws SQLException {
@@ -138,16 +132,5 @@ public class TeacherDAODB implements TeacherDAO {
 			return teacher;
 		}
 	}
-
-
-
-//	public int update(Student student) {
-//		return jdbcTemplate.update("update registration set std_id=?, std_password=? where std_id =?",
-//				student.getStd_id(), student.getStd_password());
-//	}
-//
-//	public int delete(int std_id) {
-//		return jdbcTemplate.update("delete from registration where std_id =?", std_id);
-//	}
 
 }

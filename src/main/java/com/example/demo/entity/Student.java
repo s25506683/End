@@ -12,6 +12,8 @@ public class Student {
 	private String std_image;
 	private String old_std_password;
 
+
+
 	public int getStd_id() {
 		return std_id;
 	}
@@ -75,9 +77,6 @@ public class Student {
 	public void setStd_image(String std_image) {
 		this.std_image = std_image;
 	}
-
-
-
 
 	public String getOld_std_password() {
 		return this.old_std_password;

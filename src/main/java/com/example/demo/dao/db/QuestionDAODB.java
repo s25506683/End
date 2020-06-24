@@ -4,9 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
-
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,8 +18,6 @@ import com.example.demo.util.CurrentTimeStamp;
 @Repository
 public class QuestionDAODB implements QuestionDAO {
 
- @Autowired
- private DataSource dataSource;
  @Autowired
  JdbcTemplate jdbcTemplate;
 //jdbcTemplate 
@@ -135,10 +130,6 @@ public int studentinsert(final Question question) {
       "insert into question (q_std_id, q_content, q_asktime, cs_id, q_role) values(?, ?, ?, ?, 0)",
       std_id, question.getQ_content(), timestamp, question.getCs_id());
  }
-
- /*public Question findOne(final String cs_id, final int std_id) {
-    return this.jdbcTemplate.queryForObject( "select q.q_id, q.q_std_id, q.q_content, c.cs_id, c.cs_name, q_time, q_solved from question q inner join class c on c.cs_id = q.cs_id where c.cs_id = ? and q.q_std_id = ? ", new Object[]{cs_id,std_id}, new QuestionMapper());
-  }*/
 
  public List<Question> findSolvedQuestion(final String cs_id) {
      return this.jdbcTemplate.query( "select count(cb.q_id) as count, q.q_id, q.q_std_id, s.std_name, q.q_content, c.cs_id, c.cs_name, q.q_asktime, q.q_solved from question q left join student s on s.std_id = q.q_std_id join class c on c.cs_id = q.cs_id left join comment_box cb on q.q_id = cb.q_id where q.cs_id = ? and q.q_solved = 1 group by q.q_id order by q.q_asktime"
@@ -267,8 +258,6 @@ public int deleteTeacherMessages(Question question){
   "delete from comment_box where q_id = ? and cb_time = ?"
   , question.getQ_id(), question.getCb_time());
 }
-
-
 
 
 }

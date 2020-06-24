@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,25 +8,16 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.logging.LogFile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-
-//import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.entity.Teacher;
 import com.example.demo.util.AuthenticationUtil;
@@ -104,11 +94,6 @@ public class TeacherController {
 		}else{
 			return ResponseEntity.badRequest().body("此帳號已存在");
 		}
-		
-		
-		
-		
-		
 	}
 
 	//teacher get information himself.
@@ -131,7 +116,6 @@ public class TeacherController {
 	@GetMapping(value = {"/teacher/findStudentInformation/{std_id}"})
 	public ResponseEntity<List<Teacher>> retrieveTeacherfindstudent(@PathVariable("std_id") String std_id) throws SQLException{
 		return new ResponseEntity<List<Teacher>>(dao.findStudentInformation(std_id), HttpStatus.OK);
-
 	}
 
 	//teacher change own password after login.
@@ -140,7 +124,6 @@ public class TeacherController {
 	public ResponseEntity<String> processFormUpdate(@RequestBody final Teacher teacher)throws SQLException {
 		AuthenticationUtil auth = new AuthenticationUtil();
 		int teacher_id = Integer.parseInt(auth.getCurrentUserName());
-
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 		//macth old password in database.
@@ -170,7 +153,6 @@ public class TeacherController {
 		else{
 			return ResponseEntity.badRequest().body("email格式錯誤");
 		}
-			
 	}
 
 	//teacher change own office after login.
@@ -190,7 +172,6 @@ public class TeacherController {
 			logfile.writeLog(writtenmessage);
 			return ResponseEntity.ok("renew Office Seccessful!");
 		}
-
 	}
 
 	//teacher change own Phone number after login.
@@ -209,12 +190,10 @@ public class TeacherController {
 		
 	}
 
-
 	//send new uuid password to teacher's email address.
 	//you have to  input teacher_id, teacher_email, teacher_phone.
 	@PutMapping(value = "/sendTeacherEmailWithNewPassword/")
 	public ResponseEntity<String> sendNewPasswordToStudentEmail(@RequestBody final Teacher teacher) throws SQLException{
-
 		UUID uuid  =  UUID.randomUUID();
 		String[] idarr = uuid.toString().split("-");
 		String id = idarr[0];
@@ -229,7 +208,6 @@ public class TeacherController {
 			mailservice.prepareAndSend(user_email, newpassword, Integer.toString(teacher.getTeacher_id()));
 			return ResponseEntity.ok("寄新密碼成功!!");
 		}
-
 	}
 
 	//teacher delete there student's in this class.
@@ -244,7 +222,6 @@ public class TeacherController {
 			dao.DeletestudentManually(teacher);
 			return ResponseEntity.ok("刪除此學生成功");
 		  }
-		
 	}
 
 	//teacher post there student's in this class.
@@ -259,7 +236,6 @@ public class TeacherController {
 			  dao.AddstudentManually(teacher.getStd_id(), teacher.getCs_id());
 			  return ResponseEntity.ok("新增此學生成功");
 		  }
-
 	}
 
 
