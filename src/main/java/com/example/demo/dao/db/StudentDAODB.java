@@ -4,11 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-import java.io.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,28 +17,7 @@ import com.example.demo.entity.Student;
 public class StudentDAODB implements StudentDAO {
 
 	@Autowired
-	private DataSource dataSource;
-	@Autowired
 	JdbcTemplate jdbcTemplate;
-
-//jdbcTemplate 
-
-	// public void writeLog(String writtenmessage){
-	// 	String directory = System.getProperty("user.dir");
-	// 	String fileName = "src/main/java/com/example/demo/util/logfile.txt";
-	// 	String absolutePath = directory + File.separator + fileName;
-	// 	System.out.println(absolutePath);
-		
-	// 	try (FileWriter filewriter = new FileWriter(absolutePath,true)) {
-	// 		String fileContent = writtenmessage + "\n";
-	// 		filewriter.write(fileContent);
-	// 		filewriter.flush();
-	// 		filewriter.close();
-	// 	} catch (IOException e) {
-	// 		System.err.print("Something went wrong");
-	// 	}
-	// }
-
 
 
 	public int queryUser(int std_id) {
@@ -62,12 +37,6 @@ public class StudentDAODB implements StudentDAO {
 		String std_password = this.jdbcTemplate.queryForObject(sql,String.class,std_id);
 		return std_password;
 	}
-
-	//public int passwordHasRound(int std_id, String old_std_password){
-		//String sql = "select count(std_id) as count from student where std_id = ? and std_password = ?";
-		//int count = this.jdbcTemplate.queryForObject(sql,Integer.class,std_id, old_std_password);
-		//return count;
-	//}
 
 	public int resetPasswordVerify(int std_id, String std_mail, String std_phone){
 		String sql = "select count(std_id) as count from student where std_id = ? and std_mail = ? and std_phone = ?";
@@ -113,7 +82,6 @@ public class StudentDAODB implements StudentDAO {
 		}
 	}
 
-
 	public int update(Student student) {
     	return jdbcTemplate.update("update student set std_password=?,  std_name=?, std_gender=?, std_department=? , std_phone=?, std_mail=?, std_image=? where std_id =?",
 		student.getStd_password(),student.getStd_name(), student.getStd_gender(), student.getStd_department(), student.getStd_phone(), student.getStd_mail(), student.getStd_image(), student.getStd_id());
@@ -124,8 +92,7 @@ public class StudentDAODB implements StudentDAO {
 		String password = passwordEncoder.encode(std_password);
 		return jdbcTemplate.update("update student set std_password = ? where std_id = ?",
 		password, std_id);
-	 }
-
+	}
 	
 	public int updateStudentMail(int std_id, String std_mail){
 		return jdbcTemplate.update("update student set std_mail = ? where std_id = ?",
@@ -136,7 +103,6 @@ public class StudentDAODB implements StudentDAO {
 		return jdbcTemplate.update("update student set std_phone = ? where std_id = ?",
 		std_phone, std_id);
 	}
-
 
 	public int delete(int std_id) {
 		return jdbcTemplate.update("delete from registration where std_id =?", std_id);

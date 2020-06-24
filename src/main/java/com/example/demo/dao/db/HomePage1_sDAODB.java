@@ -2,11 +2,7 @@ package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
-
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,8 +16,6 @@ import com.example.demo.util.AuthenticationUtil;
 @Repository
 public class HomePage1_sDAODB implements HomePage1_sDAO {
 
- @Autowired
- private DataSource dataSource;
  @Autowired
  JdbcTemplate jdbcTemplate;
  
@@ -101,18 +95,6 @@ private static final class HomePage1_sMapper3 implements RowMapper<HomePage1_s> 
         return homepage1_s3;
     }
 }
-
-
-//  public int update(HomePage1_s homepage1_s) {
-//     return jdbcTemplate.update(
-//       "update question set q_std_id=?, q_content=?, cs_id=? where q_std_id =?",
-//       homepage1_s.getQ_std_id(), homepage1_s.getQ_content(), homepage1_s.getCs_id(), homepage1_s.getQ_std_id());
-//  }
-
-//  public int delete(int id) {
-//     return jdbcTemplate.update(
-//       "delete from question where q_std_id =?", id);
-//  }
 
  
  

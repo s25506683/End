@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
 import java.sql.Time;
-import java.time.format.DateTimeFormatter;
-import java.security.Timestamp;
-import java.sql.Date;
 
 public class Acceptance {
 
@@ -20,9 +17,7 @@ public class Acceptance {
  private int teacher_id;
  private int std_id;
  private int hw_id;
-
  private String std_name;
-
  private int accept_state;
  private String accept_content;
  private int accept_tag;
@@ -77,8 +72,6 @@ public class Acceptance {
  public void setHw_createtime(String hw_createtime) {
      this.hw_createtime = hw_createtime;
  }
-
-
 
  public String getHw_cs_id() {
      return this.hw_cs_id;

@@ -1,9 +1,5 @@
 package com.example.demo.entity;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-
 public class Question {
     private int q_id;
     private int q_std_id;
@@ -19,6 +15,8 @@ public class Question {
     private int count;
     private int std_id;
     private boolean cb_role;
+
+
 
     public boolean isCb_role() {
         return this.cb_role;
@@ -101,8 +99,6 @@ public class Question {
         this.q_content = q_content;
     }
 
-
-
     public String getCs_id() {
         return this.cs_id;
     }
@@ -118,23 +114,6 @@ public class Question {
     public void setCs_name(String cs_name) {
         this.cs_name = cs_name;
     }
-    
-    // public Timestamp getQ_time() {
-    //     return this.q_time;
-    // }
-
-    // public void setQ_time(Timestamp q_time) {
-    //     this.q_time = q_time;
-    // }
-
-    // public String getQ_time() {
-    //     return this.q_time;
-    // }
-
-    // public void setQ_time(String q_time) {
-    //     this.q_time = q_time;
-    // }
-
 
     public String getQ_asktime() {
         return this.q_asktime;

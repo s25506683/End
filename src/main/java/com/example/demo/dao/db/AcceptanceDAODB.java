@@ -2,8 +2,6 @@ package com.example.demo.dao.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -15,14 +13,11 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.AcceptanceDAO;
 import com.example.demo.entity.Acceptance;
-import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.CurrentTimeStamp;
 
 @Repository
 public class AcceptanceDAODB implements AcceptanceDAO {
 
- @Autowired
- private DataSource dataSource;
  @Autowired
  JdbcTemplate jdbcTemplate;
 
@@ -105,12 +100,6 @@ public int queryStudentInTheAcceptance(int accept_std_id, int accept_hw_id){
   return count; //看這筆驗收中有沒有這個學生
 }
 
-// public int queryHomeworkInTheAcceptance(final int accept_std_id, final String hw_name){
-//   final String sql = "select count(accept_std_id) as count from acceptance where accept_std_id = ? and hw_name = ? ";
-//   final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,accept_std_id,hw_name);
-//   return count; //這個學生有沒有驗收過這個作業(看作業名稱)
-// }
-
 public int queryHomeworkInTheClass(final String hw_name, final String hw_cs_id){
   final String sql = "select count(hw_name) as count from homework where hw_name = ? and hw_cs_id = ?"; 
   final int count = this.jdbcTemplate.queryForObject(sql, Integer.class,hw_name,hw_cs_id);
@@ -130,15 +119,13 @@ public int queryTeacherInTheClass(final String cs_id, final String teacher_id){
   return count; //比對教師有沒有在這個課堂中
 }
 
-
-
- public int insertAcceptance(final Acceptance acceptance) {
+public int insertAcceptance(final Acceptance acceptance) {
   CurrentTimeStamp ts = new CurrentTimeStamp();
   String timestamp = ts.getCurrentTimeStamp();
   return jdbcTemplate.update(
     "insert into acceptance (accept_std_id, accept_hw_id, accept_state, accept_time, accept_done) values(?, ?, ?, ?, ?)",
     acceptance.getStd_id(), acceptance.getAccept_hw_id(), acceptance.getAccept_state(), timestamp, 0);
- }
+}
 
 public int insertHomework(final Acceptance acceptance){
   CurrentTimeStamp ts = new CurrentTimeStamp();
@@ -148,25 +135,25 @@ public int insertHomework(final Acceptance acceptance){
     acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_cs_id(), timestamp);
 }
 
- public List<Acceptance> findCourseHomework(String hw_cs_id) {
-    return this.jdbcTemplate.query("select hw_name, hw_createtime, hw_content from homework where hw_cs_id = ?"
-       ,new Object[]{hw_cs_id}, new HomeWorkMapper());
-  }
+public List<Acceptance> findCourseHomework(String hw_cs_id) {
+  return this.jdbcTemplate.query("select hw_name, hw_createtime, hw_content from homework where hw_cs_id = ?"
+      ,new Object[]{hw_cs_id}, new HomeWorkMapper());
+}
 
- public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name) {  
-     return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ? order by a.accept_time"
-       , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
- }
+public List<Acceptance> findHomeworkDetail(String cs_id, String hw_name) {  
+    return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ? order by a.accept_time"
+      , new Object[]{cs_id,hw_name}, new AcceptanceMapper());
+}
 
 
- public List<Acceptance> findCourseHomeworkformTeacher(String hw_cs_id){
-  return this.jdbcTemplate.query( "select hw_name, hw_createtime, hw_content, hw_id, hw_closed from homework where hw_cs_id = ?"
-  ,new Object[]{hw_cs_id}, new HomeWorkMapper2());
- }
+public List<Acceptance> findCourseHomeworkformTeacher(String hw_cs_id){
+return this.jdbcTemplate.query( "select hw_name, hw_createtime, hw_content, hw_id, hw_closed from homework where hw_cs_id = ?"
+,new Object[]{hw_cs_id}, new HomeWorkMapper2());
+}
 
- public List<Acceptance> findHomeworkDetailformTeacher(String cs_id, String hw_name) {  
-      return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_content, a.accept_tag, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ? order by a.accept_time"
-        , new Object[]{cs_id,hw_name}, new AcceptanceMapper2());
+public List<Acceptance> findHomeworkDetailformTeacher(String cs_id, String hw_name) {  
+    return this.jdbcTemplate.query( "select distinct a.accept_id, a.accept_std_id, s.std_name, a.accept_hw_id, a.accept_state, a.accept_time, a.accept_score, a.accept_content, a.accept_tag, a.accept_done, hw.hw_name, hw.hw_content from acceptance a join homework hw on hw.hw_id = a.accept_hw_id join student s on a.accept_std_id = s.std_id where hw.hw_cs_id = ? and hw.hw_name = ? order by a.accept_time"
+      , new Object[]{cs_id,hw_name}, new AcceptanceMapper2());
 }
 
 public Acceptance getRejectAcceptance(String cs_id, String hw_name, int std_id){
@@ -223,17 +210,6 @@ private static final class HomeWorkMapper implements RowMapper<Acceptance>{
   }
 }
 
-
-private static class HomeWorkMapper3 implements RowMapper<Acceptance>{
-
-  public Acceptance mapRow(ResultSet rs, int rowNum) throws SQLException {
-     Acceptance acceptance = new Acceptance();
-    acceptance.setStd_id(rs.getInt("std_id"));
-      return acceptance;
-  }
-}
-
-
 private static class RejectAcceptanceMapper implements RowMapper<Acceptance>{
 
   public Acceptance mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -244,7 +220,6 @@ private static class RejectAcceptanceMapper implements RowMapper<Acceptance>{
       return acceptance;
   }
 }
-
 
 private static class HomeWorkMapper2 implements RowMapper<Acceptance>{
 
@@ -258,7 +233,6 @@ private static class HomeWorkMapper2 implements RowMapper<Acceptance>{
       return acceptance;
   }
 }
-
 
 public int rejectAcceptance(Acceptance acceptance){
   return jdbcTemplate.update(
@@ -280,65 +254,64 @@ public int updateAcceptanceLine(Acceptance acceptance){
       acceptance.getAccept_state(), timestamp, acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
 }
 
+public int updateScore(Acceptance acceptance) {
+  return jdbcTemplate.update(
+    "update acceptance set accept_score = ?, accept_content = ?, accept_done = 1 where accept_std_id = ? and accept_hw_id = ?",
+    acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
+}
 
- public int updateScore(Acceptance acceptance) {
-    return jdbcTemplate.update(
-      "update acceptance set accept_score = ?, accept_content = ?, accept_done = 1 where accept_std_id = ? and accept_hw_id = ?",
-      acceptance.getAccept_score(), acceptance.getAccept_content(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
- }
 
-
- public int updateScoreAfterFinish(Acceptance acceptance){
-    return jdbcTemplate.update(
-      "update acceptance set accept_score = ? where accept_std_id = ? and accept_hw_id = ?",
-      acceptance.getAccept_score(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
- }
+public int updateScoreAfterFinish(Acceptance acceptance){
+  return jdbcTemplate.update(
+    "update acceptance set accept_score = ? where accept_std_id = ? and accept_hw_id = ?",
+    acceptance.getAccept_score(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
+}
  
 
- public int updateTag(Acceptance acceptance){
-    return jdbcTemplate.update(
-      "update acceptance set accept_tag = ? where accept_std_id = ? and accept_hw_id = ?",
-      acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
- }
+public int updateTag(Acceptance acceptance){
+  return jdbcTemplate.update(
+    "update acceptance set accept_tag = ? where accept_std_id = ? and accept_hw_id = ?",
+    acceptance.getAccept_tag(), acceptance.getStd_id(),acceptance.getAccept_hw_id());
+}
 
 
- public int updateContent(Acceptance acceptance){
-    return jdbcTemplate.update(
-      "update homework set hw_name = ?, hw_content = ? where hw_id = ?",
-      acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_id());
-    
- }
+public int updateContent(Acceptance acceptance){
+  return jdbcTemplate.update(
+    "update homework set hw_name = ?, hw_content = ? where hw_id = ?",
+    acceptance.getHw_name(), acceptance.getHw_content(), acceptance.getHw_id());
+  
+}
 
- public int updateClosedHomework(Acceptance acceptance){
+public int updateClosedHomework(Acceptance acceptance){
+System.out.println("\n\n\n");
+System.out.println("hw_closed");
+  System.out.println("\n\n\n");
+  return jdbcTemplate.update(
+    "update homework set hw_closed = 1 where hw_id = ?",
+    acceptance.getHw_id());
+}
+
+public int updateReopenHomework(Acceptance acceptance){
   System.out.println("\n\n\n");
   System.out.println("hw_closed");
-   System.out.println("\n\n\n");
-    return jdbcTemplate.update(
-      "update homework set hw_closed = 1 where hw_id = ?",
-      acceptance.getHw_id());
- }
-
- public int updateReopenHomework(Acceptance acceptance){
-   System.out.println("\n\n\n");
-   System.out.println("hw_closed");
-   System.out.println("\n\n\n");
-    return jdbcTemplate.update(
-      "update homework set hw_closed = 0 where hw_id = ?",
-      acceptance.getHw_id());
-  }
-
- public int deleteAcceptance(Acceptance acceptance){
   System.out.println("\n\n\n");
-  System.out.println("hw_open");
-  System.out.println("\n\n\n");
-    return jdbcTemplate.update(
-      "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getStd_id(), acceptance.getAccept_hw_id());
- }
+  return jdbcTemplate.update(
+    "update homework set hw_closed = 0 where hw_id = ?",
+    acceptance.getHw_id());
+}
+
+public int deleteAcceptance(Acceptance acceptance){
+System.out.println("\n\n\n");
+System.out.println("hw_open");
+System.out.println("\n\n\n");
+  return jdbcTemplate.update(
+    "delete from acceptance where accept_std_id =? and accept_hw_id =?", acceptance.getStd_id(), acceptance.getAccept_hw_id());
+}
 
 
- public int deleteHomework(Acceptance acceptance){
-   return jdbcTemplate.update("delete from homework where hw_name =? and hw_cs_id =?", acceptance.getHw_name(), acceptance.getHw_cs_id());
- }
+public int deleteHomework(Acceptance acceptance){
+  return jdbcTemplate.update("delete from homework where hw_name =? and hw_cs_id =?", acceptance.getHw_name(), acceptance.getHw_cs_id());
+}
 
  
  

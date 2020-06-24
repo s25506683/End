@@ -6,11 +6,9 @@ public class Course {
     private String cs_name;
     private String cs_photo;
     private String cs_qrcode;
-
     private int std_id;
     private String std_name;
     private String std_department;
-
     private String teacher_name;
     private String teacher_department;
     private String teacher_phone;
@@ -75,8 +73,6 @@ public class Course {
     public void setStd_department(String std_department) {
         this.std_department = std_department;
     }
-
-
     
     public String getTeacher_name() {
         return this.teacher_name;

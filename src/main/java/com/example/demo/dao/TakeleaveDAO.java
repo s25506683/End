@@ -6,8 +6,6 @@ import com.example.demo.entity.Takeleave;
 
 public interface TakeleaveDAO {
 
-// public int findCsID(int rc_id);
-
 public List<Takeleave> findTakeleaveInTheClass(String cs_id);
 
 public List<Takeleave> findStudentTakeleaveRecord(String std_id, String cs_id, int tl_state);
@@ -21,8 +19,6 @@ public int queryState(int rc_id, int std_id, int tl_state);
 public int findStateInTheTakeleave(int rc_id, int std_id); //查看state(教師是否已經審核過)
 
 public String findCsID(int rc_id);
-
-// public List<Takeleave> findAll();
 
 public int Applyforleave(Takeleave takeleave);  //請假申請
 

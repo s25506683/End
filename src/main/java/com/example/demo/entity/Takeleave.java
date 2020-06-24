@@ -13,6 +13,11 @@ public class Takeleave {
     private String record_time;
     private String rc_starttime;
     private String tl_type_name;
+    private String std_name;
+    private String rc_inputsource;
+    private String cs_id;
+
+
 
     public String getTl_type_name() {
         return this.tl_type_name;
@@ -29,10 +34,6 @@ public class Takeleave {
     public void setRc_starttime(String rc_starttime) {
         this.rc_starttime = rc_starttime;
     }
-
-    private String std_name;
-    private String rc_inputsource;
-    private String cs_id;
 
     public String getCs_id() {
         return this.cs_id;
@@ -66,9 +67,6 @@ public class Takeleave {
         this.std_name = std_name;
     }
 
-
-
-
     public int getTl_state() {
         return this.tl_state;
     }
@@ -76,7 +74,6 @@ public class Takeleave {
     public void setTl_state(int tl_state) {
         this.tl_state = tl_state;
     }
-
 
     public int getTl_id() {
         return this.tl_id;

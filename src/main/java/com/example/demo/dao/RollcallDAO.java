@@ -8,8 +8,6 @@ public interface RollcallDAO {
 
  public int addRollcall(Rollcall rollcall);
 
- //public int hasTheSameRollcallName(String rc_name);
-
  public int findRcId(String cs_id, String rc_starttime);
 
  public String findCs_id(int rc_id);

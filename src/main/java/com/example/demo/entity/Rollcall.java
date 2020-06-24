@@ -1,9 +1,5 @@
 package com.example.demo.entity;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-
 
 public class Rollcall {
     //private int cs_id;
@@ -25,8 +21,6 @@ public class Rollcall {
     private String gps_point;
     private String longitude;
     private String latitude;
-
-
     private int present;
     private int absent;
     private int long_distance;
@@ -177,13 +171,6 @@ public class Rollcall {
     public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
-
-    
-    
-
-
-
-
 
     public int getPresent() {
         return this.present;

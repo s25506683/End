@@ -34,7 +34,4 @@ public interface TeacherDAO {
 
 	public int AddstudentManually(String std_id, String cs_id);
 
-//	public int update(Teacher teacher);
-//
-//	public int delete(int std_id);
 }

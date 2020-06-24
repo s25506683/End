@@ -13,16 +13,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dao.CourseDAO;
 
-//import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.entity.Course;
 import com.example.demo.util.AuthenticationUtil;
 import com.example.demo.util.Logfile;
@@ -186,12 +180,6 @@ public class CourseController {
   }
 
 
-
-
- //老師新增課程（輸入課程名稱、課程ID）POST (done)
- //老師開放加入課程（cs_id, cs_qrcode）PUT (done)
- //學生加入課程（cs_qrcode）POST (done)
- //老師關閉加入課程（cs_qrcode）PUT
 
 
 }

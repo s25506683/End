@@ -13,14 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-/////////////import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dao.RollcallDAO;
 import com.example.demo.entity.Rollcall;
@@ -378,21 +371,6 @@ public class RollcallController {
        }
     }
 
-
-
-
-
-
- 
-
- //學生端Qrcode點名insert(done)
- //教師端手動update編輯點名(done)
- //老師刪除點名紀錄(done)
- //老師端更新QRcode(done)
- //學生在課堂點名中看到自己的所有點名紀錄(done)
- //student QRcode rollcall. 的input rc_name 改成 rc_id.(done)
-
- //老師關閉點名
 }
 
 
