@@ -1,0 +1,13 @@
+2020/09/18 09:41:38	student "406401599" watching homework in class "IM3702".
+2020/09/18 09:41:41	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:41:44	student "406401599" watching homework in class "IM3702".
+2020/09/18 09:41:46	student "406401599" watching homework in class "IM3702".
+2020/09/18 09:41:48	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:42:01	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:42:02	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:42:05	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:42:07	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:42:09	student "406401599" watching acceptancelist in class "IM3702".
+2020/09/18 09:42:10	student "406401599" watching homework in class "IM3702".
+2020/09/18 09:42:17	student "406401599" watching homework in class "IM3702".
+2020/09/18 09:42:23	student "406401599" watching homework in class "IM3702".

@@ -1,0 +1,7 @@
+2020/09/22 01:45:52	teacher 16283 adding rollcall at 2020-09-22 01:45:52 in the class.
+2020/09/22 01:45:55	teacher 16283 closed rollcall "390" .
+2020/09/22 01:45:58	teacher 16283 adding rollcall at 2020-09-22 01:45:58 in the class.
+2020/09/22 01:46:01	teacher 16283 renew the QRcode to 763bc784-b2fb-4154-b6e0-33a8fbd35f49 in rc_id = 391.
+2020/09/22 01:46:05	teacher 16283 renew the QRcode to a503f18c-de22-4913-b974-71c7150ec397 in rc_id = 391.
+2020/09/22 01:46:08	teacher 16283 renew the QRcode to 716af791-5682-4eb4-b374-221406a630c3 in rc_id = 391.
+2020/09/22 01:46:11	teacher 16283 closed rollcall "391" .

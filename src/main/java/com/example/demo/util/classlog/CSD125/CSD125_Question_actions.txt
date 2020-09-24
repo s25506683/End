@@ -1,0 +1,8 @@
+2020/09/22 09:45:38	student "406401202" watching unresolved question in class "CSD125".
+2020/09/22 09:45:38	student "406401202" watching solved question in class "CSD125".
+2020/09/22 09:45:41	student that you watching all messages in the question "152".
+2020/09/22 09:45:45	student "406401202" watching unresolved question in class "CSD125".
+2020/09/22 09:45:45	student "406401202" watching solved question in class "CSD125".
+2020/09/22 09:45:47	student that you watching all messages in the question "52".
+2020/09/22 09:45:52	student "406401202" watching unresolved question in class "CSD125".
+2020/09/22 09:45:52	student "406401202" watching solved question in class "CSD125".

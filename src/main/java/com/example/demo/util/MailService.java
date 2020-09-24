@@ -41,11 +41,15 @@ public class MailService {
     }
 
     public void prepareAndSend(String recipient, String new_password, String user_name) {
+        System.out.println("1\n\n\n");
+
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            System.out.println("2\n\n\n");
+
             messageHelper.setFrom("qrgomanager@gmail.com");
             messageHelper.setTo(recipient);
-            messageHelper.setSubject("您的RollsCall系統密碼已經變更");
+            messageHelper.setSubject("您的RollsUp系統密碼已經變更");
             resetpwdmailtemplate.setUserName(user_name);
             resetpwdmailtemplate.setNewPassword(new_password);
             messageHelper.setText(resetpwdmailtemplate.getNewMailTemplate(), true);
