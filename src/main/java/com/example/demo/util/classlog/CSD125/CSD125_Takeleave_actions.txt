@@ -1,0 +1,2 @@
+2020/09/22 01:53:49	student "406401628" apply takeleave in rollcall "392".
+2020/09/22 01:55:19	teacher "16283" allowleave takeleave in rollcall "392".

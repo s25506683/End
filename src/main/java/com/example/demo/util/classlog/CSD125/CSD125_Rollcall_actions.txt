@@ -1,0 +1,35 @@
+2020/09/22 01:45:37	teacher 16283 adding rollcall at 2020-09-22 01:45:37 in the class.
+2020/09/22 01:46:03	student 406401599 QRcode rollcall update to present in rc_id = 389.
+2020/09/22 01:46:08	student 406401599 watching personal rollcall record in the class.
+2020/09/22 01:47:04	teacher 16283 closed rollcall "389" .
+2020/09/22 01:52:33	student 406401628 watching personal rollcall record in the class.
+2020/09/22 01:53:03	teacher 16283 adding rollcall at 2020-09-22 01:53:03 in the class.
+2020/09/22 01:53:24	student 406401599 QRcode rollcall update to present in rc_id = 392.
+2020/09/22 01:53:30	student 406401599 watching personal rollcall record in the class.
+2020/09/22 01:53:40	student 406401628 watching personal rollcall record in the class.
+2020/09/22 01:55:02	teacher 16283 closed rollcall "392" .
+2020/09/22 09:44:45	student 406401202 watching personal rollcall record in the class.
+2020/09/23 14:19:44	teacher 16283 adding rollcall at 2020-09-23 14:19:43 in the class.
+2020/09/23 15:39:30	teacher 16283 adding rollcall at 2020-09-23 15:39:29 in the class.
+2020/09/23 15:40:14	student 406401599 GPS rollcall update to present in rc_id = 394.
+2020/09/23 15:40:24	teacher 16283 closed rollcall "394" .
+2020/09/23 15:45:11	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/23 15:46:18	teacher 16283 watching rollcall by person in the class.
+2020/09/23 15:46:20	teacher 16283 watching rollcall by person in the class.
+2020/09/23 15:46:24	teacher 16283 watching student 406401599's personal rollcall record in the class.
+2020/09/23 18:47:32	student 406401202 watching personal rollcall record in the class.
+2020/09/23 18:47:35	student 406401202 watching personal rollcall record in the class.
+2020/09/24 08:13:35	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 08:30:06	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 08:32:32	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 08:34:46	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 08:40:13	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 10:31:31	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 10:38:09	teacher 16283 download Web程式設計 rollcalls Excel file.
+2020/09/24 10:40:05	teacher 16283 update student rollcall record to 遠距簽到 in rc_id = 394, std_id = 406401628.
+2020/09/24 10:40:05	teacher 16283 update student rollcall record to 遲到 in rc_id = 394, std_id = 406401616.
+2020/09/24 10:40:07	teacher 16283 update student rollcall record to 病假 in rc_id = 394, std_id = 406401520.
+2020/09/24 10:40:07	teacher 16283 update student rollcall record to 事假 in rc_id = 394, std_id = 406401202.
+2020/09/24 10:40:14	teacher 16283 update student rollcall record to 喪假 in rc_id = 394, std_id = 406401109.
+2020/09/24 10:40:20	teacher 16283 update student rollcall record to 公假 in rc_id = 394, std_id = 406401000.
+2020/09/24 10:40:30	teacher 16283 download Web程式設計 rollcalls Excel file.

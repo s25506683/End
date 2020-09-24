@@ -219,6 +219,9 @@ public class ExcelUtil {
 
            //利用迴圈取出rollcallrecord的List中每一筆學生的點名紀錄.
            for(final ExcelDownload personalrecord : rollcallrecord){
+               //System.out.println("\n\n\n");
+              System.out.println(personalrecord.getTl_type_name()+"\n"+personalrecord.getStd_id());
+              System.out.println("\n");
               //跑迴圈讓rollcallrecord跟allstudent去比對學號，以防資料錯誤.
               for(; student_index < allstudent.length ;){
                  if(allstudent[student_index] == null){

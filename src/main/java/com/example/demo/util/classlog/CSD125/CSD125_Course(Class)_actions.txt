@@ -1,0 +1,5 @@
+2020/09/22 01:51:13	teacher 16283 is open QRcode(Join the class) in class "Web程式設計" with classID "CSD125".
+2020/09/22 01:51:23	teacher 16283 is open QRcode(Join the class) in class "Web程式設計" with classID "CSD125".
+2020/09/22 01:52:02	teacher 16283 is open QRcode(Join the class) in class "Web程式設計" with classID "CSD125".
+2020/09/22 01:52:24	student 406401628 join the class class "Web程式設計" with classID "CSD125".
+2020/09/22 01:52:54	teacher 16283 is open QRcode(Join the class) in class "Web程式設計" with classID "CSD125".

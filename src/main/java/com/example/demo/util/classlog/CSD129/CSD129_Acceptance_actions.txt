@@ -1,0 +1,3 @@
+2020/09/18 13:22:36	student "406401599" watching homework in class "CSD129".
+2020/09/18 13:22:39	student "406401599" watching acceptancelist in class "CSD129".
+2020/09/18 13:22:43	student "406401599" watching homework in class "CSD129".

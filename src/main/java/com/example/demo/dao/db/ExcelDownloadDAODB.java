@@ -59,7 +59,7 @@ public class ExcelDownloadDAODB implements ExcelDownloadDAO {
     }
 
     public List<ExcelDownload> findRollcallRecord(String classinfo, String rc_starttime){
-        return this.jdbcTemplate.query( "select rcre.std_id, tlty.tl_type_name from rc_record rcre join rollcall rc on rc.rc_id = rcre.rc_id join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rc.cs_id = ? and rc.rc_starttime = ?"
+        return this.jdbcTemplate.query( "select rcre.std_id, tlty.tl_type_name from rc_record rcre join rollcall rc on rc.rc_id = rcre.rc_id join takeleave_type tlty on tlty.tl_type_id = rcre.tl_type_id where rc.cs_id = ? and rc.rc_starttime = ? order by rcre.std_id"
     , new Object[]{classinfo, rc_starttime}, new ExcelDownloadMapper2());
     }
 

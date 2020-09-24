@@ -1,0 +1,17 @@
+2020/09/18 11:07:32	student "406401599" watching homework in class "CSD125".
+2020/09/18 11:07:34	student "406401599" watching acceptancelist in class "CSD125".
+2020/09/18 11:07:36	student "406401599" want to accept in homework "19".
+2020/09/18 11:07:40	student "406401599" watching acceptancelist in class "CSD125".
+2020/09/18 11:07:58	student "406401599" deleted acceptance with homework ID "19".
+2020/09/18 11:08:00	student "406401599" watching acceptancelist in class "CSD125".
+2020/09/18 11:08:01	student "406401599" want to accept in homework "19".
+2020/09/18 11:08:02	student "406401599" watching acceptancelist in class "CSD125".
+2020/09/22 09:45:54	student "406401202" watching homework in class "CSD125".
+2020/09/22 09:45:58	student "406401202" watching acceptancelist in class "CSD125".
+2020/09/22 09:46:03	student "406401202" want to accept in homework "19".
+2020/09/22 09:46:07	student "406401202" watching acceptancelist in class "CSD125".
+2020/09/22 09:46:09	student "406401202" deleted acceptance with homework ID "19".
+2020/09/22 09:46:13	student "406401202" watching acceptancelist in class "CSD125".
+2020/09/22 09:46:15	student "406401202" watching homework in class "CSD125".
+2020/09/22 09:46:26	student "406401202" watching homework in class "CSD125".
+2020/09/22 09:46:57	student "406401202" watching homework in class "CSD125".
