@@ -11,7 +11,9 @@ public class Q1 {
 				abc = false;
 				System.exit(0);
 			} else {
-				if (SUM(Xreverse) < 1000) {
+				if (SUM(originalStr) < 1000) {
+					System.out.printf("%04d\n", SUM(originalStr));
+				} else if(SUM(Xreverse) < 1000) {
 					System.out.printf("%04d\n", SUM(Xreverse));
 				} else {
 					System.out.println(SUM(Xreverse) % 10000);
